@@ -25,6 +25,14 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven {
+            name 'natrolite-releases'
+            url 'https://bitbucket.org/conreptio/maven-public/raw/master/releases'
+        }
+        maven {
+            name 'natrolite-snapshots'
+            url 'https://bitbucket.org/conreptio/maven-public/raw/master/snapshots'
+        }
     }
 }
 

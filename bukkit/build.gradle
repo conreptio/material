@@ -1,12 +1,20 @@
 ext {
     bukkit = project
+    util = project('natrolite-utils')
 
     POM_NAME = 'Natrolite Bukkit'
     POM_LICENSE_NAME = 'GNU General Public License (GPL)'
     POM_LICENSE_URL = 'https://www.gnu.org/licenses/gpl.txt'
     POM_LICENSE_DIST = 'repo'
 
+    utils = new Properties()
     bukkitVersion = '1.11.2-R0.1-SNAPSHOT'
+}
+
+utils.with {
+    core = this.util.project('core')
+    spiget = this.util.project('spiget')
+    spigetClient = this.util.project('spiget-client')
 }
 
 subprojects {

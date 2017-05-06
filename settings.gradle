@@ -2,3 +2,4 @@ rootProject.name = 'natrolite'
 
 include 'bukkit:natrolite-utils:core'
 include 'bukkit:natrolite-utils:spiget'
+include 'bukkit:natrolite-utils:spiget-client'
