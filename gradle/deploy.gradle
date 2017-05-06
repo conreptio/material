@@ -1,54 +1,44 @@
-// Version 1.0
+// Version 2.0
 
 apply plugin: 'maven'
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            if (project.hasProperty('xUrl')) {
-                repository(url: "${xUrl}/repository/maven-releases") {
-                    authentication(userName: xUser, password: xPass)
-                }
-                snapshotRepository(url: "${xUrl}/repository/maven-snapshots") {
-                    authentication(userName: xUser, password: xPass)
-                }
+uploadArchives.repositories.mavenDeployer {
+
+    if (project.hasProperty('deployRelease')) {
+        repository(url: deployRelease)
+    }
+
+    if (project.hasProperty('deploySnapshot')) {
+        snapshotRepository(url: deploySnapshot)
+    }
+
+    pom.project {
+        name = POM_NAME
+        packaging = POM_PACKAGING
+        description = POM_DESCRIPTION
+
+        licenses {
+            license {
+                name = POM_LICENSE_NAME
+                url = POM_LICENSE_URL
+                distribution = POM_LICENSE_DIST
             }
+        }
 
-            pom {
-                group = GROUP
-                version = VERSION
-                artifactId = POM_ARTIFACT_ID
+        issueManagement {
+            system = POM_ISSUE_SYSTEM
+            url = POM_ISSUE_URL
+        }
 
-                project {
-                    name = POM_NAME
-                    packaging = POM_PACKAGING
-                    description = POM_DESCRIPTION
+        ciManagement {
+            system = POM_CI_SYSTEM
+            url = POM_CI_URL
+        }
 
-                    licenses {
-                        license {
-                            name = POM_LICENSE_NAME
-                            url = POM_LICENSE_URL
-                            distribution = POM_LICENSE_DIST
-                        }
-                    }
-
-                    issueManagement {
-                        system = POM_ISSUE_SYSTEM
-                        url = POM_ISSUE_URL
-                    }
-
-                    ciManagement {
-                        system = POM_CI_SYSTEM
-                        url = POM_CI_URL
-                    }
-
-                    scm {
-                        url = POM_SCM_URL
-                        connection = POM_SCM_CONNECTION
-                        developerConnection = POM_SCM_DEVELOPER_CONNECTION
-                    }
-                }
-            }
+        scm {
+            url = POM_SCM_URL
+            connection = POM_SCM_CONNECTION
+            developerConnection = POM_SCM_DEVELOPER_CONNECTION
         }
     }
 }
