@@ -11,16 +11,11 @@ ext {
     bukkitVersion = '1.11.2-R0.1-SNAPSHOT'
 }
 
-utils.with {
-    core = this.util.project('core')
-    spiget = this.util.project('spiget')
-    spigetClient = this.util.project('spiget-client')
-}
+utils.putAll(util.subprojects.collectEntries {
+    project -> [project.name, project]
+})
 
 subprojects {
-    apply plugin: 'checkstyle'
-    apply plugin: 'net.minecrell.licenser'
-
     group += '.bukkit'
 
     checkstyle {
@@ -32,7 +27,11 @@ subprojects {
 
     gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
         if (!graph.allTasks.contains(tasks.checkstyle)) {
-            graph.allTasks.findAll { it.name.startsWith('checkstyle') }.each { it.enabled = false }
+            graph.allTasks.findAll {
+                it.name.startsWith('checkstyle')
+            }.each {
+                it.enabled = false
+            }
         }
     }
 
@@ -43,6 +42,10 @@ subprojects {
     }
 
     plugins.withType(JavaPlugin) {
+
+        plugins.apply('checkstyle')
+        plugins.apply('net.minecrell.licenser')
+
         repositories {
             maven {
                 url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
