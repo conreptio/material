@@ -2,6 +2,23 @@ plugins {
     id 'net.minecrell.licenser' version '0.3' apply false
 }
 
+ext {
+    POM_NAME = 'Natrolite'
+    POM_DESCRIPTION = 'Minecraft Minigame Manager'
+    POM_PACKAGING = 'jar'
+    POM_URL = 'https://bitbucket.org/conreptio/natrolite/'
+
+    POM_ISSUE_SYSTEM = 'BitBucket Issues'
+    POM_ISSUE_URL = 'https://bitbucket.org/conreptio/natrolite/issues'
+
+    POM_CI_SYSTEM = 'BitBucket Pipelines'
+    POM_CI_URL = 'https://bitbucket.org/conreptio/natrolite/addon/pipelines/home'
+
+    POM_SCM_URL = 'https://bitbucket.org/conreptio/natrolite/src'
+    POM_SCM_CONNECTION = 'scm:git:git://bitbucket.org:conreptio/natrolite.git'
+    POM_SCM_DEVELOPER_CONNECTION = 'scm:git:ssh://bitbucket.org:conreptio/natrolite.git'
+}
+
 allprojects {
     group = 'org.natrolite'
     version = '1.0-SNAPSHOT'

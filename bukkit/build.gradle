@@ -1,13 +1,19 @@
-group += '.bukkit'
-
 ext {
     bukkit = project
+
+    POM_NAME = 'Natrolite Bukkit'
+    POM_LICENSE_NAME = 'GNU General Public License (GPL)'
+    POM_LICENSE_URL = 'https://www.gnu.org/licenses/gpl.txt'
+    POM_LICENSE_DIST = 'repo'
+
     bukkitVersion = '1.11.2-R0.1-SNAPSHOT'
 }
 
 subprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'net.minecrell.licenser'
+
+    group += '.bukkit'
 
     checkstyle {
         toolVersion = '7.6.1'

@@ -7,4 +7,21 @@ subprojects {
         testCompile group: 'org.spigotmc', name: 'spigot-api', version: bukkitVersion
         compileOnly group: 'org.spigotmc', name: 'spigot-api', version: bukkitVersion
     }
+
+    task sourceJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourceJar
+        archives javadocJar
+    }
+
+    apply from: rootProject.file('gradle/deploy.gradle')
 }
