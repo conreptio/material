@@ -1,0 +1,10 @@
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    dependencies {
+        testCompile group: 'org.spigotmc', name: 'spigot-api', version: bukkitVersion
+        compileOnly group: 'org.spigotmc', name: 'spigot-api', version: bukkitVersion
+    }
+}
