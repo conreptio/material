@@ -1,0 +1,12 @@
+dependencies {
+    compile utils.core
+    compile group: 'ninja.leaping.configurate', name: 'configurate-hocon', version: '3.2'
+    compile group: 'ninja.leaping.configurate', name: 'configurate-gson', version: '3.2'
+    compile group: 'ninja.leaping.configurate', name: 'configurate-yaml', version: '3.2'
+}
+
+shadowJar {
+    classifier = 'shaded'
+}
+
+build.dependsOn(shadowJar)
