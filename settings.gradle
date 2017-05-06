@@ -1,5 +1,4 @@
 rootProject.name = 'natrolite'
 
-include 'bukkit'
 include 'bukkit:natrolite-utils:core'
 include 'bukkit:natrolite-utils:spiget'
