@@ -21,7 +21,7 @@
 
 package org.natrolite.util.tuple;
 
-import java.util.Objects;
+import com.google.common.base.Objects;
 
 public class Triplet<A, B, C> {
 
@@ -52,19 +52,20 @@ public class Triplet<A, B, C> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Triplet<?, ?, ?> triplet = (Triplet<?, ?, ?>) o;
-    return Objects.equals(valueA, triplet.valueA)
-        && Objects.equals(valueB, triplet.valueB)
-        && Objects.equals(valueC, triplet.valueC);
+    return Objects.equal(valueA, triplet.valueA)
+        && Objects.equal(valueB, triplet.valueB)
+        && Objects.equal(valueC, triplet.valueC);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(valueA, valueB, valueC);
+    return Objects.hashCode(valueA, valueB, valueC);
   }
 
   @Override
+  @SuppressWarnings("deprecation")
   public String toString() {
-    return com.google.common.base.Objects.toStringHelper(this)
+    return Objects.toStringHelper(this)
         .add("valueA", valueA)
         .add("valueB", valueB)
         .add("valueC", valueC)
