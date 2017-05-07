@@ -27,7 +27,9 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 
+@ThreadSafe
 public class PrefixHandler extends Handler {
 
   @Nullable
@@ -61,6 +63,7 @@ public class PrefixHandler extends Handler {
 
   @Override
   public void publish(LogRecord record) {
+    final String prefix = this.prefix;
     if (prefix != null && !prefix.isEmpty()) {
       record.setMessage(prefix + ' ' + record.getMessage());
     }
@@ -90,8 +93,11 @@ public class PrefixHandler extends Handler {
   }
 
   @Override
+  @SuppressWarnings("deprecation")
   public String toString() {
-    return "PrefixHandler{" + "prefix='" + prefix + '\'' + '}';
+    return Objects.toStringHelper(this)
+        .add("prefix", prefix)
+        .toString();
   }
 
   @Nullable
