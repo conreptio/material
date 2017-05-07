@@ -1,3 +1,9 @@
 dependencies {
     compile utils.spiget
 }
+
+shadowJar {
+    classifier = 'shaded'
+}
+
+build.dependsOn(shadowJar)
