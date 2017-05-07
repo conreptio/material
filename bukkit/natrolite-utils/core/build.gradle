@@ -1,0 +1,8 @@
+license {
+    exclude 'org/natrolite/cause/Cause.java'
+    exclude 'org/natrolite/cause/NamedCause.java'
+}
+
+processResources {
+    from bukkit.file('SPONGE-LICENSE.txt')
+}
