@@ -45,12 +45,10 @@ import javax.annotation.Nullable;
 
 /**
  * A cause represents the reason or initiator of an event.
- * <p>
  * <p>For example, if a block of sand is placed where it drops, the block
  * of sand would create a falling sand entity, which then would place another
  * block of sand. The block place event for the final block of sand would have
  * the cause chain of the block of sand -&gt; falling sand entity.</p>
- * <p>
  * <p>It is not possible to accurately the describe the chain of causes in
  * all scenarios so a best effort approach is generally acceptable. For
  * example, a player might press a lever, activating a complex Redstone
@@ -68,15 +66,16 @@ public final class Cause {
   @Nullable private ImmutableList<Object> immutableCauses;
 
   Cause(NamedCause[] causes) {
-    // basically, no validation, all the validation should take place calling this constructor
     final Object[] objects = new Object[causes.length];
     final String[] names = new String[causes.length];
+
     for (int index = 0; index < causes.length; index++) {
-      NamedCause aCause = causes[index];
-      checkNotNull(aCause, "Null cause element!");
-      objects[index] = aCause.getCauseObject();
-      names[index] = aCause.getName();
+      NamedCause cause = causes[index];
+      checkNotNull(cause, "Null cause element!");
+      objects[index] = cause.getCauseObject();
+      names[index] = cause.getName();
     }
+
     this.cause = objects;
     this.names = names;
   }
@@ -164,9 +163,9 @@ public final class Cause {
    * @return The first element of the type, if available
    */
   public <T> Optional<T> first(Class<T> target) {
-    for (Object aCause : this.cause) {
-      if (target.isInstance(aCause)) {
-        return Optional.of((T) aCause);
+    for (Object cause : this.cause) {
+      if (target.isInstance(cause)) {
+        return Optional.of((T) cause);
       }
     }
     return Optional.empty();
@@ -250,7 +249,7 @@ public final class Cause {
         try {
           final Object object = this.cause[i - 1];
           return Optional.of(object);
-        } catch (Exception e) {
+        } catch (Exception ex) {
           return Optional.empty();
         }
       }
@@ -294,7 +293,7 @@ public final class Cause {
         try {
           final Object object = this.cause[i + 1];
           return Optional.of(object);
-        } catch (Exception e) {
+        } catch (Exception ex) {
           return Optional.empty();
         }
       }
@@ -310,12 +309,11 @@ public final class Cause {
    */
   public boolean containsType(Class<?> target) {
     checkArgument(target != null, "The provided class cannot be null!");
-    for (Object aCause : this.cause) {
-      if (target.isInstance(aCause)) {
+    for (Object cause : this.cause) {
+      if (target.isInstance(cause)) {
         return true;
       }
     }
-
     return false;
   }
 
@@ -328,8 +326,8 @@ public final class Cause {
    * @return True if the object is contained within this cause
    */
   public boolean contains(Object object) {
-    for (Object aCause : this.cause) {
-      if (aCause.equals(object)) {
+    for (Object cause : this.cause) {
+      if (cause.equals(object)) {
         return true;
       }
     }
@@ -362,9 +360,9 @@ public final class Cause {
    */
   public <T> List<T> allOf(Class<T> target) {
     ImmutableList.Builder<T> builder = ImmutableList.builder();
-    for (Object aCause : this.cause) {
-      if (target.isInstance(aCause)) {
-        builder.add((T) aCause);
+    for (Object cause : this.cause) {
+      if (target.isInstance(cause)) {
+        builder.add((T) cause);
       }
     }
     return builder.build();
@@ -544,7 +542,8 @@ public final class Cause {
      */
     public Builder named(NamedCause cause) {
       checkNotNull(cause, "NamedCause cannot be null!");
-      checkArgument(!this.namesUsed.contains(cause.getName()), "Already contains an entry for: {}", cause.getName());
+      checkArgument(!this.namesUsed.contains(cause.getName()), "Already contains an entry for: {}",
+          cause.getName());
       this.causes.add(cause);
       this.namesUsed.add(cause.getName());
       return this;
@@ -621,6 +620,12 @@ public final class Cause {
       return new Cause(this.causes.toArray(new NamedCause[this.causes.size()]));
     }
 
+    /**
+     * Creates a new builder.
+     *
+     * @param value the cause
+     * @return the builder
+     */
     public Builder from(Cause value) {
       for (int i = 0; i < value.cause.length; i++) {
         this.causes.add(NamedCause.of(value.names[i], value.cause[i]));
@@ -629,6 +634,11 @@ public final class Cause {
       return this;
     }
 
+    /**
+     * Resets the builder.
+     *
+     * @return the builder
+     */
     public Builder reset() {
       this.causes.clear();
       this.namesUsed.clear();

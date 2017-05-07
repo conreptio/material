@@ -70,6 +70,13 @@ public abstract class Config<T> {
     this(file.toPath(), root, clazz);
   }
 
+  /**
+   * Creates a new instance.
+   *
+   * @param path  the file path
+   * @param root  the root node
+   * @param clazz the object class
+   */
   @SuppressWarnings("unchecked")
   public Config(Path path, @Nullable String root, Class<T> clazz) {
     this.path = path;
@@ -83,8 +90,8 @@ public abstract class Config<T> {
       mapper = ObjectMapper.forClass(clazz).bindToNew();
       load();
       save();
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
   }
 

@@ -31,6 +31,13 @@ public final class ReflectionUtil {
 
   private ReflectionUtil() {}
 
+  /**
+   * Sets a static final field.
+   *
+   * @param clazz the class
+   * @param field the field name
+   * @param value the new value
+   */
   public static void setFinalStatic(Class<?> clazz, String field, Object value) {
     try {
       setFinalStatic(clazz.getDeclaredField(field), value);
@@ -39,6 +46,12 @@ public final class ReflectionUtil {
     }
   }
 
+  /**
+   * Sets a static final field.
+   *
+   * @param field    the field
+   * @param newValue the new value
+   */
   public static void setFinalStatic(Field field, Object newValue) throws Exception {
     field.setAccessible(true);
     Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -47,17 +60,42 @@ public final class ReflectionUtil {
     field.set(null, newValue);
   }
 
+  /**
+   * Gets a {@link Field} from a {@link Class}.
+   *
+   * @param clazz the class
+   * @param name  the filed name
+   * @return the field
+   * @throws NoSuchFieldException if the field does not exist
+   */
   public static Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
     Field field = clazz.getDeclaredField(name);
     field.setAccessible(true);
     return field;
   }
 
+  /**
+   * Gets the value of a {@link Field}.
+   *
+   * @param object the object with the field
+   * @param name   the field name
+   * @return the field value
+   * @throws NoSuchFieldException   if the field does not exist
+   * @throws IllegalAccessException if the value could not be retrieved
+   */
   public static Object getFieldInstance(Object object, String name) throws NoSuchFieldException,
       IllegalAccessException {
     return getField(object.getClass(), name).get(object);
   }
 
+  /**
+   * Gets the annotation of a method if it is present.
+   *
+   * @param method     the method
+   * @param annotation the annotation class
+   * @param <T>        the annotation
+   * @return the annotation instance or {@link Optional#empty()}
+   */
   public static <T extends Annotation> Optional<T> getIfPresent(Method method,
       Class<T> annotation) {
     if (method.isAnnotationPresent(annotation)) {

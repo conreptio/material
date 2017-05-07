@@ -29,6 +29,13 @@ public class Triplet<A, B, C> {
   private final B valueB;
   private final C valueC;
 
+  /**
+   * Creates a new instance.
+   *
+   * @param valueA the first value
+   * @param valueB the second value
+   * @param valueC the third value
+   */
   public Triplet(A valueA, B valueB, C valueC) {
     this.valueA = valueA;
     this.valueB = valueB;
@@ -48,10 +55,14 @@ public class Triplet<A, B, C> {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Triplet<?, ?, ?> triplet = (Triplet<?, ?, ?>) o;
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (other == null || getClass() != other.getClass()) {
+      return false;
+    }
+    Triplet<?, ?, ?> triplet = (Triplet<?, ?, ?>) other;
     return Objects.equal(valueA, triplet.valueA)
         && Objects.equal(valueB, triplet.valueB)
         && Objects.equal(valueC, triplet.valueC);

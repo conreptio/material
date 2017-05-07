@@ -50,7 +50,7 @@ public interface PlaceholderService {
   boolean unregister(Replacer replacer);
 
   /**
-   * Unregisters all {@link Replacer}s
+   * Unregisters all {@link Replacer}s.
    */
   void unregisterAll();
 

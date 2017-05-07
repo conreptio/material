@@ -21,8 +21,6 @@
 
 package org.natrolite.util.tuple;
 
-import static com.google.common.base.Objects.equal;
-
 import com.google.common.base.Objects;
 
 public class Pair<A, B> {
@@ -44,11 +42,15 @@ public class Pair<A, B> {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Pair<?, ?> pair = (Pair<?, ?>) o;
-    return equal(valueA, pair.valueA) && equal(valueB, pair.valueB);
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (other == null || getClass() != other.getClass()) {
+      return false;
+    }
+    Pair<?, ?> pair = (Pair<?, ?>) other;
+    return Objects.equal(valueA, pair.valueA) && Objects.equal(valueB, pair.valueB);
   }
 
   @Override

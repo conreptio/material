@@ -21,7 +21,7 @@
 
 package org.natrolite.util.logging;
 
-import java.util.Objects;
+import com.google.common.base.Objects;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -37,10 +37,22 @@ public class PrefixHandler extends Handler {
     this.prefix = prefix;
   }
 
+  /**
+   * Creates a new {@link PrefixHandler} and adds it to a {@link Logger}.
+   *
+   * @param logger the logger
+   * @param prefix the prefix
+   */
   public static void register(Logger logger, String prefix) {
     register(logger, new PrefixHandler(prefix));
   }
 
+  /**
+   * Adds a {@link PrefixHandler} to add {@link Logger}.
+   *
+   * @param logger  the logger
+   * @param handler the handler
+   */
   public static void register(Logger logger, PrefixHandler handler) {
     if (Stream.of(logger.getHandlers()).noneMatch(handler::equals)) {
       logger.addHandler(handler);
@@ -61,16 +73,20 @@ public class PrefixHandler extends Handler {
   public void close() throws SecurityException {}
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    PrefixHandler that = (PrefixHandler) o;
-    return Objects.equals(prefix, that.prefix);
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (other == null || getClass() != other.getClass()) {
+      return false;
+    }
+    PrefixHandler that = (PrefixHandler) other;
+    return Objects.equal(prefix, that.prefix);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(prefix);
+    return Objects.hashCode(prefix);
   }
 
   @Override

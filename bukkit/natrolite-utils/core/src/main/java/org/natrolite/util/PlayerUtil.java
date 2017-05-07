@@ -30,6 +30,12 @@ public final class PlayerUtil {
 
   private PlayerUtil() {}
 
+  /**
+   * Gets the players client language.
+   *
+   * @param player the player
+   * @return players client locale or {@link Optional#empty()} if it could not be retrieved
+   */
   public static Optional<Locale> getLocale(@Nullable Player player) {
     if (player == null) {
       return Optional.empty();
@@ -45,6 +51,12 @@ public final class PlayerUtil {
     }
   }
 
+  /**
+   * Formats the Minecraft language to to a {@link Locale}.
+   *
+   * @param tag the language tag
+   * @return locale or {@link Optional#empty()} if it could not be parsed
+   */
   public static Optional<Locale> formatMinecraftLocale(String tag) {
     final String[] parts = tag.split("[_.]");
     if (parts.length == 1) {
@@ -59,6 +71,11 @@ public final class PlayerUtil {
     return Optional.empty();
   }
 
+  /**
+   * Resets a player.
+   *
+   * @param player the player to reset
+   */
   public static void reset(Player player) {
     player.setFlying(false);
     player.setAllowFlight(false);
