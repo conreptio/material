@@ -1,0 +1,21 @@
+dependencies {
+    compile utils.core
+}
+
+license {
+    exclude 'org/natrolite/context/Context.java'
+    exclude 'org/natrolite/context/ContextCalculator.java'
+    exclude 'org/natrolite/context/ContextSource.java'
+    exclude 'org/natrolite/context/Contextual.java'
+    exclude 'org/natrolite/context/ContextualService.java'
+}
+
+processResources {
+    from bukkit.file('SPONGE-LICENSE.txt')
+}
+
+shadowJar {
+    classifier = 'shaded'
+}
+
+build.dependsOn(shadowJar)
