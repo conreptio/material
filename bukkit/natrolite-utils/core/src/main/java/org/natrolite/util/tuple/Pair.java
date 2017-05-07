@@ -22,7 +22,9 @@
 package org.natrolite.util.tuple;
 
 import com.google.common.base.Objects;
+import javax.annotation.concurrent.Immutable;
 
+@Immutable
 public class Pair<A, B> {
 
   private final A valueA;

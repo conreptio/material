@@ -22,7 +22,9 @@
 package org.natrolite.util.tuple;
 
 import com.google.common.base.Objects;
+import javax.annotation.concurrent.Immutable;
 
+@Immutable
 public class Triplet<A, B, C> {
 
   private final A valueA;
