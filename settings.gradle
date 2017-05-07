@@ -1,6 +1,8 @@
 rootProject.name = 'natrolite'
 
 include 'bukkit:natrolite-utils:core'
+include 'bukkit:natrolite-utils:context'
 include 'bukkit:natrolite-utils:configurate'
+include 'bukkit:natrolite-utils:economy'
 include 'bukkit:natrolite-utils:spiget'
 include 'bukkit:natrolite-utils:spiget-client'
