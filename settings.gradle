@@ -1,8 +1,9 @@
 rootProject.name = 'natrolite'
 
 include 'natrolite-api'
+include 'natrolite-core'
 
-include 'bukkit:natrolite-utils:core'
+include 'natrolite-utils:core'
 include 'bukkit:natrolite-utils:context'
 include 'bukkit:natrolite-utils:configurate'
 include 'bukkit:natrolite-utils:economy'
@@ -15,3 +16,4 @@ rootProject.children.each {
     assert it.projectDir.isDirectory()
     assert it.buildFile.isFile()
 }
+

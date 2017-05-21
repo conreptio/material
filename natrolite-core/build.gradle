@@ -1,0 +1,9 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile project(':natrolite-api')
+    testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
+    compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
+}
