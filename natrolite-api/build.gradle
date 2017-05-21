@@ -5,4 +5,9 @@ plugins {
 dependencies {
     testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
     compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
+
+    utils.values().forEach { util ->
+        compile util
+        testCompile util
+    }
 }

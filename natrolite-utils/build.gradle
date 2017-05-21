@@ -2,8 +2,6 @@ ext.needSpigot = false
 
 subprojects { sub ->
     apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'eclipse'
 
     dependencies {
         if(needSpigot) {
@@ -13,21 +11,6 @@ subprojects { sub ->
             testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
             compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
         }
-    }
-
-    task sourceJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives sourceJar
-        archives javadocJar
     }
 
     apply from: rootProject.file('gradle/deploy.gradle')

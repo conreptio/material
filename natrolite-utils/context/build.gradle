@@ -11,7 +11,7 @@ license {
 }
 
 processResources {
-    from bukkit.file('SPONGE-LICENSE.txt')
+    from rootProject.file('SPONGE-LICENSE.txt')
 }
 
 shadowJar {
