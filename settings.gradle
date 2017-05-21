@@ -8,3 +8,8 @@ include 'bukkit:natrolite-utils:menu-legacy'
 include 'bukkit:natrolite-utils:placeholder'
 include 'bukkit:natrolite-utils:spiget'
 include 'bukkit:natrolite-utils:spiget-client'
+
+rootProject.children.each {
+    assert it.projectDir.isDirectory()
+    assert it.buildFile.isFile()
+}
