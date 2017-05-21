@@ -25,6 +25,11 @@ ext {
 allprojects {
     group = 'org.natrolite'
 
+    ext {
+        javaVersion = '1.8'
+        encoding = 'UTF-8'
+    }
+
     repositories {
         mavenCentral()
         maven { url 'https://bitbucket.org/conreptio/maven-public/raw/master/releases' }
@@ -32,8 +37,21 @@ allprojects {
     }
 }
 
-subprojects {
+subprojects { sub ->
     version = rootProject.version
+
+    plugins.withType(JavaPlugin) {
+        plugins.apply('net.minecrell.licenser')
+
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+
+        license {
+            header = rootProject.file('HEADER.txt')
+            include '**/*.java'
+            newLine = true
+        }
+    }
 }
 
 task wrapper(type: Wrapper) {

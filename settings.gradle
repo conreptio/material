@@ -1,5 +1,7 @@
 rootProject.name = 'natrolite'
 
+include 'natrolite-api'
+
 include 'bukkit:natrolite-utils:core'
 include 'bukkit:natrolite-utils:context'
 include 'bukkit:natrolite-utils:configurate'
