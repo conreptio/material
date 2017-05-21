@@ -26,6 +26,7 @@ allprojects {
     group = 'org.natrolite'
 
     ext {
+        bukkitVersion = '1.11.2-R0.1-SNAPSHOT'
         javaVersion = '1.8'
         encoding = 'UTF-8'
     }
@@ -34,6 +35,8 @@ allprojects {
         mavenCentral()
         maven { url 'https://bitbucket.org/conreptio/maven-public/raw/master/releases' }
         maven { url 'https://bitbucket.org/conreptio/maven-public/raw/master/snapshots' }
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 }
 
