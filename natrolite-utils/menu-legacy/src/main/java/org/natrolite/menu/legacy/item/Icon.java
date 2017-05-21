@@ -1,5 +1,5 @@
 /*
- * Natrolite - Minecraft Minigame Manager
+ * Natrolite Minigames
  *
  * Copyright (c) 2017 XNITY <info@xnity.net>
  * Copyright (c) 2017 Natrolite <info@natrolite.org>
