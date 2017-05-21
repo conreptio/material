@@ -15,15 +15,15 @@ ext {
     licenseUrl = 'https://www.gnu.org/licenses/gpl.txt'
     licenseDist = 'repo'
 
-    issueSystem = 'BitBucket Issues'
-    issueUrl = 'https://bitbucket.org/conreptio/natrolite/issues'
+    issueSystem = 'GitHub Issues'
+    issueUrl = 'https://github.com/natrolite/natrolite/issues'
 
-    ciSystem = 'BitBucket Pipelines'
-    ciUrl = 'https://bitbucket.org/conreptio/natrolite/addon/pipelines/home'
+    ciSystem = 'Travis CI'
+    ciUrl = 'https://travis-ci.org/natrolite/natrolite'
 
-    scmUrl = 'https://bitbucket.org/conreptio/natrolite/src'
-    scmConnection = 'scm:git:git://bitbucket.org:conreptio/natrolite.git'
-    scmDevConnection = 'scm:git:ssh://bitbucket.org:conreptio/natrolite.git'
+    scmUrl = 'https://github.com/natrolite/natrolite'
+    scmConnection = 'scm:git:git://github.com/natrolite/natrolite.git'
+    scmDevConnection = 'scm:git:ssh://github.com:natrolite/natrolite.git'
 }
 
 allprojects {
