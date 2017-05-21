@@ -21,18 +21,25 @@
 
 package org.natrolite;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nullable;
+public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
-public final class Natrolite {
+  @Override
+  public void onEnable() {
+    try {
+      final long start = System.currentTimeMillis();
+      getLogger().log(Level.INFO, "Plugin enabled ({0}ms)", System.currentTimeMillis() - start);
+    } catch (Throwable throwable) {
+      getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
+      setEnabled(false);
+    }
+  }
 
-  @Nullable
-  private static NatroliteInternal natrolite = null;
-
-  private Natrolite() {}
-
-  public static NatroliteInternal getNatrolite() {
-    return checkNotNull(natrolite, "Natrolite has not been initialized");
+  @Override
+  public Path getRoot() {
+    return getDataFolder().toPath();
   }
 }

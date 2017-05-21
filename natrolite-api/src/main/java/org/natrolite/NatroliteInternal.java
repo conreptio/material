@@ -21,18 +21,14 @@
 
 package org.natrolite;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.nio.file.Path;
 
-import javax.annotation.Nullable;
+interface NatroliteInternal {
 
-public final class Natrolite {
-
-  @Nullable
-  private static NatroliteInternal natrolite = null;
-
-  private Natrolite() {}
-
-  public static NatroliteInternal getNatrolite() {
-    return checkNotNull(natrolite, "Natrolite has not been initialized");
-  }
+  /**
+   * Gets the working directory.
+   *
+   * @return path of the working directory
+   */
+  Path getRoot();
 }
