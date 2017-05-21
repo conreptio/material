@@ -49,6 +49,18 @@ subprojects { sub ->
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
 
+        compileJava {
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
+            options.encoding = encoding
+        }
+
+        compileTestJava {
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
+            options.encoding = encoding
+        }
+
         license {
             header = rootProject.file('HEADER.txt')
             include '**/*.java'
