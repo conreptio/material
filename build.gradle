@@ -3,6 +3,9 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '1.2.4' apply false
 }
 
+apply from: 'gradle/idea.gradle'
+apply from: 'gradle/eclipse.gradle'
+
 description = 'Natrolite Minigame Manager'
 
 ext {
