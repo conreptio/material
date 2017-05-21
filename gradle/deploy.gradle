@@ -13,32 +13,31 @@ uploadArchives.repositories.mavenDeployer {
     }
 
     pom.project {
-        name = POM_NAME
-        packaging = POM_PACKAGING
-        description = POM_DESCRIPTION
+        packaging = 'jar'
+        description = project.description
 
         licenses {
             license {
-                name = POM_LICENSE_NAME
-                url = POM_LICENSE_URL
-                distribution = POM_LICENSE_DIST
+                name = licenseName
+                url = licenseUrl
+                distribution = licenseDist
             }
         }
 
         issueManagement {
-            system = POM_ISSUE_SYSTEM
-            url = POM_ISSUE_URL
+            system = issueSystem
+            url = issueUrl
         }
 
         ciManagement {
-            system = POM_CI_SYSTEM
-            url = POM_CI_URL
+            system = ciSystem
+            url = ciUrl
         }
 
         scm {
-            url = POM_SCM_URL
-            connection = POM_SCM_CONNECTION
-            developerConnection = POM_SCM_DEVELOPER_CONNECTION
+            url = scmUrl
+            connection = scmConnection
+            developerConnection = scmDevConnection
         }
     }
 }

@@ -3,32 +3,34 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '1.2.4' apply false
 }
 
+description = 'Natrolite Minigame Manager'
+
 ext {
-    POM_NAME = 'Natrolite'
-    POM_DESCRIPTION = 'Minecraft Minigame Manager'
-    POM_PACKAGING = 'jar'
-    POM_URL = 'https://bitbucket.org/conreptio/natrolite/'
+    homepage = 'https://natrolite.org/'
 
-    POM_ISSUE_SYSTEM = 'BitBucket Issues'
-    POM_ISSUE_URL = 'https://bitbucket.org/conreptio/natrolite/issues'
+    issueSystem = 'BitBucket Issues'
+    issueUrl = 'https://bitbucket.org/conreptio/natrolite/issues'
 
-    POM_CI_SYSTEM = 'BitBucket Pipelines'
-    POM_CI_URL = 'https://bitbucket.org/conreptio/natrolite/addon/pipelines/home'
+    ciSystem = 'BitBucket Pipelines'
+    ciUrl = 'https://bitbucket.org/conreptio/natrolite/addon/pipelines/home'
 
-    POM_SCM_URL = 'https://bitbucket.org/conreptio/natrolite/src'
-    POM_SCM_CONNECTION = 'scm:git:git://bitbucket.org:conreptio/natrolite.git'
-    POM_SCM_DEVELOPER_CONNECTION = 'scm:git:ssh://bitbucket.org:conreptio/natrolite.git'
+    scmUrl = 'https://bitbucket.org/conreptio/natrolite/src'
+    scmConnection = 'scm:git:git://bitbucket.org:conreptio/natrolite.git'
+    scmDevConnection = 'scm:git:ssh://bitbucket.org:conreptio/natrolite.git'
 }
 
 allprojects {
     group = 'org.natrolite'
-    version = '1.0-SNAPSHOT'
 
     repositories {
         mavenCentral()
         maven { url 'https://bitbucket.org/conreptio/maven-public/raw/master/releases' }
         maven { url 'https://bitbucket.org/conreptio/maven-public/raw/master/snapshots' }
     }
+}
+
+subprojects {
+    version = rootProject.version
 }
 
 task wrapper(type: Wrapper) {
