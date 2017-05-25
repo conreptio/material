@@ -8,6 +8,9 @@ jdk:
 
 script: ./gradlew build checkstyle aggregatedJavadocs
 
+after_success:
+  - scripts/publish-javadoc.sh
+
 branches:
   except:
     - gh-pages
