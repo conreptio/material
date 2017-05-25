@@ -34,6 +34,11 @@ allprojects {
         bukkitVersion = '1.11.2-R0.1-SNAPSHOT'
         javaVersion = '1.8'
         encoding = 'UTF-8'
+        javadocLinks = [
+                'http://docs.oracle.com/javase/8/docs/api/',
+                'https://jd.spongepowered.org/6.0.0/',
+                'https://hub.spigotmc.org/javadocs/spigot/'
+        ] as String[]
     }
 
     repositories {
@@ -63,6 +68,13 @@ subprojects { sub ->
 
         dependencies {
             compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '1.3.9'
+        }
+
+        javadoc {
+            options.encoding = 'UTF-8'
+            options.header = sub.name
+            options.author = true
+            options.addStringOption('Xdoclint:none', '-quiet')
         }
 
         license {
@@ -117,6 +129,26 @@ subprojects { sub ->
         artifacts {
             archives sourceJar
             archives javadocJar
+        }
+    }
+}
+
+task aggregatedJavadocs(type: Javadoc) {
+    group = 'Documentation'
+    title = "Natrolite API"
+
+    options.author true
+    options.links(javadocLinks)
+    options.addStringOption 'Xdoclint:none', '-quiet'
+
+    destinationDir = file("$rootProject.buildDir/docs/aggregated")
+
+    subprojects { sub ->
+        if (sub.name != 'natrolite-core') {
+            plugins.withType(JavaPlugin) {
+                source += sub.sourceSets.main.allJava
+                classpath += sub.sourceSets.main.compileClasspath
+            }
         }
     }
 }
