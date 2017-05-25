@@ -1,5 +1,5 @@
 name: Natrolite
-main: org.natrolite.NatroliteBukkit
+main: org.natrolite.impl.NatroliteBukkit
 version: ${version}
 author: Natrolite
 website: https://natrolite.org
