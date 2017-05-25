@@ -1,0 +1,24 @@
+dependencies {
+    compile utils.context
+}
+
+license {
+    exclude 'org/natrolite/permission/option/OptionSubjectData.java'
+    exclude 'org/natrolite/permission/MemorySubjectData.java'
+    exclude 'org/natrolite/permission/NodeTree.java'
+    exclude 'org/natrolite/permission/PermissionDescription.java'
+    exclude 'org/natrolite/permission/PermissionService.java'
+    exclude 'org/natrolite/permission/Subject.java'
+    exclude 'org/natrolite/permission/SubjectCollection.java'
+    exclude 'org/natrolite/permission/SubjectData.java'
+}
+
+processResources {
+    from rootProject.file('SPONGE-LICENSE.txt')
+}
+
+shadowJar {
+    classifier = 'shaded'
+}
+
+build.dependsOn(shadowJar)
