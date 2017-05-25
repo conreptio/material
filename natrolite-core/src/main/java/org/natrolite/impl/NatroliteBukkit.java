@@ -22,9 +22,13 @@
 package org.natrolite.impl;
 
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.logging.Level;
+import org.bstats.Metrics;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.NatroliteInternal;
+import org.natrolite.NatrolitePlugin;
 
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
@@ -32,6 +36,25 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   public void onEnable() {
     try {
       final long start = System.currentTimeMillis();
+
+      try {
+        Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.AdvancedPie("plugins") {
+          @Override
+          public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
+            HashMap<String, Integer> map = new HashMap<>();
+            for (Plugin plugin : getServer().getPluginManager().getPlugins()) {
+              if (plugin instanceof NatrolitePlugin) {
+                map.put(plugin.getName(), 1);
+              }
+            }
+            return map;
+          }
+        });
+      } catch (Throwable throwable) {
+        getLogger().log(Level.FINE, "Could not start metrics service", throwable);
+      }
+
       getLogger().log(Level.INFO, "Plugin enabled ({0}ms)", System.currentTimeMillis() - start);
     } catch (Throwable throwable) {
       getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
