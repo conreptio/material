@@ -22,6 +22,7 @@
 package org.natrolite;
 
 import java.nio.file.Path;
+import org.bukkit.plugin.Plugin;
 
 interface NatroliteInternal {
 
@@ -31,4 +32,11 @@ interface NatroliteInternal {
    * @return path of the working directory
    */
   Path getRoot();
+
+  /**
+   * Gets the natrolite plugin.
+   *
+   * @return the natrolite plugin
+   */
+  Plugin getPlugin();
 }

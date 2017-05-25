@@ -25,6 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import javax.annotation.Nullable;
+import org.bukkit.plugin.Plugin;
 
 public final class Natrolite {
 
@@ -39,5 +40,9 @@ public final class Natrolite {
 
   public static Path getRoot() {
     return getNatrolite().getRoot();
+  }
+
+  public static Plugin getPlugin() {
+    return getNatrolite().getPlugin();
   }
 }
