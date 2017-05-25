@@ -24,7 +24,7 @@ package org.natrolite;
 import java.nio.file.Path;
 import org.bukkit.plugin.Plugin;
 
-interface NatroliteInternal {
+public interface NatroliteInternal {
 
   /**
    * Gets the working directory.
