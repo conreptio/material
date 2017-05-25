@@ -8,5 +8,9 @@ jdk:
 
 script: ./gradlew build checkstyle
 
+branches:
+  except:
+    - gh-pages
+
 notifications:
   email: false
