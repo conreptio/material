@@ -26,12 +26,16 @@ import org.bukkit.OfflinePlayer;
 
 public interface PlaceholderService {
 
+  int DEFAULT_PRIORITY = 1000;
+
   /**
    * Registers a {@link Replacer} with the default priority.
    *
    * @param replacer the replacer to register
    */
-  void register(Replacer replacer);
+  default void register(Replacer replacer) {
+    register(replacer, DEFAULT_PRIORITY);
+  }
 
   /**
    * Registers a {@link Replacer}.
