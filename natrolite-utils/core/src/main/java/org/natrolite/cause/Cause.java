@@ -61,6 +61,7 @@ public final class Cause {
 
   final Object[] cause;
   final String[] names;
+
   // lazy load
   @Nullable private Map<String, Object> namedObjectMap;
   @Nullable private ImmutableList<Object> immutableCauses;

@@ -69,6 +69,7 @@ public final class NamedCause {
   public static final String SOURCE = "Source";
 
   public static final String THROWER = "Thrower";
+
   private final String name;
   private final Object object;
 
