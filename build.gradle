@@ -141,7 +141,7 @@ task aggregatedJavadocs(type: Javadoc) {
     options.links(javadocLinks)
     options.addStringOption 'Xdoclint:none', '-quiet'
 
-    destinationDir = file("$rootProject.buildDir/docs/aggregated")
+    destinationDir = file("$rootProject.buildDir/docs/aggregated/$version")
 
     subprojects { sub ->
         if (sub.name != 'natrolite-core') {
