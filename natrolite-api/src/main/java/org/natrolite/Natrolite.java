@@ -23,6 +23,7 @@ package org.natrolite;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.nio.file.Path;
 import javax.annotation.Nullable;
 
 public final class Natrolite {
@@ -34,5 +35,9 @@ public final class Natrolite {
 
   public static NatroliteInternal getNatrolite() {
     return checkNotNull(natrolite, "Natrolite has not been initialized");
+  }
+
+  public static Path getRoot() {
+    return getNatrolite().getRoot();
   }
 }
