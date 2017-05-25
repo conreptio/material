@@ -19,32 +19,5 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite;
-
-import java.nio.file.Path;
-import java.util.logging.Level;
-import org.bukkit.plugin.java.JavaPlugin;
-
-public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
-
-  @Override
-  public void onEnable() {
-    try {
-      final long start = System.currentTimeMillis();
-      getLogger().log(Level.INFO, "Plugin enabled ({0}ms)", System.currentTimeMillis() - start);
-    } catch (Throwable throwable) {
-      getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
-      setEnabled(false);
-    }
-  }
-
-  @Override
-  public Path getRoot() {
-    return getDataFolder().toPath();
-  }
-
-  @Override
-  public NatroliteBukkit getPlugin() {
-    return this;
-  }
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.impl;
