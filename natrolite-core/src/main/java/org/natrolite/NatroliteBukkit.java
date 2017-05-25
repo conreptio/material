@@ -42,4 +42,9 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   public Path getRoot() {
     return getDataFolder().toPath();
   }
+
+  @Override
+  public NatroliteBukkit getPlugin() {
+    return this;
+  }
 }
