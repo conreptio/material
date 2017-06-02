@@ -14,3 +14,9 @@ dependencies {
     testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
     compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
 }
+
+shadowJar {
+    relocate 'org.bstats', 'org.natrolite.metrics'
+}
+
+build.dependsOn(shadowJar)

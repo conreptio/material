@@ -78,6 +78,10 @@ subprojects { sub ->
             options.addStringOption('Xdoclint:none', '-quiet')
         }
 
+        shadowJar {
+            classifier = 'shaded'
+        }
+
         license {
             header = rootProject.file('HEADER.txt')
             include '**/*.java'
