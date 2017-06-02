@@ -15,6 +15,10 @@ dependencies {
     compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
 }
 
+processResources {
+    expand(version: version)
+}
+
 shadowJar {
     relocate 'org.bstats', 'org.natrolite.metrics'
 }
