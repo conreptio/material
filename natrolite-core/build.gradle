@@ -21,4 +21,6 @@ shadowJar {
     relocate 'org.bstats', 'org.natrolite.metrics'
 }
 
+apply from: rootProject.file('gradle/deploy.gradle')
+
 build.dependsOn(shadowJar)

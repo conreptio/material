@@ -11,3 +11,5 @@ dependencies {
         testCompile util
     }
 }
+
+apply from: rootProject.file('gradle/deploy.gradle')
