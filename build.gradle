@@ -83,7 +83,7 @@ subprojects { sub ->
         }
 
         license {
-            header = rootProject.file('HEADER.txt')
+            header = rootProject.file('HEADER')
             include '**/*.java'
             newLine = true
         }
@@ -106,7 +106,7 @@ subprojects { sub ->
         }
 
         processResources {
-            from rootProject.file('LICENSE.txt')
+            from rootProject.file('LICENSE')
         }
 
         task sourceJar(type: Jar) {
