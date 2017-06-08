@@ -22,7 +22,3 @@ notifications:
 env:
   global:
     secure: "lcV9VzSIvmGpfjpia1VuXgX0FZXqqE7i+9gmug/ojyYsTUSmdJPXgrA+7k7V6HdttBcYSGBjIFvdq76pPjh8opGlUZPyfGlTYwzK7ZzL02hT/lz6h/IiL70vqEKdPcd/QSPmHGoEEoWC4orFg3WAb8D8cBeBoYO46CPwnLmCysNTI52/NdqKaUv5bCvWalFA4z9rv6Gd/hF4sZOzhmh4UZkcoNjYPfZ1O9z6YV6ngTdnPpzrrnDgKPlFDf7NPTGXQFu+uSTYFJv0yiFD+KPWJO/swle3LuHOgH4cROlsHbRI/T66ug4uyx/0txFDlFhs+IcZ7/uzglBr0V6TjCTJNAHtSSS1DJiM+z1ba0BGpB9lmJxIq8Sgex4/qhHzfK6aO/viuqxWAZRoU99V6EytyvU8bbMal82zdxYhHgrnTyz0Z55MkYVvtUf+c0Q2eZUlX3jtgHsQ59ofstcofi4/kh8mZVJQ5izvTo4CoOY67SEVx2CWC6bkGjFzxfGx4sFrPGG1hO0ILzpQI+5oozCILkv6Jb7e9Tz+jLybmHTUlG44bGw/oH2TIw0+ZGPdeM+owcDYe3ghYjHZAT+iX3QdjbK4H8czD6ZISvWrATobmaXP0Rna+KUQPkTskn0MVu2wWEMwYtKjbi+saxQA6Xod05ZlTQifdHm+hsaNWcQP6Ac="
-
-cache:
-  directories:
-    - $HOME/.gradle/wrapper/
