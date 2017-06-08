@@ -1,9 +1,10 @@
 dist: trusty
-sudo: required
+sudo: false
 
 language: java
 
 jdk:
+  - openjdk8
   - oraclejdk8
 
 script: ./gradlew build checkstyle aggregatedJavadocs
