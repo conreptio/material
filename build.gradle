@@ -32,7 +32,7 @@ allprojects {
 
     ext {
         utils = new Properties()
-        bukkitVersion = '1.11.2-R0.1-SNAPSHOT'
+        bukkitVersion = '1.12-R0.1-SNAPSHOT'
         javaVersion = '1.8'
         encoding = 'UTF-8'
         javadocLinks = [
