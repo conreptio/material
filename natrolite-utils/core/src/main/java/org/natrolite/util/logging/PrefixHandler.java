@@ -21,6 +21,7 @@
 
 package org.natrolite.util.logging;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -95,7 +96,7 @@ public class PrefixHandler extends Handler {
   @Override
   @SuppressWarnings("deprecation")
   public String toString() {
-    return Objects.toStringHelper(this)
+    return MoreObjects.toStringHelper(this)
         .add("prefix", prefix)
         .toString();
   }

@@ -28,6 +28,7 @@ package org.natrolite.cause;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -204,9 +205,8 @@ public final class NamedCause {
   }
 
   @Override
-  @SuppressWarnings("deprecation") //Bukkit uses Guava 17 and Spigot Guava 18
   public String toString() {
-    return Objects.toStringHelper(this)
+    return MoreObjects.toStringHelper(this)
         .add("name", this.name)
         .add("object", this.object)
         .toString();
