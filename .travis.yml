@@ -22,6 +22,7 @@ deploy:
     - "natrolite-core/build/libs/*-shaded.jar"
   on:
     tags: true
+    jdk: oraclejdk8
     repo: natrolite/natrolite
 
 branches:
