@@ -21,6 +21,8 @@
 
 package org.natrolite.impl;
 
+import static org.natrolite.impl.StaticMessageProvider.in;
+
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -59,7 +61,7 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
       getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
 
-      getLogger().log(Level.INFO, "Plugin enabled ({0}ms)", System.currentTimeMillis() - start);
+      in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
     } catch (Throwable throwable) {
       getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
       setEnabled(false);
