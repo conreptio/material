@@ -37,6 +37,7 @@ public final class Queries {
   public static final String RESOURCE_VERSIONS = "/resources/%s/versions";
   public static final String RESOURCE_VERSION = "/resources/%s/versions/%s";
   public static final String RESOURCE_VERSION_DOWNLOAD = "/resources/%s/version/%s/download";
+  public static final String RESOURCE_DOWNLOAD = "/resources/%s/download";
 
   private Queries() {}
 }
