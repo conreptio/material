@@ -25,6 +25,10 @@ import java.util.Comparator;
 
 public class VersionComparator implements Comparator<String> {
 
+  public static boolean isOlderThan(String o1, String o2) {
+    return new VersionComparator().compare(o1, o2) == -1;
+  }
+
   @Override
   public int compare(String o1, String o2) {
     if (o1 == null) {
