@@ -11,6 +11,7 @@ include 'natrolite-utils:permission'
 include 'natrolite-utils:placeholder'
 include 'natrolite-utils:spiget'
 include 'natrolite-utils:spiget-client'
+include 'natrolite-utils:i18n-legacy'
 
 rootProject.children.each {
     assert it.projectDir.isDirectory()

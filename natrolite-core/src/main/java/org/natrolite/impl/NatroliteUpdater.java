@@ -21,6 +21,8 @@
 
 package org.natrolite.impl;
 
+import static org.natrolite.impl.StaticMessageProvider.in;
+import static org.natrolite.impl.StaticMessageProvider.wn;
 import static org.natrolite.spiget.Queries.BASE;
 import static org.natrolite.spiget.Queries.RESOURCE_DOWNLOAD;
 import static org.natrolite.util.VersionComparator.isOlderThan;
@@ -31,7 +33,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.logging.Level;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -58,24 +59,24 @@ public final class NatroliteUpdater implements Listener {
         try {
           final String current = plugin.getDescription().getVersion();
           if (isOlderThan(current, version.getName())) {
-            plugin.getLogger().info(String.format("You are using an outdated version (Current: %s | Latest: %s)", current, version.getName()));
+            in(plugin.getLogger(), "updater.outdated", current, version.getName());
 
             final String url = String.format(BASE + RESOURCE_DOWNLOAD, spigot.value());
             final Path file = getFolder().resolve(getJar(plugin).getName());
             Files.createDirectories(file.getParent());
 
-            plugin.getLogger().info(String.format("Downloading %s v%s..", plugin.getName(), version.getName()));
+            in(plugin.getLogger(), "updater.download", plugin.getName(), version.getName());
             try (InputStream in = new URL(url).openStream()) {
               Files.copy(in, file, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            plugin.getLogger().log(Level.INFO, "Success! {0} will be updated on next server start", plugin.getName());
+            in(plugin.getLogger(), "updater.success", plugin.getName(), version.getName());
           }
         } catch (Throwable throwable) {
           throw new RuntimeException(throwable);
         }
       }).exceptionally(ex -> {
-        ex.printStackTrace();
+        wn(plugin.getLogger(), "updater.error");
         return null;
       });
     }
