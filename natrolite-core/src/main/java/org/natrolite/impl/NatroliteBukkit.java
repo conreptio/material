@@ -29,7 +29,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
+import org.natrolite.Spigot;
 
+@Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
   @Override
@@ -54,6 +56,8 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
       } catch (Throwable throwable) {
         getLogger().log(Level.FINE, "Could not start metrics service", throwable);
       }
+
+      getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
 
       getLogger().log(Level.INFO, "Plugin enabled ({0}ms)", System.currentTimeMillis() - start);
     } catch (Throwable throwable) {
