@@ -1,0 +1,5 @@
+dependencies {
+    compile utils.configurate
+}
+
+build.dependsOn(shadowJar)
