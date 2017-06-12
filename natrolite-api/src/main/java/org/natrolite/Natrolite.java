@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
+import org.natrolite.game.GameRegistry;
 
 public final class Natrolite {
 
@@ -46,6 +47,10 @@ public final class Natrolite {
 
   public static Plugin getPlugin() {
     return getNatrolite().getPlugin();
+  }
+
+  public static GameRegistry getGameRegistry() {
+    return getNatrolite().getGameRegistry();
   }
 
   public static Server getServer() {

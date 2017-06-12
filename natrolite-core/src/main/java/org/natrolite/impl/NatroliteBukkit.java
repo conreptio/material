@@ -31,15 +31,26 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
+import org.natrolite.game.GameRegistry;
 import org.natrolite.updater.Spigot;
 
 @Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
+  private NatroliteGameRegistry registry;
+
+  @Override
+  public void onLoad() {
+    registry = new NatroliteGameRegistry();
+  }
+
   @Override
   public void onEnable() {
     try {
       final long start = System.currentTimeMillis();
+
+      registry.bake();
+      in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
 
       try {
         Metrics metrics = new Metrics(this);
@@ -76,5 +87,10 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   @Override
   public NatroliteBukkit getPlugin() {
     return this;
+  }
+
+  @Override
+  public GameRegistry getGameRegistry() {
+    return registry;
   }
 }
