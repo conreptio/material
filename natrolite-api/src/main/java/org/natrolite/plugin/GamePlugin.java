@@ -21,12 +21,13 @@
 
 package org.natrolite.plugin;
 
+import org.bukkit.plugin.Plugin;
 import org.natrolite.Nameable;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.game.Game;
 import org.natrolite.updater.Updatable;
 
-public interface GamePlugin<G extends Game> extends Nameable, NatrolitePlugin, Updatable {
+public interface GamePlugin<G extends Game> extends Plugin, Nameable, NatrolitePlugin, Updatable {
 
   G createGame();
 

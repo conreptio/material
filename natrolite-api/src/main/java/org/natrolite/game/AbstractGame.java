@@ -24,9 +24,10 @@ package org.natrolite.game;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.UUID;
+import org.bukkit.event.Listener;
 import org.natrolite.plugin.GamePlugin;
 
-public abstract class AbstractGame implements Game {
+public abstract class AbstractGame implements Game, Listener {
 
   private final UUID gameId = UUID.randomUUID();
   private final GamePlugin plugin;
@@ -36,6 +37,7 @@ public abstract class AbstractGame implements Game {
 
   public AbstractGame(GamePlugin plugin) {
     this.plugin = checkNotNull(plugin);
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
   @Override
