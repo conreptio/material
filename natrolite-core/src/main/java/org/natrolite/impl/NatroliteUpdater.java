@@ -38,8 +38,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
-import org.natrolite.Spigot;
-import org.natrolite.Updatable;
+import org.natrolite.updater.Spigot;
+import org.natrolite.updater.Updatable;
 import org.natrolite.spiget.Spiget;
 
 public final class NatroliteUpdater implements Listener {

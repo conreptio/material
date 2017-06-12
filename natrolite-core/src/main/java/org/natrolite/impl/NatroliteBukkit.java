@@ -31,7 +31,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
-import org.natrolite.Spigot;
+import org.natrolite.updater.Spigot;
 
 @Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
