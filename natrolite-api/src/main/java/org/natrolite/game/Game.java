@@ -22,6 +22,7 @@
 package org.natrolite.game;
 
 import org.natrolite.Identifiable;
+import org.natrolite.cause.Cause;
 import org.natrolite.plugin.GamePlugin;
 
 public interface Game extends Identifiable {
@@ -32,6 +33,14 @@ public interface Game extends Identifiable {
    * @return the current state
    */
   GameState getState();
+
+  /**
+   * Sets the game's {@link GameState}.
+   *
+   * @param state the new state
+   * @param cause the cause
+   */
+  void setState(GameState state, Cause cause);
 
   /**
    * Gets the time when the latest state change happened.

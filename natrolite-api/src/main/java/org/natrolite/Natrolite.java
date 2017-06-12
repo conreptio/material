@@ -25,6 +25,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import javax.annotation.Nullable;
+import org.bukkit.Server;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 
 public final class Natrolite {
@@ -44,5 +46,14 @@ public final class Natrolite {
 
   public static Plugin getPlugin() {
     return getNatrolite().getPlugin();
+  }
+
+  public static Server getServer() {
+    return getPlugin().getServer();
+  }
+
+  public static <T extends Event> T callEvent(T event) {
+    getServer().getPluginManager().callEvent(event);
+    return event;
   }
 }

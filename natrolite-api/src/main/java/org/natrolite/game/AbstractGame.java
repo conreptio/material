@@ -22,9 +22,13 @@
 package org.natrolite.game;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.natrolite.Natrolite.callEvent;
 
 import java.util.UUID;
 import org.bukkit.event.Listener;
+import org.natrolite.cause.Cause;
+import org.natrolite.event.game.GameStateChangeEvent;
+import org.natrolite.event.game.GameStateChangedEvent;
 import org.natrolite.plugin.GamePlugin;
 
 public abstract class AbstractGame implements Game, Listener {
@@ -48,6 +52,16 @@ public abstract class AbstractGame implements Game, Listener {
   @Override
   public GameState getState() {
     return state;
+  }
+
+  @Override
+  public void setState(GameState state, Cause cause) {
+    checkNotNull(state, "State cannot be null");
+    checkNotNull(cause, "Cause cannot be null");
+    if (!callEvent(new GameStateChangeEvent(cause, this, this.state, state)).isCancelled()) {
+      callEvent(new GameStateChangedEvent(cause, this, this.state, state));
+      this.state = state;
+    }
   }
 
   @Override
