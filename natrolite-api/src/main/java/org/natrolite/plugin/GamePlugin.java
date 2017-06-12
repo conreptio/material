@@ -21,9 +21,13 @@
 
 package org.natrolite.plugin;
 
+import org.natrolite.Nameable;
 import org.natrolite.game.Game;
+import org.natrolite.updater.Updatable;
 
-public interface GamePlugin {
+public interface GamePlugin<G extends Game> extends Nameable, Updatable {
 
-  Game createGame();
+  G createGame();
+
+  Class<G> getGameClass();
 }

@@ -21,29 +21,44 @@
 
 package org.natrolite.game;
 
-import org.natrolite.Identifiable;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.UUID;
 import org.natrolite.plugin.GamePlugin;
 
-public interface Game extends Identifiable {
+public abstract class AbstractGame implements Game {
 
-  /**
-   * Gets the current {@link GameState}.
-   *
-   * @return the current state
-   */
-  GameState getState();
+  private final UUID gameId = UUID.randomUUID();
+  private final GamePlugin plugin;
 
-  /**
-   * Gets the time when the latest state change happened.
-   *
-   * @return the time
-   */
-  long getStateTime();
+  private GameState state = GameStates.LOADING;
+  private long stateTime = System.currentTimeMillis();
 
-  /**
-   * Gets the {@link GamePlugin} this game is belonging to.
-   *
-   * @return the game plugin
-   */
-  GamePlugin getPlugin();
+  public AbstractGame(GamePlugin plugin) {
+    this.plugin = checkNotNull(plugin);
+  }
+
+  @Override
+  public UUID getUniqueId() {
+    return gameId;
+  }
+
+  @Override
+  public GameState getState() {
+    return state;
+  }
+
+  @Override
+  public long getStateTime() {
+    return stateTime;
+  }
+
+  @Override
+  public final GamePlugin getPlugin() {
+    return plugin;
+  }
+
+  public final String getName() {
+    return plugin.getName();
+  }
 }

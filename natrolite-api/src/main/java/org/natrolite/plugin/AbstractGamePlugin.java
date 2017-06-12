@@ -19,31 +19,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.game;
+package org.natrolite.plugin;
 
-import org.natrolite.Identifiable;
-import org.natrolite.plugin.GamePlugin;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-public interface Game extends Identifiable {
+import java.io.File;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.natrolite.game.Game;
 
-  /**
-   * Gets the current {@link GameState}.
-   *
-   * @return the current state
-   */
-  GameState getState();
+public abstract class AbstractGamePlugin<G extends Game>
+    extends JavaPlugin
+    implements GamePlugin<G> {
 
-  /**
-   * Gets the time when the latest state change happened.
-   *
-   * @return the time
-   */
-  long getStateTime();
+  private final Class<G> gameClass;
 
-  /**
-   * Gets the {@link GamePlugin} this game is belonging to.
-   *
-   * @return the game plugin
-   */
-  GamePlugin getPlugin();
+  public AbstractGamePlugin(Class<G> gameClass) {
+    this.gameClass = checkNotNull(gameClass);
+  }
+
+  @Override
+  public final File getFile() {
+    return super.getFile();
+  }
+
+  @Override
+  public final Class<G> getGameClass() {
+    return gameClass;
+  }
 }
