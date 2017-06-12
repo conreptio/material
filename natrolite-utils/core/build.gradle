@@ -2,6 +2,7 @@ license {
     exclude 'org/natrolite/cause/Cause.java'
     exclude 'org/natrolite/cause/NamedCause.java'
     exclude 'org/natrolite/util/Tristate.java'
+    exclude 'org/natrolite/util/OptBool.java'
 }
 
 processResources {
