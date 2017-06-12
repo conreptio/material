@@ -24,17 +24,19 @@ package org.natrolite.plugin;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.game.Game;
 
 public abstract class AbstractGamePlugin<G extends Game>
     extends JavaPlugin
-    implements GamePlugin<G> {
+    implements GamePlugin<G>, Listener {
 
   private final Class<G> gameClass;
 
   public AbstractGamePlugin(Class<G> gameClass) {
     this.gameClass = checkNotNull(gameClass);
+    getServer().getPluginManager().registerEvents(this, this);
   }
 
   @Override
