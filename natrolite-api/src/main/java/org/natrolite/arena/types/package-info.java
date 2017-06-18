@@ -19,27 +19,5 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.game;
-
-import org.natrolite.plugin.GamePlugin;
-
-public interface GameRegistry {
-
-  /**
-   * Registers a {@link GamePlugin} with its name as id.
-   *
-   * @param plugin the plugin
-   * @throws IllegalStateException if the id or the plugin is already registered
-   */
-  default void register(GamePlugin plugin) {
-    register(plugin.getName().toLowerCase(), plugin);
-  }
-
-  /**
-   * Registers a {@link GamePlugin}.
-   *
-   * @param plugin the plugin
-   * @throws IllegalStateException if the id or the plugin is already registered
-   */
-  void register(String id, GamePlugin plugin);
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.arena.types;

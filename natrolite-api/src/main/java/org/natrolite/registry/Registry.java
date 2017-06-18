@@ -19,32 +19,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite;
+package org.natrolite.registry;
 
-import java.nio.file.Path;
-import org.bukkit.plugin.Plugin;
-import org.natrolite.registry.Registry;
+import org.natrolite.arena.Arena;
+import org.natrolite.arena.ArenaFactory;
+import org.natrolite.plugin.GamePlugin;
 
-public interface NatroliteInternal {
-
-  /**
-   * Gets the working directory.
-   *
-   * @return path of the working directory
-   */
-  Path getRoot();
+public interface Registry {
 
   /**
-   * Gets the Natrolite {@link Plugin}.
+   * Registers a {@link GamePlugin} with its name as id.
    *
-   * @return the natrolite plugin
+   * @param plugin the plugin
+   * @throws IllegalStateException if the id or the plugin is already registered
    */
-  Plugin getPlugin();
+  default void register(GamePlugin plugin) {
+    register(plugin.getName().toLowerCase(), plugin);
+  }
 
   /**
-   * Gets the {@link Registry}.
+   * Registers a {@link GamePlugin}.
    *
-   * @return the game registry
+   * @param plugin the plugin
+   * @throws IllegalStateException if the id or the plugin is already registered
    */
-  Registry getGameRegistry();
+  void register(String id, GamePlugin plugin);
+
+  /**
+   * Registers an {@link Arena}.
+   *
+   * @param id      the arena id
+   * @param factory the arena factory
+   */
+  <T extends Arena> void register(String id, Class<T> clazz, ArenaFactory<T> factory);
 }

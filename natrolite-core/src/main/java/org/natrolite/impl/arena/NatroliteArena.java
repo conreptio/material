@@ -27,15 +27,15 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import org.bukkit.World;
 import org.natrolite.arena.Arena;
 import org.natrolite.game.Game;
 
 public class NatroliteArena implements Arena {
 
+  @Nullable private World world;
   private Set<UUID> players = new HashSet<>();
-
-  @Nullable
-  private Game game;
+  @Nullable private Game game;
 
   @Override
   public Optional<Game> getGame() {
@@ -49,5 +49,19 @@ public class NatroliteArena implements Arena {
   @Override
   public Set<UUID> getPlayers() {
     return ImmutableSet.copyOf(players);
+  }
+
+  @Override
+  public Optional<World> getWorld() {
+    return Optional.ofNullable(world);
+  }
+
+  public void setWorld(World world) {
+    this.world = world;
+  }
+
+  @Override
+  public World getWorldUnsafe() {
+    return world;
   }
 }

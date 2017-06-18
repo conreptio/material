@@ -29,17 +29,20 @@ import com.google.common.collect.MapMaker;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
-import org.natrolite.game.GameRegistry;
+import org.natrolite.arena.Arena;
+import org.natrolite.arena.ArenaFactory;
 import org.natrolite.plugin.GamePlugin;
+import org.natrolite.registry.Registry;
 
-public final class NatroliteGameRegistry implements GameRegistry {
+public final class NatroliteRegistry implements Registry {
 
   private ImmutableMap<String, GamePlugin<?>> gameMap = ImmutableMap.of();
+  private ImmutableMap<String, ArenaFactory<?>> arenaMap = ImmutableMap.of();
 
   @Nullable
   private TemporaryRegistry temporaryRegistry = new TemporaryRegistry();
 
-  NatroliteGameRegistry() {}
+  NatroliteRegistry() {}
 
   @Override
   public void register(String id, GamePlugin plugin) {
@@ -48,6 +51,18 @@ public final class NatroliteGameRegistry implements GameRegistry {
     checkState(temporaryRegistry != null);
     if (!temporaryRegistry.gameMap.containsKey(id)) {
       temporaryRegistry.gameMap.put(id, plugin);
+    } else {
+      throw new IllegalStateException("ID is already registered");
+    }
+  }
+
+  @Override
+  public <T extends Arena> void register(String id, Class<T> clazz, ArenaFactory<T> factory) {
+    checkNotNull(id, "ID cannot be null");
+    checkNotNull(false, "Factory cannot be null");
+    checkState(temporaryRegistry != null);
+    if (!temporaryRegistry.arenaMap.containsKey(id)) {
+      temporaryRegistry.arenaMap.put(id, factory);
     } else {
       throw new IllegalStateException("ID is already registered");
     }
@@ -64,12 +79,16 @@ public final class NatroliteGameRegistry implements GameRegistry {
   void bake() {
     checkState(temporaryRegistry != null);
     gameMap = ImmutableMap.copyOf(temporaryRegistry.gameMap);
+    arenaMap = ImmutableMap.copyOf(temporaryRegistry.arenaMap);
     temporaryRegistry = null;
   }
 
   private static final class TemporaryRegistry {
 
     private final Map<String, GamePlugin<?>> gameMap = new MapMaker()
+        .concurrencyLevel(4).makeMap();
+
+    private final Map<String, ArenaFactory<?>> arenaMap = new MapMaker()
         .concurrencyLevel(4).makeMap();
   }
 }

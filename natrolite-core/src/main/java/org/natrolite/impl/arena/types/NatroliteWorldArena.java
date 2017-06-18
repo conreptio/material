@@ -19,34 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.arena;
+package org.natrolite.impl.arena.types;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.natrolite.game.Game;
+import org.natrolite.arena.ArenaFactory;
+import org.natrolite.arena.types.WorldArena;
+import org.natrolite.impl.arena.NatroliteArena;
 
-public interface Arena {
+public class NatroliteWorldArena extends NatroliteArena implements WorldArena {
 
-  Optional<Game> getGame();
-
-  Set<UUID> getPlayers();
-
-  Optional<World> getWorld();
-
-  World getWorldUnsafe();
-
-  default boolean isPlaying(Player player) {
-    return getPlayers().contains(player.getUniqueId());
+  public static NatroliteWorldArena.Factory factory() {
+    return new NatroliteWorldArena.Factory();
   }
 
-  default Set<Player> getPlayerList() {
-    return getPlayers().stream()
-        .filter(uuid -> Bukkit.getPlayer(uuid) != null)
-        .map(Bukkit::getPlayer).collect(Collectors.toSet());
+  public static class Factory implements ArenaFactory<NatroliteWorldArena> {
+
+    @Override
+    public NatroliteWorldArena build() {
+      return new NatroliteWorldArena();
+    }
   }
 }

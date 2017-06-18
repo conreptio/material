@@ -31,20 +31,25 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
-import org.natrolite.game.GameRegistry;
 import org.natrolite.impl.arena.NatroliteArenaManager;
+import org.natrolite.impl.arena.types.NatroliteRegionArena;
+import org.natrolite.impl.arena.types.NatroliteWorldArena;
+import org.natrolite.registry.Registry;
 import org.natrolite.updater.Spigot;
 
 @Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
-  private NatroliteGameRegistry registry;
+  private NatroliteRegistry registry;
   private NatroliteArenaManager arenaManager;
 
   @Override
   public void onLoad() {
-    registry = new NatroliteGameRegistry();
+    registry = new NatroliteRegistry();
     arenaManager = new NatroliteArenaManager(this);
+
+    registry.register("natroWorld", NatroliteWorldArena.class, NatroliteWorldArena.factory());
+    registry.register("natroRegion", NatroliteRegionArena.class, NatroliteRegionArena.factory());
   }
 
   @Override
@@ -95,7 +100,7 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   }
 
   @Override
-  public GameRegistry getGameRegistry() {
+  public Registry getGameRegistry() {
     return registry;
   }
 }
