@@ -19,9 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.game;
+package org.natrolite.game.state;
 
-public interface GameState {
+public interface EnumGameState extends GameState {
 
   String name();
+
+  @Override
+  default String getName() {
+    return name();
+  }
 }

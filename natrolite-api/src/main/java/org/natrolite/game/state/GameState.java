@@ -19,13 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.example;
+package org.natrolite.game.state;
 
-import org.natrolite.game.state.EnumGameState;
+public interface GameState {
 
-public enum ExampleStates implements EnumGameState {
-
-  LOBBY,
-  PREPARING,
-  RUNNING
+  String getName();
 }

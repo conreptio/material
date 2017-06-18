@@ -29,7 +29,7 @@ import org.bukkit.event.HandlerList;
 import org.natrolite.cause.Cause;
 import org.natrolite.event.NatroliteEvent;
 import org.natrolite.game.Game;
-import org.natrolite.game.GameState;
+import org.natrolite.game.state.GameState;
 
 public class GameStateChangedEvent extends Event implements NatroliteEvent {
 
@@ -44,6 +44,10 @@ public class GameStateChangedEvent extends Event implements NatroliteEvent {
     this.game = Preconditions.checkNotNull(game);
     this.from = Preconditions.checkNotNull(from);
     this.to = Preconditions.checkNotNull(to);
+  }
+
+  public static HandlerList getHandlerList() {
+    return HANDLER_LIST;
   }
 
   public Game getGame() {
@@ -95,10 +99,6 @@ public class GameStateChangedEvent extends Event implements NatroliteEvent {
 
   @Override
   public HandlerList getHandlers() {
-    return HANDLER_LIST;
-  }
-
-  public static HandlerList getHandlerList() {
     return HANDLER_LIST;
   }
 }

@@ -31,6 +31,8 @@ import org.natrolite.arena.Arena;
 import org.natrolite.cause.Cause;
 import org.natrolite.event.game.GameStateChangeEvent;
 import org.natrolite.event.game.GameStateChangedEvent;
+import org.natrolite.game.state.GameState;
+import org.natrolite.game.state.GameStates;
 import org.natrolite.plugin.GamePlugin;
 
 public abstract class AbstractGame implements Game, Listener {
