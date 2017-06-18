@@ -51,6 +51,12 @@ allprojects {
     utils.putAll(project(':natrolite-utils').subprojects.collectEntries {
         project -> [project.name, project]
     })
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
 }
 
 subprojects { sub ->
