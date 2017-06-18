@@ -2,9 +2,18 @@ plugins {
     id 'java'
 }
 
+sourceSets {
+    example {
+
+    }
+}
+
 dependencies {
     testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
     compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
+
+    exampleCompile project(':natrolite-api')
+    exampleCompile group: 'org.bukkit', name: 'bukkit', version: '1.12-R0.1-SNAPSHOT'
 
     utils.values().forEach { util ->
         compile util
