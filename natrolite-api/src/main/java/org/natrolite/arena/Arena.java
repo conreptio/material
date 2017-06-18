@@ -19,22 +19,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.example;
+package org.natrolite.arena;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerEggThrowEvent;
-import org.natrolite.arena.Arena;
-import org.natrolite.game.AbstractGame;
-import org.natrolite.plugin.GamePlugin;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.natrolite.game.Game;
 
-class Example extends AbstractGame {
+public interface Arena {
 
-  Example(GamePlugin plugin, Arena arena) {
-    super(plugin, arena);
+  Optional<Game> getGame();
+
+  Set<UUID> getPlayers();
+
+  default boolean isPlaying(Player player) {
+    return getPlayers().contains(player.getUniqueId());
   }
 
-  @EventHandler
-  public void onThrow(PlayerEggThrowEvent event) {
-    filter(event.getPlayer(), () -> event.setHatching(false));
+  default Set<Player> getPlayerList() {
+    return getPlayers().stream()
+        .filter(uuid -> Bukkit.getPlayer(uuid) != null)
+        .map(Bukkit::getPlayer).collect(Collectors.toSet());
   }
 }

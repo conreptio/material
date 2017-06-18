@@ -21,6 +21,7 @@
 
 package org.natrolite.example;
 
+import org.natrolite.arena.Arena;
 import org.natrolite.plugin.AbstractGamePlugin;
 
 public class ExamplePlugin extends AbstractGamePlugin<Example> {
@@ -35,7 +36,7 @@ public class ExamplePlugin extends AbstractGamePlugin<Example> {
   }
 
   @Override
-  public Example createGame() {
-    return new Example(this);
+  public Example createGame(Arena arena) {
+    return new Example(this, arena);
   }
 }

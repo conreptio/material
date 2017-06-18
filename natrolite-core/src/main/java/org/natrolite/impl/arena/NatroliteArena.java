@@ -19,22 +19,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.example;
+package org.natrolite.impl.arena;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerEggThrowEvent;
+import com.google.common.collect.ImmutableSet;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import javax.annotation.Nullable;
 import org.natrolite.arena.Arena;
-import org.natrolite.game.AbstractGame;
-import org.natrolite.plugin.GamePlugin;
+import org.natrolite.game.Game;
 
-class Example extends AbstractGame {
+public class NatroliteArena implements Arena {
 
-  Example(GamePlugin plugin, Arena arena) {
-    super(plugin, arena);
+  private Set<UUID> players = new HashSet<>();
+
+  @Nullable
+  private Game game;
+
+  @Override
+  public Optional<Game> getGame() {
+    return Optional.ofNullable(game);
   }
 
-  @EventHandler
-  public void onThrow(PlayerEggThrowEvent event) {
-    filter(event.getPlayer(), () -> event.setHatching(false));
+  public void setGame(Game game) {
+    this.game = game;
+  }
+
+  @Override
+  public Set<UUID> getPlayers() {
+    return ImmutableSet.copyOf(players);
   }
 }

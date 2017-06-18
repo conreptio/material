@@ -32,16 +32,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.game.GameRegistry;
+import org.natrolite.impl.arena.NatroliteArenaManager;
 import org.natrolite.updater.Spigot;
 
 @Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
   private NatroliteGameRegistry registry;
+  private NatroliteArenaManager arenaManager;
 
   @Override
   public void onLoad() {
     registry = new NatroliteGameRegistry();
+    arenaManager = new NatroliteArenaManager(this);
   }
 
   @Override
@@ -51,6 +54,8 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
       registry.bake();
       in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
+
+      arenaManager.loadArenas();
 
       try {
         Metrics metrics = new Metrics(this);

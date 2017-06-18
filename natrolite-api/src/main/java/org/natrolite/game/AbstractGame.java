@@ -25,7 +25,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.natrolite.Natrolite.callEvent;
 
 import java.util.UUID;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.natrolite.arena.Arena;
 import org.natrolite.cause.Cause;
 import org.natrolite.event.game.GameStateChangeEvent;
 import org.natrolite.event.game.GameStateChangedEvent;
@@ -35,13 +37,20 @@ public abstract class AbstractGame implements Game, Listener {
 
   private final UUID gameId = UUID.randomUUID();
   private final GamePlugin plugin;
+  private final Arena arena;
 
   private GameState state = GameStates.LOADING;
   private long stateTime = System.currentTimeMillis();
 
-  public AbstractGame(GamePlugin plugin) {
+  public AbstractGame(GamePlugin plugin, Arena arena) {
     this.plugin = checkNotNull(plugin);
+    this.arena = checkNotNull(arena);
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  @Override
+  public Arena getArena() {
+    return arena;
   }
 
   @Override
@@ -76,5 +85,11 @@ public abstract class AbstractGame implements Game, Listener {
 
   public final String getName() {
     return plugin.getName();
+  }
+
+  protected void filter(Player player, Runnable runnable) {
+    if (getArena().isPlaying(player)) {
+      runnable.run();
+    }
   }
 }

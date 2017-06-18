@@ -22,10 +22,18 @@
 package org.natrolite.game;
 
 import org.natrolite.Identifiable;
+import org.natrolite.arena.Arena;
 import org.natrolite.cause.Cause;
 import org.natrolite.plugin.GamePlugin;
 
 public interface Game extends Identifiable {
+
+  /**
+   * Gets the games's arena.
+   *
+   * @return arena
+   */
+  Arena getArena();
 
   /**
    * Gets the current {@link GameState}.

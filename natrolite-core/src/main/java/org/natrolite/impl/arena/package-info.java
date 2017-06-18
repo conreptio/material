@@ -19,22 +19,5 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.example;
-
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerEggThrowEvent;
-import org.natrolite.arena.Arena;
-import org.natrolite.game.AbstractGame;
-import org.natrolite.plugin.GamePlugin;
-
-class Example extends AbstractGame {
-
-  Example(GamePlugin plugin, Arena arena) {
-    super(plugin, arena);
-  }
-
-  @EventHandler
-  public void onThrow(PlayerEggThrowEvent event) {
-    filter(event.getPlayer(), () -> event.setHatching(false));
-  }
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.impl.arena;
