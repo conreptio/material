@@ -1,7 +1,7 @@
 Natrolite [![Build Status](https://travis-ci.org/natrolite/natrolite.svg?branch=master)](https://travis-ci.org/natrolite/natrolite)
 =========
 
-Natrolite is an API/Library developed to help Bukkit Developers writing clean code without much effort.
+Natrolite is an API/Library created to help Bukkit Developers writing clean code without much effort.
 
 Links
 -----
