@@ -30,7 +30,7 @@ public final class NatroliteArenaManager implements Listener {
 
   public NatroliteArenaManager(NatroliteBukkit natrolite) {
     this.natrolite = natrolite;
-    natrolite.getServer().getPluginManager().registerEvents(this, natrolite);
+    // natrolite.getServer().getPluginManager().registerEvents(this, natrolite);
   }
 
   public void loadArenas() {}

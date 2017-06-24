@@ -24,19 +24,25 @@ package org.natrolite.plugin;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
+import java.util.Optional;
+import javax.annotation.Nullable;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.Natrolite;
 import org.natrolite.game.Game;
+import org.natrolite.map.MapSettings;
 
 public abstract class AbstractGamePlugin<G extends Game>
     extends JavaPlugin
     implements GamePlugin<G>, Listener {
 
   private final Class<G> gameClass;
+  @Nullable private final Class<? extends MapSettings> settings;
 
-  public AbstractGamePlugin(Class<G> gameClass) {
+  public AbstractGamePlugin(Class<G> gameClass, Class<? extends MapSettings> settings) {
     this.gameClass = checkNotNull(gameClass);
+    this.settings = settings;
+
     Natrolite.getGameRegistry().register(this);
     getServer().getPluginManager().registerEvents(this, this);
   }
@@ -49,5 +55,10 @@ public abstract class AbstractGamePlugin<G extends Game>
   @Override
   public final Class<G> getGameClass() {
     return gameClass;
+  }
+
+  @Override
+  public final Optional<Class<? extends MapSettings>> getMapSettings() {
+    return Optional.ofNullable(settings);
   }
 }

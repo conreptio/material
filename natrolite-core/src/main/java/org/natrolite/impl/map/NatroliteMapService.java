@@ -21,19 +21,78 @@
 
 package org.natrolite.impl.map;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.logging.Level;
+import javax.annotation.Nullable;
+import org.natrolite.configurate.types.YamlConfig;
+import org.natrolite.impl.NatroliteBukkit;
+import org.natrolite.map.GameMap;
+import org.natrolite.map.MapConfig;
 import org.natrolite.map.MapService;
+import org.natrolite.map.MapSettings;
+import org.natrolite.plugin.GamePlugin;
 
 public class NatroliteMapService implements MapService {
 
-  public NatroliteMapService() {}
+  private final NatroliteBukkit natrolite;
+  private final Path folder;
+
+  @Nullable
+  private List<GameMap> maps;
+
+  public NatroliteMapService(NatroliteBukkit natrolite) {
+    this.natrolite = natrolite;
+    this.folder = natrolite.getRoot().resolve("maps");
+  }
+
+  private static boolean isWorld(Path path) {
+    return Files.isDirectory(path) && Files.exists(path.resolve("level.dat"));
+  }
 
   @Override
-  public void loadMaps() {
-
+  public int loadMaps() throws Exception {
+    final ArrayList<NatroliteMap> list = new ArrayList<>();
+    Files.createDirectories(folder);
+    Files.list(folder).filter(NatroliteMapService::isWorld).forEach(file -> {
+      final Map<GamePlugin<?>, MapSettings> settingsMap = new HashMap<>();
+      final YamlConfig<MapConfig> config = new YamlConfig<>(
+          file.resolve("config.yml"),
+          MapConfig.class
+      );
+      for (String gameId : config.getConfig().getGames()) {
+        Optional<GamePlugin<?>> plugin = natrolite.getGameRegistry().getGame(gameId);
+        if (plugin.isPresent()) {
+          Optional<Class<? extends MapSettings>> settings = plugin.get().getMapSettings();
+          if (!settings.isPresent()) {
+            natrolite.getLogger().log(
+                Level.WARNING,
+                "Skipping {0} as it has no map settings configured", gameId
+            );
+            continue;
+          }
+          YamlConfig<? extends MapSettings> gameConfig = new YamlConfig<>(
+              file.resolve(gameId + ".yml"),
+              settings.get()
+          );
+          settingsMap.put(plugin.get(), gameConfig.getConfig());
+        }
+      }
+      list.add(new NatroliteMap(file, ImmutableMap.copyOf(settingsMap)));
+    });
+    maps = ImmutableList.copyOf(list);
+    return getSize();
   }
 
   @Override
   public int getSize() {
-    return 0;
+    return maps == null ? 0 : maps.size();
   }
 }

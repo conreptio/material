@@ -28,14 +28,18 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import org.bstats.Metrics;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.natrolite.Natrolite;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.impl.arena.NatroliteArenaManager;
 import org.natrolite.impl.arena.types.NatroliteRegionArena;
 import org.natrolite.impl.arena.types.NatroliteWorldArena;
-import org.natrolite.registry.Registry;
+import org.natrolite.impl.map.NatroliteMapService;
+import org.natrolite.map.MapService;
 import org.natrolite.updater.Spigot;
+import org.natrolite.util.ReflectionUtil;
 
 @Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
@@ -45,8 +49,17 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
   @Override
   public void onLoad() {
+    ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
+
     registry = new NatroliteRegistry();
     arenaManager = new NatroliteArenaManager(this);
+
+    getServer().getServicesManager().register(
+        MapService.class,
+        new NatroliteMapService(this),
+        this,
+        ServicePriority.Low
+    );
 
     registry.register("natroWorld", NatroliteWorldArena.class, NatroliteWorldArena.factory());
     registry.register("natroRegion", NatroliteRegionArena.class, NatroliteRegionArena.factory());
@@ -56,6 +69,9 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   public void onEnable() {
     try {
       final long start = System.currentTimeMillis();
+
+      final int size = Natrolite.getService(MapService.class).loadMaps();
+      in(getLogger(), size == 1 ? "map.loaded" : "maps.loaded", size);
 
       registry.bake();
       in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
@@ -100,7 +116,7 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   }
 
   @Override
-  public Registry getGameRegistry() {
+  public NatroliteRegistry getGameRegistry() {
     return registry;
   }
 }

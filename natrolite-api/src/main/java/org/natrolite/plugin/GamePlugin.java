@@ -21,11 +21,13 @@
 
 package org.natrolite.plugin;
 
+import java.util.Optional;
 import org.bukkit.plugin.Plugin;
 import org.natrolite.Nameable;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.arena.Arena;
 import org.natrolite.game.Game;
+import org.natrolite.map.MapSettings;
 import org.natrolite.updater.Updatable;
 
 public interface GamePlugin<G extends Game> extends Plugin, Nameable, NatrolitePlugin, Updatable {
@@ -33,4 +35,8 @@ public interface GamePlugin<G extends Game> extends Plugin, Nameable, NatroliteP
   G createGame(Arena arena);
 
   Class<G> getGameClass();
+
+  default Optional<Class<? extends MapSettings>> getMapSettings() {
+    return Optional.empty();
+  }
 }

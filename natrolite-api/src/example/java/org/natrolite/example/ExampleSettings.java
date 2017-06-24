@@ -19,11 +19,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.map;
+package org.natrolite.example;
 
-public interface MapService {
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.natrolite.map.MapSettings;
 
-  int loadMaps() throws Exception;
+@ConfigSerializable
+public class ExampleSettings implements MapSettings {
 
-  int getSize();
+  @Setting
+  private boolean yes = false;
+
+  @Override
+  public boolean isValid() {
+    return yes;
+  }
 }

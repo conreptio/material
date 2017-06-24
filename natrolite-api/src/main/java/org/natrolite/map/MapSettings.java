@@ -21,9 +21,7 @@
 
 package org.natrolite.map;
 
-public interface MapService {
+public interface MapSettings {
 
-  int loadMaps() throws Exception;
-
-  int getSize();
+  boolean isValid();
 }

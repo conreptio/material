@@ -61,4 +61,8 @@ public final class Natrolite {
     getServer().getPluginManager().callEvent(event);
     return event;
   }
+
+  public static <T> T getService(Class<T> service) {
+    return checkNotNull(getServer().getServicesManager().getRegistration(service).getProvider());
+  }
 }

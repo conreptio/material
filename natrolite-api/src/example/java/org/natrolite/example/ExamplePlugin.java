@@ -27,7 +27,7 @@ import org.natrolite.plugin.AbstractGamePlugin;
 public class ExamplePlugin extends AbstractGamePlugin<Example> {
 
   public ExamplePlugin() {
-    super(Example.class);
+    super(Example.class, ExampleSettings.class);
   }
 
   @Override

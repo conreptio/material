@@ -21,9 +21,18 @@
 
 package org.natrolite.map;
 
-public interface MapService {
+import com.google.common.collect.Lists;
+import java.util.List;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-  int loadMaps() throws Exception;
+@ConfigSerializable
+public class MapConfig {
 
-  int getSize();
+  @Setting("games")
+  private List<String> games = Lists.newArrayList();
+
+  public List<String> getGames() {
+    return games;
+  }
 }

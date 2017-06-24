@@ -22,14 +22,19 @@
 package org.natrolite.impl.map;
 
 import java.nio.file.Path;
+import java.util.Map;
 import org.natrolite.map.GameMap;
+import org.natrolite.map.MapSettings;
+import org.natrolite.plugin.GamePlugin;
 
 public class NatroliteMap implements GameMap {
 
   private final Path file;
+  private final Map<GamePlugin<?>, MapSettings> map;
 
-  public NatroliteMap(Path file) {
+  NatroliteMap(Path file, Map<GamePlugin<?>, MapSettings> map) {
     this.file = file;
+    this.map = map;
   }
 
   @Override
