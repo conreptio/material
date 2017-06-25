@@ -21,7 +21,9 @@
 
 package org.natrolite.impl.arena.types;
 
+import java.util.Optional;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.bukkit.command.CommandSender;
 import org.natrolite.arena.ArenaFactory;
 import org.natrolite.arena.types.WorldArena;
 import org.natrolite.impl.arena.NatroliteArena;
@@ -41,6 +43,11 @@ public class NatroliteWorldArena extends NatroliteArena implements WorldArena {
     @Override
     public NatroliteWorldArena build(String id, ConfigurationNode value) {
       return new NatroliteWorldArena(id);
+    }
+
+    @Override
+    public Optional<NatroliteWorldArena> build(String id, CommandSender sender, String[] args) {
+      return Optional.of(new NatroliteWorldArena(id));
     }
   }
 }

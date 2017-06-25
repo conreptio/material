@@ -40,6 +40,7 @@ import org.natrolite.arena.ArenaService;
 import org.natrolite.impl.arena.NatroliteArenaService;
 import org.natrolite.impl.arena.types.NatroliteRegionArena;
 import org.natrolite.impl.arena.types.NatroliteWorldArena;
+import org.natrolite.impl.commands.ArenaCommand;
 import org.natrolite.impl.map.NatroliteMapService;
 import org.natrolite.impl.serialisation.ArenaSerializer;
 import org.natrolite.map.MapService;
@@ -69,6 +70,8 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   public void onEnable() {
     try {
       final long start = System.currentTimeMillis();
+
+      getCommand("arena").setExecutor(new ArenaCommand(registry));
 
       serializers = TypeSerializers.getDefaultSerializers().newChild();
       ArenaSerializer.register(serializers, this);

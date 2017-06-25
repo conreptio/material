@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import javax.annotation.Nullable;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaFactory;
@@ -83,6 +84,10 @@ public final class NatroliteRegistry implements Registry {
 
   public Optional<ArenaFactory<?>> getArena(String id) {
     return Optional.ofNullable(arenaMap.get(id));
+  }
+
+  public Set<String> getRegisteredArenaIds() {
+    return arenaMap.keySet();
   }
 
   public int size() {

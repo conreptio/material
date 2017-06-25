@@ -19,22 +19,5 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.arena;
-
-import java.util.Optional;
-import ninja.leaping.configurate.ConfigurationNode;
-import org.bukkit.command.CommandSender;
-
-public interface ArenaFactory<T extends Arena> {
-
-  T build(String id, ConfigurationNode value);
-
-  /**
-   * Builds an arena by command.
-   *
-   * @param id   the arena id
-   * @param args the command args
-   * @return new arena or {@link Optional#empty()} if more setup is needed
-   */
-  Optional<T> build(String id, CommandSender sender, String[] args);
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.impl.commands;

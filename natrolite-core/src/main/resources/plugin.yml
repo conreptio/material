@@ -3,3 +3,8 @@ main: org.natrolite.impl.NatroliteBukkit
 version: ${version}
 author: Natrolite
 website: https://natrolite.org
+
+commands:
+  arena:
+    description: Commands for Arena Management
+    usage: /<command> (args)

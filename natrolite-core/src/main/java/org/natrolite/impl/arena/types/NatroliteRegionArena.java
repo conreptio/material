@@ -21,7 +21,9 @@
 
 package org.natrolite.impl.arena.types;
 
+import java.util.Optional;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.bukkit.command.CommandSender;
 import org.natrolite.arena.ArenaFactory;
 import org.natrolite.arena.types.RegionArena;
 import org.natrolite.impl.arena.NatroliteArena;
@@ -41,6 +43,11 @@ public class NatroliteRegionArena extends NatroliteArena implements RegionArena 
     @Override
     public NatroliteRegionArena build(String id, ConfigurationNode value) {
       return new NatroliteRegionArena(id);
+    }
+
+    @Override
+    public Optional<NatroliteRegionArena> build(String id, CommandSender sender, String[] args) {
+      return Optional.empty();
     }
   }
 }
