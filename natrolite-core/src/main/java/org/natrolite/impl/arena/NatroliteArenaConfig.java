@@ -21,17 +21,10 @@
 
 package org.natrolite.impl.arena;
 
-import org.bukkit.event.Listener;
-import org.natrolite.impl.NatroliteBukkit;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-public final class NatroliteArenaManager implements Listener {
+@ConfigSerializable
+class NatroliteArenaConfig {
 
-  private final NatroliteBukkit natrolite;
 
-  public NatroliteArenaManager(NatroliteBukkit natrolite) {
-    this.natrolite = natrolite;
-    // natrolite.getServer().getPluginManager().registerEvents(this, natrolite);
-  }
-
-  public void loadArenas() {}
 }

@@ -33,7 +33,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.Natrolite;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
-import org.natrolite.impl.arena.NatroliteArenaManager;
+import org.natrolite.arena.ArenaService;
+import org.natrolite.impl.arena.NatroliteArenaService;
 import org.natrolite.impl.arena.types.NatroliteRegionArena;
 import org.natrolite.impl.arena.types.NatroliteWorldArena;
 import org.natrolite.impl.map.NatroliteMapService;
@@ -45,21 +46,15 @@ import org.natrolite.util.ReflectionUtil;
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
   private NatroliteRegistry registry;
-  private NatroliteArenaManager arenaManager;
 
   @Override
   public void onLoad() {
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
 
     registry = new NatroliteRegistry();
-    arenaManager = new NatroliteArenaManager(this);
 
-    getServer().getServicesManager().register(
-        MapService.class,
-        new NatroliteMapService(this),
-        this,
-        ServicePriority.Low
-    );
+    register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
+    register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
 
     registry.register("natroWorld", NatroliteWorldArena.class, NatroliteWorldArena.factory());
     registry.register("natroRegion", NatroliteRegionArena.class, NatroliteRegionArena.factory());
@@ -70,13 +65,16 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
     try {
       final long start = System.currentTimeMillis();
 
-      final int size = Natrolite.getService(MapService.class).loadMaps();
-      in(getLogger(), size == 1 ? "map.loaded" : "maps.loaded", size);
-
       registry.bake();
       in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
 
-      arenaManager.loadArenas();
+      final MapService map = Natrolite.getService(MapService.class);
+      map.loadMaps();
+      in(getLogger(), map.getSize() == 1 ? "map.loaded" : "maps.loaded", map.getSize());
+
+      final ArenaService arena = Natrolite.getService(ArenaService.class);
+      arena.loadArenas();
+      in(getLogger(), arena.getSize() == 1 ? "arena.loaded" : "arenas.loaded", arena.getSize());
 
       try {
         Metrics metrics = new Metrics(this);
@@ -118,5 +116,9 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   @Override
   public NatroliteRegistry getGameRegistry() {
     return registry;
+  }
+
+  private <T> void register(Class<T> clazz, T provider, ServicePriority priority) {
+    getServer().getServicesManager().register(clazz, provider, this, priority);
   }
 }
