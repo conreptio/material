@@ -23,6 +23,7 @@ package org.natrolite.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static org.natrolite.Natrolite.callEvent;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
@@ -31,6 +32,9 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaFactory;
+import org.natrolite.cause.Cause;
+import org.natrolite.event.registry.ArenaRegisterEvent;
+import org.natrolite.event.registry.GameRegisterEvent;
 import org.natrolite.plugin.GamePlugin;
 import org.natrolite.registry.Registry;
 
@@ -50,7 +54,9 @@ public final class NatroliteRegistry implements Registry {
     checkNotNull(plugin, "Plugin cannot be null");
     checkState(temporaryRegistry != null);
     if (!temporaryRegistry.gameMap.containsKey(id)) {
-      temporaryRegistry.gameMap.put(id, plugin);
+      if (!callEvent(new GameRegisterEvent(Cause.source(this).build())).isCancelled()) {
+        temporaryRegistry.gameMap.put(id, plugin);
+      }
     } else {
       throw new IllegalStateException("ID is already registered");
     }
@@ -62,7 +68,10 @@ public final class NatroliteRegistry implements Registry {
     checkNotNull(false, "Factory cannot be null");
     checkState(temporaryRegistry != null);
     if (!temporaryRegistry.arenaMap.containsKey(id)) {
-      temporaryRegistry.arenaMap.put(id, factory);
+      if (!callEvent(
+          new ArenaRegisterEvent(Cause.source(this).build(), id, clazz, factory)).isCancelled()) {
+        temporaryRegistry.arenaMap.put(id, factory);
+      }
     } else {
       throw new IllegalStateException("ID is already registered");
     }
