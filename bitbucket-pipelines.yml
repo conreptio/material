@@ -4,4 +4,4 @@ pipelines:
   default:
     - step:
         script:
-          - bash ./gradlew build checkstyle
+          - bash ./gradlew check
