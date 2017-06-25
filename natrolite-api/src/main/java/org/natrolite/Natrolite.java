@@ -50,7 +50,7 @@ public final class Natrolite {
   }
 
   public static Registry getGameRegistry() {
-    return getNatrolite().getGameRegistry();
+    return getNatrolite().getRegistry();
   }
 
   public static Server getServer() {

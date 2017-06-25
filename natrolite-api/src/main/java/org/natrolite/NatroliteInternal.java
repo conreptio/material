@@ -46,9 +46,9 @@ public interface NatroliteInternal {
   /**
    * Gets the {@link Registry}.
    *
-   * @return the game registry
+   * @return the registry
    */
-  Registry getGameRegistry();
+  Registry getRegistry();
 
   /**
    * Gets the {@link TypeSerializerCollection} the internal plugin is using.

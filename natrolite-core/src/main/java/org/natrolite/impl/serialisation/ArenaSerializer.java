@@ -51,7 +51,7 @@ public final class ArenaSerializer implements TypeSerializer<Arena> {
       throws ObjectMappingException {
     final String id = value.getNode("id").getString();
     final String typeId = value.getNode("type").getString();
-    final Optional<ArenaFactory<?>> factory = natrolite.getGameRegistry().getArena(typeId);
+    final Optional<ArenaFactory<?>> factory = natrolite.getRegistry().getArena(typeId);
     if (!factory.isPresent()) {
       throw new ObjectMappingException("Arena type not registered: " + typeId);
     }

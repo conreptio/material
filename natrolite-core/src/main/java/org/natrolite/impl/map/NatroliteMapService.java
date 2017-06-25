@@ -68,7 +68,7 @@ public class NatroliteMapService implements MapService {
           MapConfig.class
       );
       for (String gameId : config.getConfig().getGames()) {
-        Optional<GamePlugin<?>> plugin = natrolite.getGameRegistry().getGame(gameId);
+        Optional<GamePlugin<?>> plugin = natrolite.getRegistry().getGame(gameId);
         if (plugin.isPresent()) {
           Optional<Class<? extends MapSettings>> settings = plugin.get().getMapSettings();
           if (!settings.isPresent()) {

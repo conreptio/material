@@ -122,7 +122,7 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   }
 
   @Override
-  public NatroliteRegistry getGameRegistry() {
+  public NatroliteRegistry getRegistry() {
     return registry;
   }
 
