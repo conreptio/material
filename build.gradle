@@ -111,6 +111,7 @@ subprojects { sub ->
 
         processResources {
             from rootProject.file('LICENSE')
+            from rootProject.file('THIRD-PARTY.txt')
         }
 
         task sourceJar(type: Jar) {
@@ -145,13 +146,10 @@ subprojects { sub ->
 task aggregatedJavadocs(type: Javadoc) {
     group = 'Documentation'
     title = "Natrolite API"
-
     options.author true
     options.links(javadocLinks)
     options.addStringOption 'Xdoclint:none', '-quiet'
-
     destinationDir = file("$rootProject.buildDir/docs/aggregated/$version")
-
     subprojects { sub ->
         if (sub.name != 'natrolite-core') {
             plugins.withType(JavaPlugin) {
