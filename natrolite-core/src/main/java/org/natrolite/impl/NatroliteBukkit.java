@@ -26,6 +26,9 @@ import static org.natrolite.impl.StaticMessageProvider.in;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.logging.Level;
+import ninja.leaping.configurate.ConfigurationOptions;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bstats.Metrics;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
@@ -38,6 +41,7 @@ import org.natrolite.impl.arena.NatroliteArenaService;
 import org.natrolite.impl.arena.types.NatroliteRegionArena;
 import org.natrolite.impl.arena.types.NatroliteWorldArena;
 import org.natrolite.impl.map.NatroliteMapService;
+import org.natrolite.impl.serialisation.ArenaSerializer;
 import org.natrolite.map.MapService;
 import org.natrolite.updater.Spigot;
 import org.natrolite.util.ReflectionUtil;
@@ -46,6 +50,7 @@ import org.natrolite.util.ReflectionUtil;
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
   private NatroliteRegistry registry;
+  private TypeSerializerCollection serializers;
 
   @Override
   public void onLoad() {
@@ -64,6 +69,9 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   public void onEnable() {
     try {
       final long start = System.currentTimeMillis();
+
+      serializers = TypeSerializers.getDefaultSerializers().newChild();
+      ArenaSerializer.register(serializers, this);
 
       registry.bake();
       in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
@@ -116,6 +124,19 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   @Override
   public NatroliteRegistry getGameRegistry() {
     return registry;
+  }
+
+  @Override
+  public TypeSerializerCollection getSerializers() {
+    return serializers;
+  }
+
+  public Path resolve(String file) {
+    return getRoot().resolve(file);
+  }
+
+  public ConfigurationOptions defaultOptions() {
+    return ConfigurationOptions.defaults().setSerializers(getSerializers());
   }
 
   private <T> void register(Class<T> clazz, T provider, ServicePriority priority) {

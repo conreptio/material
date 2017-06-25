@@ -72,6 +72,10 @@ public final class NatroliteRegistry implements Registry {
     return Optional.ofNullable(gameMap.get(id));
   }
 
+  public Optional<ArenaFactory<?>> getArena(String id) {
+    return Optional.ofNullable(arenaMap.get(id));
+  }
+
   public int size() {
     return gameMap.size();
   }

@@ -27,15 +27,28 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.World;
 import org.natrolite.arena.Arena;
 import org.natrolite.game.Game;
 
-public class NatroliteArena implements Arena {
+public abstract class NatroliteArena implements Arena {
 
+  private final String id;
   @Nullable private World world;
   private Set<UUID> players = new HashSet<>();
   @Nullable private Game game;
+
+  public NatroliteArena(String id) {
+    this.id = id;
+  }
+
+  @Override
+  public final String getId() {
+    return id;
+  }
 
   @Override
   public Optional<Game> getGame() {
@@ -63,5 +76,11 @@ public class NatroliteArena implements Arena {
   @Override
   public World getWorldUnsafe() {
     return world;
+  }
+
+  @Override
+  @OverridingMethodsMustInvokeSuper
+  public void serialize(ConfigurationNode value) throws ObjectMappingException {
+    value.getNode("natrolite").setValue(true);
   }
 }

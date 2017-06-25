@@ -21,11 +21,16 @@
 
 package org.natrolite.impl.arena.types;
 
+import ninja.leaping.configurate.ConfigurationNode;
 import org.natrolite.arena.ArenaFactory;
 import org.natrolite.arena.types.WorldArena;
 import org.natrolite.impl.arena.NatroliteArena;
 
 public class NatroliteWorldArena extends NatroliteArena implements WorldArena {
+
+  private NatroliteWorldArena(String id) {
+    super(id);
+  }
 
   public static NatroliteWorldArena.Factory factory() {
     return new NatroliteWorldArena.Factory();
@@ -34,8 +39,8 @@ public class NatroliteWorldArena extends NatroliteArena implements WorldArena {
   public static class Factory implements ArenaFactory<NatroliteWorldArena> {
 
     @Override
-    public NatroliteWorldArena build() {
-      return new NatroliteWorldArena();
+    public NatroliteWorldArena build(String id, ConfigurationNode value) {
+      return new NatroliteWorldArena(id);
     }
   }
 }

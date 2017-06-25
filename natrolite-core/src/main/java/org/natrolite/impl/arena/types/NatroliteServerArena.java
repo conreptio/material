@@ -24,4 +24,9 @@ package org.natrolite.impl.arena.types;
 import org.natrolite.arena.types.ServerArena;
 import org.natrolite.impl.arena.NatroliteArena;
 
-public class NatroliteServerArena extends NatroliteArena implements ServerArena {}
+public class NatroliteServerArena extends NatroliteArena implements ServerArena {
+
+  private NatroliteServerArena(String id) {
+    super(id);
+  }
+}

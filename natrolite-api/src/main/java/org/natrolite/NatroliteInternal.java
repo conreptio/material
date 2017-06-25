@@ -22,6 +22,8 @@
 package org.natrolite;
 
 import java.nio.file.Path;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
 import org.natrolite.registry.Registry;
 
@@ -47,4 +49,13 @@ public interface NatroliteInternal {
    * @return the game registry
    */
   Registry getGameRegistry();
+
+  /**
+   * Gets the {@link TypeSerializerCollection} the internal plugin is using.
+   *
+   * @return type serializer collection of the plugin
+   */
+  default TypeSerializerCollection getSerializers() {
+    return TypeSerializers.getDefaultSerializers();
+  }
 }

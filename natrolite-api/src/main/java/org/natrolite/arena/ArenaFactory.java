@@ -21,7 +21,9 @@
 
 package org.natrolite.arena;
 
+import ninja.leaping.configurate.ConfigurationNode;
+
 public interface ArenaFactory<T extends Arena> {
 
-  T build();
+  T build(String id, ConfigurationNode value);
 }

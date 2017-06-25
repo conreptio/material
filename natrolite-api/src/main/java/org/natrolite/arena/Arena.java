@@ -25,12 +25,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.natrolite.game.Game;
 
 public interface Arena {
+
+  String getId();
+
+  void serialize(ConfigurationNode value) throws ObjectMappingException;
 
   Optional<Game> getGame();
 

@@ -22,28 +22,32 @@
 package org.natrolite.impl.arena;
 
 import com.google.common.collect.ImmutableList;
-import java.nio.file.Path;
+import com.google.common.reflect.TypeToken;
+import java.io.IOException;
 import java.util.List;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.gson.GsonConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
 import org.natrolite.impl.NatroliteBukkit;
 
 public class NatroliteArenaService implements ArenaService {
 
-  private final Path path;
-  private List<NatroliteArena> arenas = ImmutableList.of();
+  private static final String FILE = "arenas.json";
+  private final NatroliteBukkit natrolite;
+  private final GsonConfigurationLoader loader;
+  private List<Arena> arenas = ImmutableList.of();
 
   public NatroliteArenaService(NatroliteBukkit natrolite) {
-    this.path = natrolite.getRoot().resolve("arenas.json");
+    this.natrolite = natrolite;
+    this.loader = GsonConfigurationLoader.builder().setPath(natrolite.resolve(FILE)).build();
   }
 
   @Override
-  public void loadArenas() throws Exception {
-    GsonConfigurationLoader loader = new GsonConfigurationLoader.Builder()
-        .setPath(path)
-        .build();
-    ConfigurationNode root = loader.load();
+  public void loadArenas() throws IOException, ObjectMappingException {
+    final ConfigurationNode root = loader.load(natrolite.defaultOptions());
+    this.arenas = ImmutableList.copyOf(root.getList(TypeToken.of(Arena.class)));
   }
 
   @Override
