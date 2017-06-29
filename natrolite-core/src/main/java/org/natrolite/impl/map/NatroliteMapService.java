@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
-import javax.annotation.Nullable;
 import org.natrolite.configurate.types.YamlConfig;
 import org.natrolite.impl.NatroliteBukkit;
 import org.natrolite.map.GameMap;
@@ -42,9 +41,7 @@ public class NatroliteMapService implements MapService {
 
   private final NatroliteBukkit natrolite;
   private final Path folder;
-
-  @Nullable
-  private List<GameMap> maps;
+  private List<GameMap> maps = ImmutableList.of();
 
   public NatroliteMapService(NatroliteBukkit natrolite) {
     this.natrolite = natrolite;
@@ -91,6 +88,6 @@ public class NatroliteMapService implements MapService {
 
   @Override
   public int getSize() {
-    return maps == null ? 0 : maps.size();
+    return maps.size();
   }
 }
