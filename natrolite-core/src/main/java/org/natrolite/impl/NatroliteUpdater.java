@@ -40,12 +40,24 @@ import org.natrolite.spiget.Spiget;
 import org.natrolite.updater.Spigot;
 import org.natrolite.updater.Updatable;
 
+/**
+ * Automatically updates bukkit plugins with the {@link Spigot} annotation.
+ *
+ * @author conreptio
+ */
 public final class NatroliteUpdater implements Listener {
 
-  private NatroliteBukkit natrolite;
+  private final NatroliteBukkit natrolite;
 
   NatroliteUpdater(NatroliteBukkit natrolite) {
     this.natrolite = natrolite;
+  }
+
+  private static File getJar(Plugin plugin) throws Exception {
+    if (plugin instanceof Updatable) {
+      return ((Updatable) plugin).getFile();
+    }
+    return new File(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
   }
 
   @EventHandler(priority = EventPriority.HIGH)
@@ -82,12 +94,5 @@ public final class NatroliteUpdater implements Listener {
 
   private Path getFolder() {
     return natrolite.getServer().getUpdateFolderFile().toPath();
-  }
-
-  private File getJar(Plugin plugin) throws Exception {
-    if (plugin instanceof Updatable) {
-      return ((Updatable) plugin).getFile();
-    }
-    return new File(plugin.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
   }
 }
