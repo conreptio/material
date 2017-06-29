@@ -19,6 +19,11 @@
 
 package org.natrolite.arena.types;
 
+import java.util.Optional;
 import org.natrolite.arena.Arena;
+import org.natrolite.map.GameMap;
 
-public interface WorldArena extends Arena {}
+public interface WorldArena extends Arena {
+
+  Optional<GameMap> getMap();
+}

@@ -25,8 +25,9 @@ import org.bukkit.command.CommandSender;
 import org.natrolite.arena.ArenaFactory;
 import org.natrolite.arena.types.RegionArena;
 import org.natrolite.impl.arena.NatroliteArena;
+import org.natrolite.map.MapSettings;
 
-public class NatroliteRegionArena extends NatroliteArena implements RegionArena {
+public final class NatroliteRegionArena extends NatroliteArena implements RegionArena {
 
   private NatroliteRegionArena(String id) {
     super(id);
@@ -34,6 +35,11 @@ public class NatroliteRegionArena extends NatroliteArena implements RegionArena 
 
   public static NatroliteRegionArena.Factory factory() {
     return new NatroliteRegionArena.Factory();
+  }
+
+  @Override
+  public Optional<MapSettings> getSettings() {
+    return Optional.empty(); //TODO
   }
 
   public static class Factory implements ArenaFactory<NatroliteRegionArena> {

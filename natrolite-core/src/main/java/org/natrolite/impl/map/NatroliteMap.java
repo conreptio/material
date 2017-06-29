@@ -21,6 +21,7 @@ package org.natrolite.impl.map;
 
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import org.natrolite.map.GameMap;
 import org.natrolite.map.MapSettings;
 import org.natrolite.plugin.GamePlugin;
@@ -38,5 +39,10 @@ public class NatroliteMap implements GameMap {
   @Override
   public Path getFile() {
     return file;
+  }
+
+  @Override
+  public Optional<MapSettings> getSettings(GamePlugin plugin) {
+    return map.entrySet().stream().filter(e -> e.equals(plugin)).map(Map.Entry::getValue).findAny();
   }
 }

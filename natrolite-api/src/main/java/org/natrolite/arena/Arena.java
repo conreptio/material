@@ -29,14 +29,38 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.natrolite.game.Game;
+import org.natrolite.map.MapSettings;
 
 public interface Arena {
 
+  /**
+   * Gets the arena id.
+   *
+   * @return arena id
+   */
   String getId();
 
+  /**
+   * Serializes the arena into a {@link ConfigurationNode}.
+   *
+   * @param value the node
+   * @throws ObjectMappingException if the arena could not be serialized
+   */
   void serialize(ConfigurationNode value) throws ObjectMappingException;
 
+  /**
+   * Gets the current {@link Game}.
+   *
+   * @return current game or {@link Optional#empty()} if there is no game running.
+   */
   Optional<Game> getGame();
+
+  /**
+   * Gets the settings of the current {@link org.natrolite.map.GameMap}.
+   *
+   * @return settings of the current map or {@link Optional#empty()} if the map is not present.
+   */
+  Optional<MapSettings> getSettings();
 
   Set<UUID> getPlayers();
 

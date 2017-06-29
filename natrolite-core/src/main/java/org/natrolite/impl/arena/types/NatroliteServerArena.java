@@ -19,12 +19,19 @@
 
 package org.natrolite.impl.arena.types;
 
+import java.util.Optional;
 import org.natrolite.arena.types.ServerArena;
 import org.natrolite.impl.arena.NatroliteArena;
+import org.natrolite.map.MapSettings;
 
-public class NatroliteServerArena extends NatroliteArena implements ServerArena {
+public final class NatroliteServerArena extends NatroliteArena implements ServerArena {
 
   private NatroliteServerArena(String id) {
     super(id);
+  }
+
+  @Override
+  public Optional<MapSettings> getSettings() {
+    return Optional.empty(); //TODO
   }
 }

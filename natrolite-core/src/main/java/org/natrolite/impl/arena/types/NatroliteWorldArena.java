@@ -20,13 +20,18 @@
 package org.natrolite.impl.arena.types;
 
 import java.util.Optional;
+import javax.annotation.Nullable;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.bukkit.command.CommandSender;
 import org.natrolite.arena.ArenaFactory;
 import org.natrolite.arena.types.WorldArena;
 import org.natrolite.impl.arena.NatroliteArena;
+import org.natrolite.map.GameMap;
+import org.natrolite.map.MapSettings;
 
 public class NatroliteWorldArena extends NatroliteArena implements WorldArena {
+
+  @Nullable private GameMap map;
 
   private NatroliteWorldArena(String id) {
     super(id);
@@ -34,6 +39,17 @@ public class NatroliteWorldArena extends NatroliteArena implements WorldArena {
 
   public static NatroliteWorldArena.Factory factory() {
     return new NatroliteWorldArena.Factory();
+  }
+
+  @Override
+  public Optional<MapSettings> getSettings() {
+    return getGame().flatMap(game -> Optional.ofNullable(map)
+        .map(map -> map.getSettings(game).orElse(null)));
+  }
+
+  @Override
+  public Optional<GameMap> getMap() {
+    return Optional.ofNullable(map);
   }
 
   public static class Factory implements ArenaFactory<NatroliteWorldArena> {

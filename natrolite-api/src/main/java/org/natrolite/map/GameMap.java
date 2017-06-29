@@ -20,6 +20,9 @@
 package org.natrolite.map;
 
 import java.nio.file.Path;
+import java.util.Optional;
+import org.natrolite.game.Game;
+import org.natrolite.plugin.GamePlugin;
 
 public interface GameMap {
 
@@ -28,4 +31,10 @@ public interface GameMap {
   }
 
   Path getFile();
+
+  default Optional<MapSettings> getSettings(Game game) {
+    return getSettings(game.getPlugin());
+  }
+
+  Optional<MapSettings> getSettings(GamePlugin plugin);
 }
