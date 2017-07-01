@@ -17,6 +17,5 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.kit;
-
-public interface Perk {}
+@org.natrolite.NonnullByDefault
+package org.natrolite.spiget.client;
