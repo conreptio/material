@@ -89,7 +89,7 @@ subprojects { sub ->
         license {
             header = rootProject.file('HEADER.txt')
             include '**/*.java'
-            include '**/*.properties'
+            include '**/natrolite_*.properties'
             include '**/*.yml'
             newLine = true
         }

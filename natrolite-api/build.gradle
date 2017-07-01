@@ -8,9 +8,18 @@ sourceSets {
     }
 }
 
+license {
+    exclude 'org/natrolite/metrics/*.java'
+}
+
 dependencies {
     testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
     compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
+
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile (group: 'com.zaxxer', name: 'HikariCP', version: '2.6.2') {
+        exclude module: 'slf4j-api'
+    }
 
     utils.values().forEach { util ->
         compile util

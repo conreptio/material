@@ -22,6 +22,7 @@ package org.natrolite.impl;
 import static org.natrolite.impl.StaticMessageProvider.in;
 
 import com.google.common.reflect.TypeToken;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -59,6 +60,7 @@ import org.natrolite.util.ReflectionUtil;
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
+  private final NatroliteDatabase database = new NatroliteDatabase();
   private TypeSerializerCollection serializers;
 
   @Override
@@ -125,6 +127,12 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
       getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
 
+      saveResource("THIRD-PARTY.txt", true);
+      saveResource("LICENSE.txt", true);
+      saveResource("database.properties", false);
+
+      database.init(getRoot().resolve("database.properties"));
+
       ArenaTicker.start(this);
 
       in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
@@ -152,6 +160,13 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
   @Override
   public TypeSerializerCollection getSerializers() {
     return serializers;
+  }
+
+  @Override
+  public void saveResource(String resourcePath, boolean replace) {
+    if (!Files.exists(getRoot().resolve(resourcePath)) || replace) {
+      super.saveResource(resourcePath, replace);
+    }
   }
 
   public Path resolve(String file) {
