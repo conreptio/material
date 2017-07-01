@@ -19,11 +19,11 @@
 
 package org.natrolite.impl.commands;
 
+import static java.util.stream.Collectors.joining;
 import static org.natrolite.impl.StaticMessageProvider.mg;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -68,9 +68,8 @@ public final class ArenaCommand implements CommandExecutor {
 
       if (list || args[0].equalsIgnoreCase("list")) {
         final List<Arena> arenas = Natrolite.getService(ArenaService.class).getArenas();
-        mg(sender, "arena.list", arenas.size(), arenas.stream()
-            .map(ArenaCommand::color)
-            .collect(Collectors.joining(", ")));
+        mg(sender, "arena.list", arenas.size(),
+            arenas.stream().map(ArenaCommand::color).collect(joining(", ")));
         return true;
       }
 
@@ -87,8 +86,7 @@ public final class ArenaCommand implements CommandExecutor {
 
         if (!factory.isPresent()) {
           mg(sender, "arena.type.unknown", type);
-          mg(sender, "arena.type.list",
-              registry.getRegisteredArenaIds().stream().collect(Collectors.joining(", ")));
+          mg(sender, "arena.type.list", registry.getArenaIds().stream().collect(joining(", ")));
           return true;
         }
 

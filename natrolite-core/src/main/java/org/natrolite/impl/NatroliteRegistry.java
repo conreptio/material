@@ -95,7 +95,7 @@ public final class NatroliteRegistry implements Registry {
         .findAny();
   }
 
-  public Set<String> getRegisteredArenaIds() {
+  public Set<String> getArenaIds() {
     return arenaMap.keySet();
   }
 

@@ -48,14 +48,12 @@ import org.natrolite.util.ReflectionUtil;
 @Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
-  private NatroliteRegistry registry;
+  private final NatroliteRegistry registry = new NatroliteRegistry();
   private TypeSerializerCollection serializers;
 
   @Override
   public void onLoad() {
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
-
-    registry = new NatroliteRegistry();
 
     register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
     register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
