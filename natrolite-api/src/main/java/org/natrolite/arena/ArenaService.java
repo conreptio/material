@@ -55,7 +55,17 @@ public interface ArenaService {
    */
   List<Arena> getArenas();
 
+  /**
+   * Loads arenas from config.
+   *
+   * @throws Exception if an error occurs
+   */
   void loadArenas() throws Exception;
 
+  /**
+   * Gets the amount of loaded arenas.
+   *
+   * @return amount of loaded arenas
+   */
   int getSize();
 }

@@ -55,6 +55,11 @@ public interface Arena {
    */
   Optional<Game> getGame();
 
+  /**
+   * Gets the current {@link ArenaState}.
+   *
+   * @return current arena state
+   */
   ArenaState getState();
 
   /**
