@@ -17,10 +17,11 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.spiget;
+package org.natrolite.spiget.client;
 
 import com.google.gson.reflect.TypeToken;
 import java.util.List;
+import org.natrolite.spiget.Category;
 
 public final class Tokens {
 

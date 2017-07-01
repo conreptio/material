@@ -17,26 +17,25 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package spiget;
+package org.natrolite.spiget;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.junit.Test;
-import org.natrolite.spiget.Resource;
-import org.natrolite.spiget.Spiget;
+import org.natrolite.spiget.client.Spiget;
 
-public class ResourceTest {
+public class CategoryTest {
 
   @Test
-  public void testResource() {
+  public void testCategory() {
     try {
-      Resource resource = Spiget.getResource("34523").get(5, TimeUnit.SECONDS);
-      assertEquals(resource.getId(), (Integer) 34523);
-      assertEquals(resource.getName(), "AutomaticInventory");
+      List<Category> categories = Spiget.getCategories().get(5, TimeUnit.SECONDS);
+      assertEquals(categories.get(0).getId(), (Integer) 2);
     } catch (InterruptedException | ExecutionException | TimeoutException ex) {
       ex.printStackTrace();
       fail();

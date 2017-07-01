@@ -17,7 +17,7 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.spiget;
+package org.natrolite.spiget.client;
 
 public final class Queries {
 

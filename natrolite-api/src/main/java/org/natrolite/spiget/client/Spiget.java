@@ -17,17 +17,10 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.spiget;
+package org.natrolite.spiget.client;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.lang.String.format;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
-import static org.natrolite.spiget.Queries.AUTHOR_DETAILS;
-import static org.natrolite.spiget.Queries.BASE;
-import static org.natrolite.spiget.Queries.CATEGORY_LIST;
-import static org.natrolite.spiget.Queries.RESOURCE_DETAILS;
-import static org.natrolite.spiget.Queries.RESOURCE_VERSION;
-import static org.natrolite.spiget.Tokens.CATEGORIES;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +32,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nullable;
+import org.natrolite.spiget.Author;
+import org.natrolite.spiget.Category;
+import org.natrolite.spiget.Resource;
+import org.natrolite.spiget.Version;
 
 public class Spiget {
 
@@ -65,23 +62,23 @@ public class Spiget {
   }
 
   public static CompletableFuture<List<Category>> getCategories() {
-    return of(CATEGORY_LIST).execute(CATEGORIES);
+    return of(Queries.CATEGORY_LIST).execute(Tokens.CATEGORIES);
   }
 
   public static CompletableFuture<Resource> getResource(String id) {
-    return of(format(RESOURCE_DETAILS, id)).execute(Resource.class);
+    return of(String.format(Queries.RESOURCE_DETAILS, id)).execute(Resource.class);
   }
 
   public static CompletableFuture<Author> getAuthor(String id) {
-    return of(format(AUTHOR_DETAILS, id)).execute(Author.class);
+    return of(String.format(Queries.AUTHOR_DETAILS, id)).execute(Author.class);
   }
 
   public static CompletableFuture<Version> getVersion(String resource, String version) {
-    return of(format(RESOURCE_VERSION, resource, version)).execute(Version.class);
+    return of(String.format(Queries.RESOURCE_VERSION, resource, version)).execute(Version.class);
   }
 
   public static CompletableFuture<Version> getLatestVersion(String resource) {
-    return of(format(RESOURCE_VERSION, resource, "latest")).execute(Version.class);
+    return of(String.format(Queries.RESOURCE_VERSION, resource, "latest")).execute(Version.class);
   }
 
   public CompletableFuture<String> execute() {
@@ -98,7 +95,7 @@ public class Spiget {
 
   private String read() throws RuntimeException {
     try {
-      HttpURLConnection connection = (HttpURLConnection) new URL(BASE + url).openConnection();
+      HttpURLConnection connection = (HttpURLConnection) new URL(Queries.BASE + url).openConnection();
       connection.setRequestProperty("User-Agent", agent != null ? agent : AGENT);
       try (InputStream in = connection.getInputStream()) {
         Scanner s = new Scanner(in).useDelimiter("\\A");

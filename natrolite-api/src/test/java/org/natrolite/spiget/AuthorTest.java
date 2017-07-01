@@ -17,7 +17,7 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package spiget;
+package org.natrolite.spiget;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -26,8 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.junit.Test;
-import org.natrolite.spiget.Author;
-import org.natrolite.spiget.Spiget;
+import org.natrolite.spiget.client.Spiget;
 
 public class AuthorTest {
 

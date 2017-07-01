@@ -21,8 +21,8 @@ package org.natrolite.impl;
 
 import static org.natrolite.impl.StaticMessageProvider.in;
 import static org.natrolite.impl.StaticMessageProvider.wn;
-import static org.natrolite.spiget.Queries.BASE;
-import static org.natrolite.spiget.Queries.RESOURCE_DOWNLOAD;
+import static org.natrolite.spiget.client.Queries.BASE;
+import static org.natrolite.spiget.client.Queries.RESOURCE_DOWNLOAD;
 import static org.natrolite.util.VersionComparator.isOlderThan;
 
 import java.io.File;
@@ -36,7 +36,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
-import org.natrolite.spiget.Spiget;
+import org.natrolite.spiget.client.Spiget;
 import org.natrolite.updater.Spigot;
 import org.natrolite.updater.Updatable;
 
