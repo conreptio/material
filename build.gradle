@@ -89,6 +89,8 @@ subprojects { sub ->
         license {
             header = rootProject.file('HEADER')
             include '**/*.java'
+            include '**/*.properties'
+            include '**/*.yml'
             newLine = true
         }
 

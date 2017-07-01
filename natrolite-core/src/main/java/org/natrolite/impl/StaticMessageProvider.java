@@ -22,7 +22,7 @@ package org.natrolite.impl;
 import java.util.Optional;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.natrolite.lang.legacy.SimpleMessageProvider;
 
 public final class StaticMessageProvider extends SimpleMessageProvider {
@@ -45,9 +45,9 @@ public final class StaticMessageProvider extends SimpleMessageProvider {
     tr(key, args).ifPresent(logger::severe);
   }
 
-  public static void mg(Player player, String key, Object... args) {
+  public static void mg(CommandSender sender, String key, Object... args) {
     tr(key, args).map(s -> ChatColor.translateAlternateColorCodes('&', s))
-        .ifPresent(player::sendMessage);
+        .ifPresent(sender::sendMessage);
   }
 
   public static Optional<String> tr(String key, Object... args) {

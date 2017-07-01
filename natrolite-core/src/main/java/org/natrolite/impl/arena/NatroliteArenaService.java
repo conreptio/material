@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeToken;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.gson.GsonConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -32,6 +33,7 @@ import org.natrolite.impl.NatroliteBukkit;
 
 public class NatroliteArenaService implements ArenaService {
 
+  private static final String PATTERN = "^[a-zA-Z0-9]*$";
   private static final String FILE = "arenas.json";
   private final NatroliteBukkit natrolite;
   private final GsonConfigurationLoader loader;
@@ -40,6 +42,11 @@ public class NatroliteArenaService implements ArenaService {
   public NatroliteArenaService(NatroliteBukkit natrolite) {
     this.natrolite = natrolite;
     this.loader = GsonConfigurationLoader.builder().setPath(natrolite.resolve(FILE)).build();
+  }
+
+  @Override
+  public boolean isValid(String id) {
+    return Pattern.matches(PATTERN, id);
   }
 
   @Override

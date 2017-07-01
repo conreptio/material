@@ -19,13 +19,17 @@
 
 package org.natrolite.impl.commands;
 
+import static org.natrolite.impl.StaticMessageProvider.mg;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.natrolite.Natrolite;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaFactory;
+import org.natrolite.arena.ArenaService;
 import org.natrolite.impl.NatroliteRegistry;
 
 public final class ArenaCommand implements CommandExecutor {
@@ -41,30 +45,32 @@ public final class ArenaCommand implements CommandExecutor {
     if (command.getName().equalsIgnoreCase("arena")) {
 
       if (args.length == 0) {
-        sender.sendMessage("/arena create <type> <id>");
+        sender.sendMessage("/arena create <id> <type>");
         return true;
       }
 
       if (args[0].equalsIgnoreCase("create")) {
 
         if (args.length != 3) {
-          sender.sendMessage("Syntax: /arena create <type> <id>");
+          mg(sender, "invalid.syntax", "/arena create <id> <type>");
           return true;
         }
 
-        final String type = args[1];
-        final String id = args[2].trim();
+        final String id = args[1].trim();
+        final String type = args[2];
         final Optional<ArenaFactory<?>> factory = registry.getArena(type);
 
         if (!factory.isPresent()) {
-          sender.sendMessage("Unknown type '" + type + "'.");
-          sender.sendMessage("Available arena types: " +
+          mg(sender, "arena.type.unknown", type);
+          mg(sender, "arena.type.list",
               registry.getRegisteredArenaIds().stream().collect(Collectors.joining(", ")));
           return true;
         }
 
-        if (id.isEmpty() || id.contains(" ")) {
-          sender.sendMessage("The arena may only contain letters and numbers.");
+        final ArenaService service = Natrolite.getService(ArenaService.class);
+
+        if (!service.isValid(id)) {
+          mg(sender, "arena.id.invalid");
           return true;
         }
 
@@ -74,8 +80,7 @@ public final class ArenaCommand implements CommandExecutor {
         }
         return true;
       }
-      sender.sendMessage("Unknown sub-command. Use '/arena' to get a list of available " +
-          "commands or check our documentation for help.");
+      mg(sender, "command.unknown", "/arena");
       return true;
     }
     return false;

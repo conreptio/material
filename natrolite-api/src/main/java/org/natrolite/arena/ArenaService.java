@@ -21,6 +21,13 @@ package org.natrolite.arena;
 
 public interface ArenaService {
 
+  /**
+   * Checks if a {@link String} is a valid arena id.
+   *
+   * @return true if valid
+   */
+  boolean isValid(String id);
+
   void loadArenas() throws Exception;
 
   int getSize();
