@@ -34,14 +34,18 @@ import org.natrolite.arena.ArenaFactory;
 import org.natrolite.cause.Cause;
 import org.natrolite.event.registry.ArenaRegisterEvent;
 import org.natrolite.event.registry.GameRegisterEvent;
+import org.natrolite.event.registry.SignRegisterEvent;
 import org.natrolite.plugin.GamePlugin;
 import org.natrolite.registry.Registry;
+import org.natrolite.sign.GameSign;
+import org.natrolite.sign.SignFactory;
 import org.natrolite.util.tuple.Pair;
 
 public final class NatroliteRegistry implements Registry {
 
   private Map<String, GamePlugin<?>> gameMap = ImmutableMap.of();
   private Map<String, Pair<Class<? extends Arena>, ArenaFactory<?>>> arenaMap = ImmutableMap.of();
+  private Map<String, Pair<Class<? extends GameSign>, SignFactory<?>>> signMap = ImmutableMap.of();
 
   @Nullable
   private TemporaryRegistry temporaryRegistry = new TemporaryRegistry();
@@ -65,12 +69,28 @@ public final class NatroliteRegistry implements Registry {
   @Override
   public <T extends Arena> void register(String id, Class<T> clazz, ArenaFactory<T> factory) {
     checkNotNull(id, "ID cannot be null");
-    checkNotNull(false, "Factory cannot be null");
+    checkNotNull(clazz, "Class cannot be null");
+    checkNotNull(factory, "Factory cannot be null");
     checkState(temporaryRegistry != null);
     if (!temporaryRegistry.arenaMap.containsKey(id)) {
       if (!callEvent(
           new ArenaRegisterEvent(Cause.source(this).build(), id, clazz, factory)).isCancelled()) {
         temporaryRegistry.arenaMap.put(id, new Pair<>(clazz, factory));
+      }
+    } else {
+      throw new IllegalStateException("ID is already registered");
+    }
+  }
+
+  @Override
+  public <T extends GameSign> void register(String id, Class<T> clazz, SignFactory<T> factory) {
+    checkNotNull(id, "ID cannot be null");
+    checkNotNull(clazz, "Class cannot be null");
+    checkNotNull(factory, "Factory cannot be null");
+    checkState(temporaryRegistry != null);
+    if (!temporaryRegistry.signMap.containsKey(id)) {
+      if (!callEvent(new SignRegisterEvent(Cause.source(this).build())).isCancelled()) {
+        temporaryRegistry.signMap.put(id, new Pair<>(clazz, factory));
       }
     } else {
       throw new IllegalStateException("ID is already registered");
@@ -95,6 +115,20 @@ public final class NatroliteRegistry implements Registry {
         .findAny();
   }
 
+  public Optional<? extends SignFactory<?>> getSign(String id) {
+    return signMap.entrySet().stream()
+        .filter(en -> en.getKey().equals(id))
+        .map(en -> en.getValue().getB())
+        .findAny();
+  }
+
+  public Optional<String> getSignId(Class<? extends GameSign> clazz) {
+    return signMap.entrySet().stream()
+        .filter(en -> en.getValue().getA().equals(clazz))
+        .map(Map.Entry::getKey)
+        .findAny();
+  }
+
   public Set<String> getArenaIds() {
     return arenaMap.keySet();
   }
@@ -107,6 +141,7 @@ public final class NatroliteRegistry implements Registry {
     checkState(temporaryRegistry != null);
     gameMap = ImmutableMap.copyOf(temporaryRegistry.gameMap);
     arenaMap = ImmutableMap.copyOf(temporaryRegistry.arenaMap);
+    signMap = ImmutableMap.copyOf(temporaryRegistry.signMap);
     temporaryRegistry = null;
   }
 
@@ -116,6 +151,9 @@ public final class NatroliteRegistry implements Registry {
         .concurrencyLevel(4).makeMap();
 
     private final Map<String, Pair<Class<? extends Arena>, ArenaFactory<?>>> arenaMap
+        = new MapMaker().concurrencyLevel(4).makeMap();
+
+    private final Map<String, Pair<Class<? extends GameSign>, SignFactory<?>>> signMap
         = new MapMaker().concurrencyLevel(4).makeMap();
   }
 }

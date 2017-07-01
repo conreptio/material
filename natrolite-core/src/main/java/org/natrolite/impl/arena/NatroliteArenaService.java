@@ -86,11 +86,6 @@ public class NatroliteArenaService implements ArenaService {
         .collect(Collectors.toMap(Arena::getId, arena -> arena));
   }
 
-  @Override
-  public int getSize() {
-    return arenas.size();
-  }
-
   private void save() {
     natrolite.getServer().getScheduler().runTaskAsynchronously(natrolite, () -> {
       try {

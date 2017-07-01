@@ -20,48 +20,49 @@
 package org.natrolite.impl.serialisation;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.reflect.TypeToken;
 import java.util.Optional;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
-import org.natrolite.arena.Arena;
-import org.natrolite.arena.ArenaFactory;
+import org.bukkit.util.BlockVector;
 import org.natrolite.impl.NatroliteBukkit;
+import org.natrolite.sign.GameSign;
+import org.natrolite.sign.SignFactory;
 
-public final class ArenaSerializer implements TypeSerializer<Arena> {
+public class SignSerializer implements TypeSerializer<GameSign> {
 
+  private static final String ID = "id";
+  private static final String POSITION = "position";
+  private static final String SUB_NODE = "data";
   private final NatroliteBukkit natrolite;
 
-  public ArenaSerializer(NatroliteBukkit natrolite) {
+  public SignSerializer(NatroliteBukkit natrolite) {
     this.natrolite = natrolite;
   }
 
   @Override
-  public Arena deserialize(TypeToken<?> type, ConfigurationNode value)
+  public GameSign deserialize(TypeToken<?> type, ConfigurationNode value)
       throws ObjectMappingException {
-    final String id = value.getNode("id").getString();
-    final String typeId = value.getNode("type").getString();
-    final Optional<? extends ArenaFactory<?>> factory = natrolite.getRegistry().getArena(typeId);
+    final String id = value.getNode(ID).getString();
+    final BlockVector vector = value.getNode(POSITION).getValue(TypeToken.of(BlockVector.class));
+    final Optional<? extends SignFactory<?>> factory = natrolite.getRegistry().getSign(id);
     if (!factory.isPresent()) {
-      throw new ObjectMappingException("Arena type not registered: " + typeId);
+      throw new ObjectMappingException("Sign type not registered: " + id);
     }
-    checkNotNull(id);
-    checkState(!id.isEmpty());
-    return factory.get().build(id, value.getNode("data"));
+    return factory.get().create(checkNotNull(vector), value.getNode(SUB_NODE));
   }
 
   @Override
-  public void serialize(TypeToken<?> type, Arena obj, ConfigurationNode value)
+  public void serialize(TypeToken<?> type, GameSign obj, ConfigurationNode value)
       throws ObjectMappingException {
-    final Optional<String> typeId = natrolite.getRegistry().getArenaId(obj.getClass());
-    if (!typeId.isPresent()) {
-      throw new ObjectMappingException("Arena class not registered: " + obj.getClass().getName());
+    final Optional<String> id = natrolite.getRegistry().getSignId(obj.getClass());
+    if (!id.isPresent()) {
+      throw new ObjectMappingException("Sign class not registered: " + obj.getClass().getName());
     }
-    value.getNode("id").setValue(obj.getId());
-    value.getNode("type").setValue(typeId.get());
-    obj.serialize(value.getNode("data"));
+    value.getNode(ID).setValue(TypeToken.of(String.class), id.get());
+    value.getNode(POSITION).setValue(TypeToken.of(BlockVector.class), obj.getPosition());
+    obj.serialize(value.getNode(SUB_NODE));
   }
 }

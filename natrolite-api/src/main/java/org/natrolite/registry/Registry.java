@@ -22,6 +22,8 @@ package org.natrolite.registry;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaFactory;
 import org.natrolite.plugin.GamePlugin;
+import org.natrolite.sign.GameSign;
+import org.natrolite.sign.SignFactory;
 
 public interface Registry {
 
@@ -50,4 +52,14 @@ public interface Registry {
    * @param factory the arena factory
    */
   <T extends Arena> void register(String id, Class<T> clazz, ArenaFactory<T> factory);
+
+  /**
+   * Registers an {@link GameSign}.
+   *
+   * @param id      the sign id
+   * @param clazz   the sign class
+   * @param factory the sign factory
+   * @param <T>     the sign
+   */
+  <T extends GameSign> void register(String id, Class<T> clazz, SignFactory<T> factory);
 }

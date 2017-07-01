@@ -21,6 +21,7 @@ package org.natrolite.impl;
 
 import static org.natrolite.impl.StaticMessageProvider.in;
 
+import com.google.common.reflect.TypeToken;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.Natrolite;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
+import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
 import org.natrolite.impl.arena.NatroliteArenaService;
 import org.natrolite.impl.arena.types.NatroliteRegionArena;
@@ -41,7 +43,14 @@ import org.natrolite.impl.arena.types.NatroliteWorldArena;
 import org.natrolite.impl.commands.ArenaCommand;
 import org.natrolite.impl.map.NatroliteMapService;
 import org.natrolite.impl.serialisation.ArenaSerializer;
+import org.natrolite.impl.serialisation.SignSerializer;
+import org.natrolite.impl.sign.NatroliteSignService;
+import org.natrolite.impl.sign.types.ArenaSign;
+import org.natrolite.impl.sign.types.CakeSign;
+import org.natrolite.impl.sign.types.PluginSign;
 import org.natrolite.map.MapService;
+import org.natrolite.sign.GameSign;
+import org.natrolite.sign.SignService;
 import org.natrolite.updater.Spigot;
 import org.natrolite.util.ReflectionUtil;
 
@@ -57,9 +66,14 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
     register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
     register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
+    register(SignService.class, new NatroliteSignService(this), ServicePriority.Low);
 
     registry.register("world", NatroliteWorldArena.class, NatroliteWorldArena.factory());
     registry.register("region", NatroliteRegionArena.class, NatroliteRegionArena.factory());
+
+    registry.register("arena", ArenaSign.class, ArenaSign.factory());
+    registry.register("cake", CakeSign.class, CakeSign.factory());
+    registry.register("plugin", PluginSign.class, PluginSign.factory());
   }
 
   @Override
@@ -69,10 +83,12 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
       getCommand("arena").setExecutor(new ArenaCommand(registry));
 
-      serializers = TypeSerializers.getDefaultSerializers().newChild();
-      ArenaSerializer.register(serializers, this);
-
       registry.bake();
+
+      serializers = TypeSerializers.getDefaultSerializers().newChild();
+      serializers.registerType(TypeToken.of(Arena.class), new ArenaSerializer(this));
+      serializers.registerType(TypeToken.of(GameSign.class), new SignSerializer(this));
+
       in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
 
       final MapService map = Natrolite.getService(MapService.class);
@@ -82,6 +98,11 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
       final ArenaService arena = Natrolite.getService(ArenaService.class);
       arena.loadArenas();
       in(getLogger(), arena.getSize() == 1 ? "arena.loaded" : "arenas.loaded", arena.getSize());
+
+      final SignService sign = Natrolite.getService(SignService.class);
+      sign.loadSigns();
+      final int signAmount = sign.getSigns().size();
+      in(getLogger(), signAmount == 1 ? "sign.load.one" : "sign.load", signAmount);
 
       try {
         Metrics metrics = new Metrics(this);

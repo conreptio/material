@@ -67,5 +67,7 @@ public interface ArenaService {
    *
    * @return amount of loaded arenas
    */
-  int getSize();
+  default int getSize() {
+    return getArenas().size();
+  }
 }
