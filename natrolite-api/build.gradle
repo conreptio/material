@@ -9,7 +9,8 @@ sourceSets {
 }
 
 license {
-    exclude 'org/natrolite/metrics/*.java'
+    exclude 'org/natrolite/metrics/Metrics.java'
+    exclude 'org/natrolite/metrics/MetricsLite.java'
 }
 
 dependencies {
