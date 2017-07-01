@@ -41,6 +41,11 @@ public interface Arena {
   String getId();
 
   /**
+   * Ticks the arena.
+   */
+  default void tick() {}
+
+  /**
    * Serializes the arena into a {@link ConfigurationNode}.
    *
    * @param value the node
@@ -68,6 +73,13 @@ public interface Arena {
    * @return settings of the current map or {@link Optional#empty()} if the map is not present.
    */
   Optional<MapSettings> getSettings();
+
+  /**
+   * Ticks the arena's game. Should not be overridden.
+   */
+  default void tickOther() {
+    getGame().ifPresent(Game::tick);
+  }
 
   Set<UUID> getPlayers();
 

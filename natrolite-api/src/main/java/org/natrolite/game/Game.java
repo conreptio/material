@@ -28,6 +28,11 @@ import org.natrolite.plugin.GamePlugin;
 public interface Game extends Identifiable {
 
   /**
+   * Ticks the game.
+   */
+  default void tick() {}
+
+  /**
    * Gets the games's arena.
    *
    * @return arena

@@ -37,6 +37,7 @@ import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
+import org.natrolite.impl.arena.ArenaTicker;
 import org.natrolite.impl.arena.NatroliteArenaService;
 import org.natrolite.impl.arena.types.NatroliteRegionArena;
 import org.natrolite.impl.arena.types.NatroliteWorldArena;
@@ -123,6 +124,8 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
       }
 
       getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
+
+      ArenaTicker.start(this);
 
       in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
     } catch (Throwable throwable) {
