@@ -20,24 +20,32 @@
 package org.natrolite.impl.arena;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.MapMaker;
 import com.google.common.reflect.TypeToken;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.annotation.concurrent.NotThreadSafe;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.gson.GsonConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
 import org.natrolite.impl.NatroliteBukkit;
+import org.natrolite.util.DuplicationException;
 
+@NotThreadSafe
 public class NatroliteArenaService implements ArenaService {
 
   private static final String PATTERN = "^[a-zA-Z0-9]*$";
   private static final String FILE = "arenas.json";
   private final NatroliteBukkit natrolite;
   private final GsonConfigurationLoader loader;
-  private List<Arena> arenas = ImmutableList.of();
+  private Map<String, Arena> arenas = new MapMaker().concurrencyLevel(4).makeMap();
 
   public NatroliteArenaService(NatroliteBukkit natrolite) {
     this.natrolite = natrolite;
@@ -50,13 +58,48 @@ public class NatroliteArenaService implements ArenaService {
   }
 
   @Override
+  public Optional<Arena> getArena(String id) {
+    return arenas.entrySet().stream()
+        .filter(en -> en.getKey().equals(id))
+        .map(Map.Entry::getValue)
+        .findAny();
+  }
+
+  @Override
+  public void addArena(Arena arena) throws DuplicationException {
+    if (arenas.containsKey(arena.getId())) {
+      throw new DuplicationException();
+    }
+    arenas.put(arena.getId(), arena);
+    save();
+  }
+
+  @Override
+  public List<Arena> getArenas() {
+    return ImmutableList.copyOf(arenas.values());
+  }
+
+  @Override
   public void loadArenas() throws IOException, ObjectMappingException {
     final ConfigurationNode root = loader.load(natrolite.defaultOptions());
-    this.arenas = ImmutableList.copyOf(root.getList(TypeToken.of(Arena.class)));
+    this.arenas = root.getList(TypeToken.of(Arena.class)).stream()
+        .collect(Collectors.toMap(Arena::getId, arena -> arena));
   }
 
   @Override
   public int getSize() {
     return arenas.size();
+  }
+
+  private void save() {
+    natrolite.getServer().getScheduler().runTaskAsynchronously(natrolite, () -> {
+      try {
+        final ConfigurationNode root = loader.load(natrolite.defaultOptions());
+        root.setValue(new TypeToken<List<Arena>>() {}, new ArrayList<>(arenas.values()));
+        loader.save(root);
+      } catch (IOException | ObjectMappingException ex) {
+        ex.printStackTrace();
+      }
+    });
   }
 }

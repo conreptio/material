@@ -27,3 +27,4 @@ commands:
   arena:
     description: Commands for Arena Management
     usage: /<command> (args)
+    aliases: [arenas]

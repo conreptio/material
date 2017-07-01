@@ -49,20 +49,24 @@ public final class ArenaSerializer implements TypeSerializer<Arena> {
       throws ObjectMappingException {
     final String id = value.getNode("id").getString();
     final String typeId = value.getNode("type").getString();
-    final Optional<ArenaFactory<?>> factory = natrolite.getRegistry().getArena(typeId);
+    final Optional<? extends ArenaFactory<?>> factory = natrolite.getRegistry().getArena(typeId);
     if (!factory.isPresent()) {
       throw new ObjectMappingException("Arena type not registered: " + typeId);
     }
     checkNotNull(id);
     checkState(!id.isEmpty());
-    return factory.get().build(id, value);
+    return factory.get().build(id, value.getNode("data"));
   }
 
   @Override
   public void serialize(TypeToken<?> type, Arena obj, ConfigurationNode value)
       throws ObjectMappingException {
+    final Optional<String> typeId = natrolite.getRegistry().getArenaId(obj.getClass());
+    if (!typeId.isPresent()) {
+      throw new ObjectMappingException("Arena class not registered: " + obj.getClass().getName());
+    }
     value.getNode("id").setValue(obj.getId());
-    value.getNode("type").setValue("natroWorld");
-    obj.serialize(value);
+    value.getNode("type").setValue(typeId.get());
+    obj.serialize(value.getNode("data"));
   }
 }

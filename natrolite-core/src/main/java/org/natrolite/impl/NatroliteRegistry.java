@@ -36,11 +36,12 @@ import org.natrolite.event.registry.ArenaRegisterEvent;
 import org.natrolite.event.registry.GameRegisterEvent;
 import org.natrolite.plugin.GamePlugin;
 import org.natrolite.registry.Registry;
+import org.natrolite.util.tuple.Pair;
 
 public final class NatroliteRegistry implements Registry {
 
-  private ImmutableMap<String, GamePlugin<?>> gameMap = ImmutableMap.of();
-  private ImmutableMap<String, ArenaFactory<?>> arenaMap = ImmutableMap.of();
+  private Map<String, GamePlugin<?>> gameMap = ImmutableMap.of();
+  private Map<String, Pair<Class<? extends Arena>, ArenaFactory<?>>> arenaMap = ImmutableMap.of();
 
   @Nullable
   private TemporaryRegistry temporaryRegistry = new TemporaryRegistry();
@@ -69,7 +70,7 @@ public final class NatroliteRegistry implements Registry {
     if (!temporaryRegistry.arenaMap.containsKey(id)) {
       if (!callEvent(
           new ArenaRegisterEvent(Cause.source(this).build(), id, clazz, factory)).isCancelled()) {
-        temporaryRegistry.arenaMap.put(id, factory);
+        temporaryRegistry.arenaMap.put(id, new Pair<>(clazz, factory));
       }
     } else {
       throw new IllegalStateException("ID is already registered");
@@ -80,15 +81,25 @@ public final class NatroliteRegistry implements Registry {
     return Optional.ofNullable(gameMap.get(id));
   }
 
-  public Optional<ArenaFactory<?>> getArena(String id) {
-    return Optional.ofNullable(arenaMap.get(id));
+  public Optional<? extends ArenaFactory<?>> getArena(String id) {
+    return arenaMap.entrySet().stream()
+        .filter(en -> en.getKey().equals(id))
+        .map(en -> en.getValue().getB())
+        .findAny();
+  }
+
+  public Optional<String> getArenaId(Class<? extends Arena> clazz) {
+    return arenaMap.entrySet().stream()
+        .filter(en -> en.getValue().getA().equals(clazz))
+        .map(Map.Entry::getKey)
+        .findAny();
   }
 
   public Set<String> getRegisteredArenaIds() {
     return arenaMap.keySet();
   }
 
-  public int size() {
+  int size() {
     return gameMap.size();
   }
 
@@ -104,7 +115,7 @@ public final class NatroliteRegistry implements Registry {
     private final Map<String, GamePlugin<?>> gameMap = new MapMaker()
         .concurrencyLevel(4).makeMap();
 
-    private final Map<String, ArenaFactory<?>> arenaMap = new MapMaker()
-        .concurrencyLevel(4).makeMap();
+    private final Map<String, Pair<Class<? extends Arena>, ArenaFactory<?>>> arenaMap
+        = new MapMaker().concurrencyLevel(4).makeMap();
   }
 }

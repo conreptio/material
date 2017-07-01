@@ -60,8 +60,8 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
     register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
     register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
 
-    registry.register("natroWorld", NatroliteWorldArena.class, NatroliteWorldArena.factory());
-    registry.register("natroRegion", NatroliteRegionArena.class, NatroliteRegionArena.factory());
+    registry.register("world", NatroliteWorldArena.class, NatroliteWorldArena.factory());
+    registry.register("region", NatroliteRegionArena.class, NatroliteRegionArena.factory());
   }
 
   @Override

@@ -21,8 +21,10 @@ package org.natrolite.impl.commands;
 
 import static org.natrolite.impl.StaticMessageProvider.mg;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +32,9 @@ import org.natrolite.Natrolite;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaFactory;
 import org.natrolite.arena.ArenaService;
+import org.natrolite.arena.ArenaStates;
 import org.natrolite.impl.NatroliteRegistry;
+import org.natrolite.util.DuplicationException;
 
 public final class ArenaCommand implements CommandExecutor {
 
@@ -40,12 +44,33 @@ public final class ArenaCommand implements CommandExecutor {
     this.registry = registry;
   }
 
+  private static String color(Arena arena) {
+    return (arena.getState() == ArenaStates.OFFLINE ? ChatColor.RED : ChatColor.GREEN)
+        + arena.getId() + ChatColor.RESET;
+  }
+
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (command.getName().equalsIgnoreCase("arena")) {
 
+      boolean list = false;
+
       if (args.length == 0) {
-        sender.sendMessage("/arena create <id> <type>");
+        if (label.equalsIgnoreCase("arenas")) {
+          list = true;
+        } else {
+          mg(sender, "help.header", "/arena");
+          mg(sender, "help.command", "/arena list");
+          mg(sender, "help.command", "/arena create <id> <type>");
+          return true;
+        }
+      }
+
+      if (list || args[0].equalsIgnoreCase("list")) {
+        final List<Arena> arenas = Natrolite.getService(ArenaService.class).getArenas();
+        mg(sender, "arena.list", arenas.size(), arenas.stream()
+            .map(ArenaCommand::color)
+            .collect(Collectors.joining(", ")));
         return true;
       }
 
@@ -58,7 +83,7 @@ public final class ArenaCommand implements CommandExecutor {
 
         final String id = args[1].trim();
         final String type = args[2];
-        final Optional<ArenaFactory<?>> factory = registry.getArena(type);
+        final Optional<? extends ArenaFactory<?>> factory = registry.getArena(type);
 
         if (!factory.isPresent()) {
           mg(sender, "arena.type.unknown", type);
@@ -74,9 +99,17 @@ public final class ArenaCommand implements CommandExecutor {
           return true;
         }
 
-        final Optional<? extends Arena> arena = factory.get().build(id, sender, args);
-        if (arena.isPresent()) {
-          sender.sendMessage("Success! Arena [" + id + "] has been created.");
+        try {
+          if (service.getArena(id).isPresent()) {
+            throw new DuplicationException();
+          }
+          final Optional<? extends Arena> arena = factory.get().build(id, sender, args);
+          if (arena.isPresent()) {
+            service.addArena(arena.get());
+            mg(sender, "arena.creation.success", id);
+          }
+        } catch (DuplicationException ex) {
+          mg(sender, "arena.creation.duplication", id);
         }
         return true;
       }

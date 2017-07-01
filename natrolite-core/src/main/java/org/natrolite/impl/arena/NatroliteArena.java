@@ -30,6 +30,8 @@ import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.World;
 import org.natrolite.arena.Arena;
+import org.natrolite.arena.ArenaState;
+import org.natrolite.arena.ArenaStates;
 import org.natrolite.game.Game;
 
 public abstract class NatroliteArena implements Arena {
@@ -38,6 +40,7 @@ public abstract class NatroliteArena implements Arena {
   @Nullable private World world;
   private Set<UUID> players = new HashSet<>();
   @Nullable private Game game;
+  private ArenaState state = ArenaStates.ONLINE;
 
   public NatroliteArena(String id) {
     this.id = id;
@@ -55,6 +58,11 @@ public abstract class NatroliteArena implements Arena {
 
   public void setGame(Game game) {
     this.game = game;
+  }
+
+  @Override
+  public ArenaState getState() {
+    return state;
   }
 
   @Override

@@ -55,6 +55,8 @@ public interface Arena {
    */
   Optional<Game> getGame();
 
+  ArenaState getState();
+
   /**
    * Gets the settings of the current {@link org.natrolite.map.GameMap}.
    *

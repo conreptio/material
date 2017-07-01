@@ -19,6 +19,10 @@
 
 package org.natrolite.arena;
 
+import java.util.List;
+import java.util.Optional;
+import org.natrolite.util.DuplicationException;
+
 public interface ArenaService {
 
   /**
@@ -27,6 +31,29 @@ public interface ArenaService {
    * @return true if valid
    */
   boolean isValid(String id);
+
+  /**
+   * Gets an arena by its id.
+   *
+   * @param id the arena id
+   * @return arena or {@link Optional#empty()}
+   */
+  Optional<Arena> getArena(String id);
+
+  /**
+   * Registers an arena.
+   *
+   * @param arena the arena to register
+   * @throws DuplicationException if the arena id is already used
+   */
+  void addArena(Arena arena) throws DuplicationException;
+
+  /**
+   * Returns an immutable list of all arenas.
+   *
+   * @return list of all arenas
+   */
+  List<Arena> getArenas();
 
   void loadArenas() throws Exception;
 
