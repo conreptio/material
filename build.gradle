@@ -87,7 +87,7 @@ subprojects { sub ->
         }
 
         license {
-            header = rootProject.file('HEADER')
+            header = rootProject.file('HEADER.txt')
             include '**/*.java'
             include '**/*.properties'
             include '**/*.yml'
@@ -112,7 +112,7 @@ subprojects { sub ->
         }
 
         processResources {
-            from rootProject.file('LICENSE')
+            from rootProject.file('LICENSE.txt')
             from rootProject.file('THIRD-PARTY.txt')
         }
 
@@ -163,5 +163,5 @@ task aggregatedJavadocs(type: Javadoc) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = '4.0'
 }
