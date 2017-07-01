@@ -1,5 +1,0 @@
-dependencies {
-    compile utils.core
-}
-
-build.dependsOn(shadowJar)

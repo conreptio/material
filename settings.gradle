@@ -13,7 +13,6 @@ include 'natrolite-utils:spiget'
 include 'natrolite-utils:spiget-client'
 include 'natrolite-utils:i18n-legacy'
 include 'natrolite-utils:simple-data'
-include 'natrolite-utils:command'
 
 rootProject.children.each {
     assert it.projectDir.isDirectory()
