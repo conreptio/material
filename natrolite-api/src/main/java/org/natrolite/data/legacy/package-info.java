@@ -17,18 +17,5 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
+@org.natrolite.NonnullByDefault
 package org.natrolite.data.legacy;
-
-import java.util.Optional;
-import org.bukkit.entity.Player;
-
-public interface DataManager<T> {
-
-  Optional<T> get(Player player);
-
-  Optional<T> getOrCreate(Player player);
-
-  void set(Player player, T data);
-
-  void saveAll() throws Exception;
-}

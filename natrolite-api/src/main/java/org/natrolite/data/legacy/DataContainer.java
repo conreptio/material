@@ -17,10 +17,10 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.util;
+package org.natrolite.data.legacy;
 
-@FunctionalInterface
-public interface Callback<T> {
+@Deprecated
+public interface DataContainer<T> {
 
-  void run(T type);
+  void copyFrom(T other);
 }

@@ -17,10 +17,5 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.util;
-
-@FunctionalInterface
-public interface Callback<T> {
-
-  void run(T type);
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.data;

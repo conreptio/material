@@ -19,7 +19,17 @@
 
 package org.natrolite.data.legacy;
 
-public interface DataContainer<T> {
+import java.util.Optional;
+import org.bukkit.entity.Player;
 
-  void copyFrom(T other);
+@Deprecated
+public interface DataManager<T> {
+
+  Optional<T> get(Player player);
+
+  Optional<T> getOrCreate(Player player);
+
+  void set(Player player, T data);
+
+  void saveAll() throws Exception;
 }

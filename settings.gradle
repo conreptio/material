@@ -8,7 +8,6 @@ include 'natrolite-utils:configurate'
 include 'natrolite-utils:economy'
 include 'natrolite-utils:permission'
 include 'natrolite-utils:i18n-legacy'
-include 'natrolite-utils:simple-data'
 
 rootProject.children.each {
     assert it.projectDir.isDirectory()

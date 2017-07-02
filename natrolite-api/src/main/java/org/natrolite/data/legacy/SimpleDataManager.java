@@ -29,6 +29,7 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.natrolite.configurate.types.HoconConfig;
 
+@Deprecated
 public class SimpleDataManager<T extends DataContainer<T>> implements DataManager<T> {
 
   private final Class<T> dataClass;
