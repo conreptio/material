@@ -99,15 +99,15 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
       in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
 
-      final MapService map = Natrolite.getService(MapService.class);
+      final MapService map = Natrolite.provideUnchecked(MapService.class);
       map.loadMaps();
       in(getLogger(), map.getSize() == 1 ? "map.loaded" : "maps.loaded", map.getSize());
 
-      final ArenaService arena = Natrolite.getService(ArenaService.class);
+      final ArenaService arena = Natrolite.provideUnchecked(ArenaService.class);
       arena.loadArenas();
       in(getLogger(), arena.getSize() == 1 ? "arena.loaded" : "arenas.loaded", arena.getSize());
 
-      final SignService sign = Natrolite.getService(SignService.class);
+      final SignService sign = Natrolite.provideUnchecked(SignService.class);
       sign.loadSigns();
       final int signAmount = sign.getSigns().size();
       in(getLogger(), signAmount == 1 ? "sign.load.one" : "sign.load", signAmount);

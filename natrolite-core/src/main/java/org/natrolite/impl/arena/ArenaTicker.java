@@ -35,7 +35,7 @@ public final class ArenaTicker implements Runnable {
 
   @Override
   public void run() {
-    Natrolite.getService(ArenaService.class).getArenas().forEach(arena -> {
+    Natrolite.provideUnchecked(ArenaService.class).getArenas().forEach(arena -> {
       arena.tick();
       arena.tickOther();
     });

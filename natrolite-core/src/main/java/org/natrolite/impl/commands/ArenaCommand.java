@@ -67,7 +67,7 @@ public final class ArenaCommand implements CommandExecutor {
       }
 
       if (list || args[0].equalsIgnoreCase("list")) {
-        final List<Arena> arenas = Natrolite.getService(ArenaService.class).getArenas();
+        final List<Arena> arenas = Natrolite.provideUnchecked(ArenaService.class).getArenas();
         mg(sender, "arena.list", arenas.size(),
             arenas.stream().map(ArenaCommand::color).collect(joining(", ")));
         return true;
@@ -90,7 +90,7 @@ public final class ArenaCommand implements CommandExecutor {
           return true;
         }
 
-        final ArenaService service = Natrolite.getService(ArenaService.class);
+        final ArenaService service = Natrolite.provideUnchecked(ArenaService.class);
 
         if (!service.isValid(id)) {
           mg(sender, "arena.id.invalid");

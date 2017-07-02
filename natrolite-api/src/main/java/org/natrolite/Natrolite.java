@@ -22,10 +22,12 @@ package org.natrolite;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import javax.annotation.Nullable;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicesManager;
 import org.natrolite.registry.Registry;
 
 public final class Natrolite {
@@ -55,12 +57,20 @@ public final class Natrolite {
     return getPlugin().getServer();
   }
 
+  public static ServicesManager getServicesManager() {
+    return getServer().getServicesManager();
+  }
+
   public static <T extends Event> T callEvent(T event) {
     getServer().getPluginManager().callEvent(event);
     return event;
   }
 
-  public static <T> T getService(Class<T> service) {
-    return checkNotNull(getServer().getServicesManager().getRegistration(service).getProvider());
+  public static <T> Optional<T> provide(Class<T> service) {
+    return Optional.ofNullable(getServicesManager().getRegistration(service).getProvider());
+  }
+
+  public static <T> T provideUnchecked(Class<T> service) {
+    return provide(service).orElseThrow(IllegalStateException::new);
   }
 }
