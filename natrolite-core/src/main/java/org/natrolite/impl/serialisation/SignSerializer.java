@@ -31,7 +31,7 @@ import org.natrolite.impl.NatroliteBukkit;
 import org.natrolite.sign.GameSign;
 import org.natrolite.sign.SignFactory;
 
-public class SignSerializer implements TypeSerializer<GameSign> {
+public final class SignSerializer implements TypeSerializer<GameSign> {
 
   private static final String ID = "id";
   private static final String POSITION = "position";
