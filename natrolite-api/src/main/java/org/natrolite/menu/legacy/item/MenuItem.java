@@ -17,11 +17,27 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.menu.legacy.animation;
+package org.natrolite.menu.legacy.item;
 
-import org.natrolite.menu.legacy.Menu;
+import java.util.List;
+import javax.annotation.Nullable;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-public interface AnimatedMenu extends Menu {
+@Deprecated
+public interface MenuItem {
 
-  void tick();
+  Material getMaterial();
+
+  int getAmount();
+
+  byte getDurability();
+
+  @Nullable
+  String getName();
+
+  @Nullable
+  List<String> getLore();
+
+  ItemStack toItemStack();
 }

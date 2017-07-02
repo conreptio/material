@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.natrolite.menu.legacy.MenuManager;
 
+@Deprecated
 public abstract class Icon implements MenuItem, Cloneable {
 
   private Material material;

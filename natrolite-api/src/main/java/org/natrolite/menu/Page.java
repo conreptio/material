@@ -17,26 +17,9 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.menu.legacy.item;
+package org.natrolite.menu;
 
-import java.util.List;
-import javax.annotation.Nullable;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+public interface Page {
 
-public interface MenuItem {
-
-  Material getMaterial();
-
-  int getAmount();
-
-  byte getDurability();
-
-  @Nullable
-  String getName();
-
-  @Nullable
-  List<String> getLore();
-
-  ItemStack toItemStack();
+  String getTitle();
 }

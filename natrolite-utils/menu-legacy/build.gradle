@@ -1,9 +1,0 @@
-dependencies {
-    compile utils.core
-}
-
-shadowJar {
-    classifier = 'shaded'
-}
-
-build.dependsOn(shadowJar)

@@ -21,40 +21,14 @@ package org.natrolite.menu.legacy;
 
 import javax.annotation.Nullable;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.natrolite.menu.legacy.item.Icon;
 
-public interface Menu {
+@Deprecated
+public interface MenuManager {
 
-  InventoryType getType();
-
-  int getSize();
+  void openMenu(Player player, Menu menu);
 
   @Nullable
-  String getTitle();
+  Menu getMenu(Player player);
 
-  void setTitle(@Nullable String title);
-
-  Icon[] getIcons();
-
-  @Nullable
-  Icon getIcon(int slot) throws IllegalArgumentException;
-
-  void setIcon(int slot, @Nullable Icon icon) throws IllegalArgumentException;
-
-  void removeIcon(int slot);
-
-  void handleOpen(Player player);
-
-  void handleClose(Player player);
-
-  void update();
-
-  void update(Player player);
-
-  Inventory toInventory();
-
-  void onClick(int slot, MenuManager menuManager, Player player, InventoryClickEvent event);
+  boolean hasMenu(Player player);
 }

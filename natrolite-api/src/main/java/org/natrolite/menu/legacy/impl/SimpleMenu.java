@@ -34,6 +34,7 @@ import org.natrolite.menu.legacy.MenuManager;
 import org.natrolite.menu.legacy.item.Icon;
 
 @NotThreadSafe
+@Deprecated
 public class SimpleMenu implements Menu {
 
   private final InventoryType type;

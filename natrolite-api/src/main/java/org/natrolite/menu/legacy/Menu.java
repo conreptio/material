@@ -17,35 +17,45 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.menu.legacy.item;
+package org.natrolite.menu.legacy;
 
-import org.bukkit.Material;
+import javax.annotation.Nullable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.natrolite.menu.legacy.MenuManager;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.natrolite.menu.legacy.item.Icon;
 
-public class DisplayIcon extends Icon {
+@Deprecated
+public interface Menu {
 
-  public DisplayIcon(Material material) {
-    super(material);
-  }
+  InventoryType getType();
 
-  public DisplayIcon(Material material, int amount) {
-    super(material, amount);
-  }
+  int getSize();
 
-  public DisplayIcon(Material material, int amount, byte durability) {
-    super(material, amount, durability);
-  }
+  @Nullable
+  String getTitle();
 
-  public DisplayIcon(Material material, String name, String... lore) {
-    super(material, name, lore);
-  }
+  void setTitle(@Nullable String title);
 
-  public DisplayIcon(Material material, int amount, byte durability, String title, String... lore) {
-    super(material, amount, durability, title, lore);
-  }
+  Icon[] getIcons();
 
-  @Override
-  public void onClick(MenuManager menuManager, Player player, InventoryClickEvent event) {}
+  @Nullable
+  Icon getIcon(int slot) throws IllegalArgumentException;
+
+  void setIcon(int slot, @Nullable Icon icon) throws IllegalArgumentException;
+
+  void removeIcon(int slot);
+
+  void handleOpen(Player player);
+
+  void handleClose(Player player);
+
+  void update();
+
+  void update(Player player);
+
+  Inventory toInventory();
+
+  void onClick(int slot, MenuManager menuManager, Player player, InventoryClickEvent event);
 }

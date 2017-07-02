@@ -38,6 +38,7 @@ import org.natrolite.menu.legacy.animation.AnimatedMenu;
 import org.natrolite.menu.legacy.item.Icon;
 
 @NotThreadSafe
+@Deprecated
 public class SimpleMenuManager implements MenuManager, Listener, Runnable {
 
   private final JavaPlugin plugin;

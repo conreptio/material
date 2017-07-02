@@ -17,17 +17,5 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.menu.legacy;
-
-import javax.annotation.Nullable;
-import org.bukkit.entity.Player;
-
-public interface MenuManager {
-
-  void openMenu(Player player, Menu menu);
-
-  @Nullable
-  Menu getMenu(Player player);
-
-  boolean hasMenu(Player player);
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.menu;
