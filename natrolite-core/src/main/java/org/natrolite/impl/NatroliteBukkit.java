@@ -53,6 +53,7 @@ import org.natrolite.impl.sign.types.PluginSign;
 import org.natrolite.map.MapService;
 import org.natrolite.sign.GameSign;
 import org.natrolite.sign.SignService;
+import org.natrolite.sql.DatabaseService;
 import org.natrolite.updater.Spigot;
 import org.natrolite.util.ReflectionUtil;
 
@@ -60,16 +61,20 @@ import org.natrolite.util.ReflectionUtil;
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
-  private final NatroliteDatabase database = new NatroliteDatabase();
   private TypeSerializerCollection serializers;
 
   @Override
   public void onLoad() {
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
 
+    saveResource("THIRD-PARTY.txt", true);
+    saveResource("LICENSE.txt", true);
+    saveResource("database.properties", false);
+
     register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
     register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
     register(SignService.class, new NatroliteSignService(this), ServicePriority.Low);
+    register(DatabaseService.class, new NatroliteDatabaseService(this), ServicePriority.Low);
 
     registry.register("world", NatroliteWorldArena.class, NatroliteWorldArena.factory());
     registry.register("region", NatroliteRegionArena.class, NatroliteRegionArena.factory());
@@ -126,12 +131,6 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
       }
 
       getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
-
-      saveResource("THIRD-PARTY.txt", true);
-      saveResource("LICENSE.txt", true);
-      saveResource("database.properties", false);
-
-      database.init(getRoot().resolve("database.properties"));
 
       ArenaTicker.start(this);
 

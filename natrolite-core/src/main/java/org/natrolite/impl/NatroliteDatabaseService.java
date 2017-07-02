@@ -25,23 +25,26 @@ import com.zaxxer.hikari.HikariConfig;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Properties;
 import javax.annotation.Nullable;
 import javax.sql.DataSource;
-import org.natrolite.sql.Database;
+import org.natrolite.sql.DatabaseService;
 
-public class NatroliteDatabase implements Database {
+public final class NatroliteDatabaseService implements DatabaseService {
 
   @Nullable
   private HikariConfig config;
 
-  void init(Path path) throws IOException {
-    try (InputStream in = Files.newInputStream(path)) {
-      final Properties properties = new Properties();
-      properties.load(in);
-      System.out.println(properties.stringPropertyNames());
-      config = new HikariConfig(properties);
+  NatroliteDatabaseService(NatroliteBukkit plugin) {
+    try {
+      try (InputStream in = Files.newInputStream(plugin.getRoot().resolve("database.properties"))) {
+        final Properties properties = new Properties();
+        properties.load(in);
+        System.out.println(properties.stringPropertyNames());
+        config = new HikariConfig(properties);
+      }
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
   }
 

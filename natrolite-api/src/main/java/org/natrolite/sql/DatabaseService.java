@@ -23,7 +23,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
-public interface Database {
+public interface DatabaseService {
 
   /**
    * Gets the {@link DataSource}.
