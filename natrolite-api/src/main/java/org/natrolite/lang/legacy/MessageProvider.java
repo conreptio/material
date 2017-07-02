@@ -24,6 +24,7 @@ import java.util.MissingResourceException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+@Deprecated
 public interface MessageProvider {
 
   default Locale getDefault() {

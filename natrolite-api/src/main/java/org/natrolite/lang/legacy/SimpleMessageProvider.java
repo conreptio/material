@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+@Deprecated
 public class SimpleMessageProvider implements MessageProvider {
 
   private final String bundle;
