@@ -33,6 +33,18 @@ dependencies {
         exclude module: 'slf4j-api'
     }
 
+    compile(group: 'ninja.leaping.configurate', name: 'configurate-hocon', version: '3.3') {
+        exclude module: 'guava'
+    }
+    compile(group: 'ninja.leaping.configurate', name: 'configurate-gson', version: '3.3') {
+        exclude module: 'guava'
+        exclude module: 'gson'
+    }
+    compile(group: 'ninja.leaping.configurate', name: 'configurate-yaml', version: '3.3') {
+        exclude module: 'guava'
+        exclude module: 'snakeyaml'
+    }
+
     utils.values().forEach { util ->
         compile util
         testCompile util
