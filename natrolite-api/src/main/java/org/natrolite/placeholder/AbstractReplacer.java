@@ -19,11 +19,9 @@
 
 package org.natrolite.placeholder;
 
-import org.apache.commons.lang.StringUtils;
-
 public abstract class AbstractReplacer implements Replacer {
 
   protected String replace(String text, String token, String replacement) {
-    return StringUtils.replace(text, '{' + token + '}', replacement);
+    return Replacer.replace(text, token, replacement);
   }
 }

@@ -19,17 +19,22 @@
 
 package org.natrolite.placeholder;
 
-import javax.annotation.Nullable;
-import org.bukkit.OfflinePlayer;
+import org.apache.commons.lang.StringUtils;
+import org.natrolite.cause.Cause;
 
+@FunctionalInterface
 public interface Replacer {
+
+  static String replace(String text, String token, String replacement) {
+    return StringUtils.replace(text, '{' + token + '}', replacement);
+  }
 
   /**
    * Replaces all placeholders of a text.
    *
-   * @param player the optional player
-   * @param text   the text to replace
+   * @param cause the cause
+   * @param text  the text to replace
    * @return the replaced text
    */
-  String replace(@Nullable OfflinePlayer player, String text);
+  String replace(Cause cause, String text);
 }
