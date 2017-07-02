@@ -1,26 +1,11 @@
-plugins {
-    id 'java'
-}
-
-repositories {
-    maven { url 'http://repo.bstats.org/content/repositories/releases/' }
-}
-
 dependencies {
     compile project(':natrolite-api')
-    compile group: 'org.bstats', name: 'bstats-bukkit', version: '1.1'
-    testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
-    compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile (group: 'com.zaxxer', name: 'HikariCP', version: '2.6.2') {
+        exclude module: 'slf4j-api'
+    }
 }
 
 processResources {
     expand(version: version)
 }
-
-shadowJar {
-    relocate 'org.bstats', 'org.natrolite.metrics'
-}
-
-apply from: rootProject.file('gradle/deploy.gradle')
-
-build.dependsOn(shadowJar)

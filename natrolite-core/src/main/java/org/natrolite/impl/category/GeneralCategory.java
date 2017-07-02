@@ -17,5 +17,26 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@org.natrolite.NonnullByDefault
-package org.natrolite.service;
+package org.natrolite.impl.category;
+
+import java.util.UUID;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+
+@ConfigSerializable
+public final class GeneralCategory {
+
+  @Setting("server-name")
+  private String serverName = "server-" + UUID.randomUUID().toString();
+
+  @Setting("database")
+  private boolean database = false;
+
+  public String serverName() {
+    return serverName;
+  }
+
+  public boolean database() {
+    return database;
+  }
+}

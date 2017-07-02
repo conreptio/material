@@ -29,7 +29,6 @@ import java.util.logging.Level;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
-import org.bstats.Metrics;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +37,7 @@ import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
+import org.natrolite.configurate.types.HoconConfig;
 import org.natrolite.impl.arena.ArenaTicker;
 import org.natrolite.impl.arena.NatroliteArenaService;
 import org.natrolite.impl.arena.types.NatroliteRegionArena;
@@ -51,6 +51,7 @@ import org.natrolite.impl.sign.types.ArenaSign;
 import org.natrolite.impl.sign.types.CakeSign;
 import org.natrolite.impl.sign.types.PluginSign;
 import org.natrolite.map.MapService;
+import org.natrolite.metrics.Metrics;
 import org.natrolite.sign.GameSign;
 import org.natrolite.sign.SignService;
 import org.natrolite.sql.DatabaseService;
@@ -62,6 +63,7 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
   private TypeSerializerCollection serializers;
+  private HoconConfig<NatroliteConfig> config;
 
   @Override
   public void onLoad() {
@@ -70,6 +72,12 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
     saveResource("THIRD-PARTY.txt", true);
     saveResource("LICENSE.txt", true);
     saveResource("database.properties", false);
+
+    config = new HoconConfig<>(
+        getRoot().resolve("natrolite.conf"),
+        "natrolite",
+        NatroliteConfig.class
+    );
 
     register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
     register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
