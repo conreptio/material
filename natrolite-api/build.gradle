@@ -9,8 +9,14 @@ sourceSets {
 }
 
 license {
-    exclude 'org/natrolite/metrics/Metrics.java'
-    exclude 'org/natrolite/metrics/MetricsLite.java'
+    exclude 'org/natrolite/cause/Cause.java'
+    exclude 'org/natrolite/cause/NamedCause.java'
+
+    exclude 'org/natrolite/context/Context.java'
+    exclude 'org/natrolite/context/ContextCalculator.java'
+    exclude 'org/natrolite/context/ContextSource.java'
+    exclude 'org/natrolite/context/Contextual.java'
+    exclude 'org/natrolite/context/ContextualService.java'
 
     exclude 'org/natrolite/economy/Currency.java'
     exclude 'org/natrolite/economy/EconomyService.java'
@@ -22,11 +28,17 @@ license {
     exclude 'org/natrolite/economy/transaction/TransactionType.java'
     exclude 'org/natrolite/economy/transaction/TransactionTypes.java'
     exclude 'org/natrolite/economy/transaction/TransferResult.java'
+
+    exclude 'org/natrolite/metrics/Metrics.java'
+    exclude 'org/natrolite/metrics/MetricsLite.java'
+
+    exclude 'org/natrolite/util/Tristate.java'
+    exclude 'org/natrolite/util/OptBool.java'
 }
 
 dependencies {
-    testCompile group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
-    compileOnly group: 'org.bukkit', name: 'bukkit', version: bukkitVersion
+    testCompile group: 'org.spigotmc', name: 'spigot-api', version: bukkitVersion
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: bukkitVersion
 
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     compile (group: 'com.zaxxer', name: 'HikariCP', version: '2.6.2') {

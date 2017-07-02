@@ -2,9 +2,7 @@ rootProject.name = 'natrolite'
 
 include 'natrolite-api'
 include 'natrolite-core'
-include 'natrolite-utils:core'
-include 'natrolite-utils:context'
-include 'natrolite-utils:permission'
+include 'natrolite-utils'
 
 rootProject.children.each {
     assert it.projectDir.isDirectory()
