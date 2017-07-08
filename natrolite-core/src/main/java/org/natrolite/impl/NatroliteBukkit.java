@@ -61,6 +61,7 @@ import org.natrolite.util.ReflectionUtil;
 @Spigot("39140")
 public final class NatroliteBukkit extends JavaPlugin implements NatroliteInternal {
 
+  private final NatroliteServicesManager servicesManager = new NatroliteServicesManager(this);
   private final NatroliteRegistry registry = new NatroliteRegistry();
   private TypeSerializerCollection serializers;
   private HoconConfig<NatroliteConfig> config;
@@ -138,6 +139,7 @@ public final class NatroliteBukkit extends JavaPlugin implements NatroliteIntern
         getLogger().log(Level.FINE, "Could not start metrics service", throwable);
       }
 
+      getServer().getPluginManager().registerEvents(servicesManager, this);
       getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
 
       ArenaTicker.start(this);
