@@ -46,7 +46,7 @@ public final class ItemBuilder {
   @Nullable private Short durability;
   @Nullable private String name;
   @Nullable private String localizedName;
-  @Nullable private Boolean unbreakable = false;
+  @Nullable private Boolean unbreakable;
   @Nullable private ItemFlag[] flags;
   @Nullable private String[] lore;
 
@@ -149,7 +149,7 @@ public final class ItemBuilder {
   @Override
   @SuppressWarnings("deprecation")
   public String toString() {
-    MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this);
+    final MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this);
     if (material != null) {
       helper.add("material", material);
     }
