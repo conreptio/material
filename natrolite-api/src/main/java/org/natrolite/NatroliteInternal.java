@@ -27,6 +27,8 @@ import org.natrolite.registry.Registry;
 
 public interface NatroliteInternal {
 
+  String PLUGIN_NAME = "Natrolite";
+
   /**
    * Gets the working directory.
    *
