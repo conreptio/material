@@ -21,6 +21,7 @@ package org.natrolite.item;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import com.google.common.base.MoreObjects;
 import java.util.Arrays;
@@ -50,73 +51,179 @@ public final class ItemBuilder {
   @Nullable private ItemFlag[] flags;
   @Nullable private String[] lore;
 
+  /**
+   * Creates a new {@link ItemBuilder} instance.
+   */
   public ItemBuilder() {}
 
+  /**
+   * Sets the {@link Material} of this {@link ItemStack}.
+   * <p>
+   * You can also use {@link ItemBuilder#material(int)} with the material id.
+   */
   public ItemBuilder material(Material material) {
-    this.material = checkNotNull(material);
+    this.material = checkNotNull(material, "Material cannot be null");
     return this;
   }
 
+  /**
+   * Sets the {@link Material} of this {@link ItemStack} using its unique id.
+   *
+   * @throws IllegalArgumentException if the material id is negative or the id does not belong to
+   *                                  any material
+   */
+  @SuppressWarnings("deprecation")
+  public ItemBuilder material(int id) {
+    checkArgument(id >= 0);
+    final Material material = Material.getMaterial(id);
+    checkArgument(material != null, "Material could not be found");
+    this.material = material;
+    return this;
+  }
+
+  /**
+   * Sets the {@link Material} of this {@link ItemStack} using its name.
+   *
+   * @throws IllegalArgumentException if the id does not belong to any material
+   */
+  public ItemBuilder material(String name) {
+    final Material material = Material.getMaterial(checkNotNull(name, "Name cannot be null"));
+    checkArgument(material != null, "Material could not be found");
+    this.material = material;
+    return this;
+  }
+
+  /**
+   * Sets the {@link ItemStack}'s quantity.
+   * <p>
+   * The value must be greater than zero or an exception will be thrown.
+   *
+   * @throws IllegalArgumentException if the amount is not greater than zero
+   */
   public ItemBuilder amount(int amount) {
     checkArgument(amount > 0);
     this.amount = amount;
     return this;
   }
 
+  /**
+   * Sets the {@link MaterialData} for this {@link ItemStack}.
+   * <p>
+   * You can also use {@link ItemBuilder#data(byte)} to set the data by its id.
+   *
+   * @see MaterialData
+   */
   public ItemBuilder data(MaterialData data) {
     this.data = checkNotNull(data);
     return this;
   }
 
+  /**
+   * Sets the {@link MaterialData} for this {@link ItemStack} by its id.
+   *
+   * @see MaterialData
+   */
   @SuppressWarnings("deprecation")
   public ItemBuilder data(byte data) {
     this.data = new MaterialData(data);
     return this;
   }
 
+  /**
+   * Sets the durability of this {@link ItemStack}.
+   * <p>
+   * The durability can not be lower than zero.
+   *
+   * @throws IllegalArgumentException if {@code durability} is negative
+   */
   public ItemBuilder durability(short durability) {
-    checkArgument(durability > 0);
+    checkArgument(durability >= 0);
     this.durability = durability;
     return this;
   }
 
+  /**
+   * Sets the {@code Displayname} for this {@link ItemStack}.
+   * <p>
+   * Color-Codes are supported.
+   */
   public ItemBuilder name(String name) {
     this.name = checkNotNull(name);
     return this;
   }
 
+  /**
+   * Sets the localized name for this {@link ItemStack}.
+   *
+   * @see ItemMeta#setLocalizedName(String)
+   */
   public ItemBuilder localizedName(String localizedName) {
     this.localizedName = checkNotNull(localizedName);
     return this;
   }
 
+  /**
+   * Makes the {@link ItemStack} unbreakable (it does not loose durability).
+   * <p>
+   * Use{@link ItemFlag#HIDE_UNBREAKABLE} to hide this attribute.
+   *
+   * @param unbreakable true to make the item unbreakable
+   * @see ItemMeta#setUnbreakable(boolean)
+   */
   public ItemBuilder unbreakable(boolean unbreakable) {
     this.unbreakable = unbreakable;
     return this;
   }
 
+  /**
+   * Adds a list of {@link ItemFlag}s to this {@link ItemStack}.
+   *
+   * @see ItemFlag
+   */
   public ItemBuilder flags(ItemFlag... flags) {
     this.flags = checkNotNull(flags);
     return this;
   }
 
+  /**
+   * Adds a list of {@link ItemFlag}s to this {@link ItemStack}.
+   *
+   * @see ItemFlag
+   */
   public ItemBuilder flags(Collection<ItemFlag> flags) {
     this.flags = flags.toArray(new ItemFlag[flags.size()]);
     return this;
   }
 
+  /**
+   * Sets the lore for this {@link ItemStack}.
+   * <p>
+   * This is the text that will be displayed below the Displayname on hovering.
+   */
   public ItemBuilder lore(String... lore) {
     this.lore = checkNotNull(lore);
     return this;
   }
 
+  /**
+   * Sets the lore for this {@link ItemStack}.
+   * <p>
+   * This is the text that will be displayed below the Displayname on hovering.
+   */
   public ItemBuilder lore(Collection<String> lore) {
     this.lore = lore.toArray(new String[lore.size()]);
     return this;
   }
 
+  /**
+   * Builds an {@link ItemStack} with the requested features.
+   *
+   * @return the requested itemstack
+   * @throws IllegalStateException if no material has been set
+   */
   public ItemStack build() {
-    final ItemStack item = new ItemStack(checkNotNull(material, "Material cannot be null"));
+    checkState(material != null, "Material has not been set");
+    final ItemStack item = new ItemStack(material);
     final ItemMeta meta = item.getItemMeta();
     if (amount != null) {
       item.setAmount(amount);
@@ -146,12 +253,15 @@ public final class ItemBuilder {
     return item;
   }
 
+  /**
+   * Creates a {@link String} with all set attributes of the current {@link ItemBuilder} instance.
+   */
   @Override
   @SuppressWarnings("deprecation")
   public String toString() {
     final MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this);
     if (material != null) {
-      helper.add("material", material);
+      helper.add("material", material.name());
     }
     if (amount != null) {
       helper.add("amount", amount);

@@ -19,41 +19,39 @@
 
 package org.natrolite.item;
 
+import java.util.Collections;
 import org.bukkit.Material;
 import org.junit.Test;
 
-public class ItemBuilderTest {
+public final class ItemBuilderTest {
 
-  @Test(expected = NullPointerException.class)
+  @Test
+  public void test() {
+    new ItemBuilder().flags(Collections.emptyList()).lore(Collections.emptyList());
+  }
+
+  @Test(expected = IllegalStateException.class)
   public void testDefault() {
     new ItemBuilder().build();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalAmount() {
-    new ItemBuilder().material(Material.APPLE).amount(0).build();
+    new ItemBuilder().material(Material.APPLE).amount(0);
   }
 
-  /*
-
-  @Test
-  public void testBuilder() {
-    ItemStack item1 = new ItemBuilder()
-        .material(Material.APPLE)
-        .amount(3)
-        .name("My Apple")
-        .unbreakable(true)
-        .flags(ItemFlag.HIDE_ATTRIBUTES)
-        .build();
-    assertNotNull(item1);
-    assertNotNull(item1.getItemMeta());
-    assertSame(item1.getType(), Material.APPLE);
-    assertSame(item1.getAmount(), 3);
-    assertEquals(item1.getItemMeta().getDisplayName(), "My Apple");
-    assertTrue(item1.getItemMeta().isUnbreakable());
-    assertTrue(item1.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_ATTRIBUTES));
-    assertFalse(item1.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_ENCHANTS));
+  @Test(expected = IllegalArgumentException.class)
+  public void testIllegalMaterial() {
+    new ItemBuilder().material(-1);
   }
 
-  */
+  @Test(expected = IllegalArgumentException.class)
+  public void testIllegalDurability() {
+    new ItemBuilder().durability((short) -1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testIllegalMaterialName() {
+    new ItemBuilder().material("einhorn");
+  }
 }
