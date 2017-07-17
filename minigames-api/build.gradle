@@ -1,0 +1,9 @@
+sourceSets {
+    example {
+        compileClasspath += main.compileClasspath + main.output
+    }
+}
+
+dependencies {
+    compile project(':natrolite-api')
+}
