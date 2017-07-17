@@ -28,7 +28,6 @@ import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
-import org.natrolite.registry.Registry;
 
 public final class Natrolite {
 
@@ -47,10 +46,6 @@ public final class Natrolite {
 
   public static Plugin getPlugin() {
     return getNatrolite().getPlugin();
-  }
-
-  public static Registry getGameRegistry() {
-    return getNatrolite().getRegistry();
   }
 
   public static Server getServer() {

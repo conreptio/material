@@ -20,10 +20,7 @@
 package org.natrolite;
 
 import java.nio.file.Path;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
-import org.natrolite.registry.Registry;
 
 public interface NatroliteInternal {
 
@@ -42,20 +39,4 @@ public interface NatroliteInternal {
    * @return the natrolite plugin
    */
   Plugin getPlugin();
-
-  /**
-   * Gets the {@link Registry}.
-   *
-   * @return the registry
-   */
-  Registry getRegistry();
-
-  /**
-   * Gets the {@link TypeSerializerCollection} the internal plugin is using.
-   *
-   * @return type serializer collection of the plugin
-   */
-  default TypeSerializerCollection getSerializers() {
-    return TypeSerializers.getDefaultSerializers();
-  }
 }

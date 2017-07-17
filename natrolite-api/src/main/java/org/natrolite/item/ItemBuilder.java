@@ -26,18 +26,20 @@ import static com.google.common.base.Preconditions.checkState;
 import com.google.common.base.MoreObjects;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import javax.annotation.Nullable;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.Wool;
 
 /**
  * Builder pattern for an {@link ItemStack}.
  *
  * @author Lukas Nehrke
- * @version 1.0
+ * @version 1.0.1
  */
 public final class ItemBuilder {
 
@@ -69,8 +71,9 @@ public final class ItemBuilder {
   /**
    * Sets the {@link Material} of this {@link ItemStack} using its unique id.
    *
-   * @throws IllegalArgumentException if the material id is negative or the id does not belong to
-   *                                  any material
+   * @throws IllegalArgumentException if the id is negative or does not belong to a material
+   * @see Material
+   * @see ItemStack#setType(Material)
    */
   @SuppressWarnings("deprecation")
   public ItemBuilder material(int id) {
@@ -83,8 +86,12 @@ public final class ItemBuilder {
 
   /**
    * Sets the {@link Material} of this {@link ItemStack} using its name.
+   * <p>
+   * The name is equal with the {@link Enum#name()}, e.g AIR.
    *
    * @throws IllegalArgumentException if the id does not belong to any material
+   * @see Material
+   * @see Material#name()
    */
   public ItemBuilder material(String name) {
     final Material material = Material.getMaterial(checkNotNull(name, "Name cannot be null"));
@@ -96,9 +103,12 @@ public final class ItemBuilder {
   /**
    * Sets the {@link ItemStack}'s quantity.
    * <p>
-   * The value must be greater than zero or an exception will be thrown.
+   * The value must be greater than zero or an exception will be thrown. Setting the amount higher
+   * than the max stack size can cause issues.
    *
    * @throws IllegalArgumentException if the amount is not greater than zero
+   * @see ItemStack#setAmount(int)
+   * @see Material#getMaxStackSize()
    */
   public ItemBuilder amount(int amount) {
     checkArgument(amount > 0);
@@ -109,9 +119,11 @@ public final class ItemBuilder {
   /**
    * Sets the {@link MaterialData} for this {@link ItemStack}.
    * <p>
+   * The data is for example used to change the color of a {@link Wool} block.
    * You can also use {@link ItemBuilder#data(byte)} to set the data by its id.
    *
    * @see MaterialData
+   * @see ItemStack#setData(MaterialData)
    */
   public ItemBuilder data(MaterialData data) {
     this.data = checkNotNull(data);
@@ -120,12 +132,16 @@ public final class ItemBuilder {
 
   /**
    * Sets the {@link MaterialData} for this {@link ItemStack} by its id.
+   * <p>
+   * <b>Note:</b> Make sure you already have set the material
    *
-   * @see MaterialData
+   * @see MaterialData#MaterialData(Material, byte)
+   * @see ItemStack#setData(MaterialData)
    */
   @SuppressWarnings("deprecation")
   public ItemBuilder data(byte data) {
-    this.data = new MaterialData(data);
+    checkState(material != null, "Material must be set first");
+    this.data = new MaterialData(material, data);
     return this;
   }
 
@@ -135,6 +151,7 @@ public final class ItemBuilder {
    * The durability can not be lower than zero.
    *
    * @throws IllegalArgumentException if {@code durability} is negative
+   * @see ItemStack#setDurability(short)
    */
   public ItemBuilder durability(short durability) {
     checkArgument(durability >= 0);
@@ -146,6 +163,8 @@ public final class ItemBuilder {
    * Sets the {@code Displayname} for this {@link ItemStack}.
    * <p>
    * Color-Codes are supported.
+   *
+   * @see ItemMeta#setDisplayName(String)
    */
   public ItemBuilder name(String name) {
     this.name = checkNotNull(name);
@@ -179,6 +198,7 @@ public final class ItemBuilder {
    * Adds a list of {@link ItemFlag}s to this {@link ItemStack}.
    *
    * @see ItemFlag
+   * @see ItemMeta#addItemFlags(ItemFlag...)
    */
   public ItemBuilder flags(ItemFlag... flags) {
     this.flags = checkNotNull(flags);
@@ -189,6 +209,7 @@ public final class ItemBuilder {
    * Adds a list of {@link ItemFlag}s to this {@link ItemStack}.
    *
    * @see ItemFlag
+   * @see ItemMeta#addItemFlags(ItemFlag...)
    */
   public ItemBuilder flags(Collection<ItemFlag> flags) {
     this.flags = flags.toArray(new ItemFlag[flags.size()]);
@@ -198,7 +219,10 @@ public final class ItemBuilder {
   /**
    * Sets the lore for this {@link ItemStack}.
    * <p>
-   * This is the text that will be displayed below the Displayname on hovering.
+   * This is the text that will be displayed below the displayname on hovering.
+   * Color-Codes are supported.
+   *
+   * @see ItemMeta#setLore(List)
    */
   public ItemBuilder lore(String... lore) {
     this.lore = checkNotNull(lore);
@@ -208,7 +232,10 @@ public final class ItemBuilder {
   /**
    * Sets the lore for this {@link ItemStack}.
    * <p>
-   * This is the text that will be displayed below the Displayname on hovering.
+   * This is the text that will be displayed below the displayname on hovering.
+   * Color-Codes are supported.
+   *
+   * @see ItemMeta#setLore(List)
    */
   public ItemBuilder lore(Collection<String> lore) {
     this.lore = lore.toArray(new String[lore.size()]);
@@ -255,6 +282,8 @@ public final class ItemBuilder {
 
   /**
    * Creates a {@link String} with all set attributes of the current {@link ItemBuilder} instance.
+   *
+   * @see Object#toString()
    */
   @Override
   @SuppressWarnings("deprecation")
