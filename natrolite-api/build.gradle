@@ -1,9 +1,3 @@
-sourceSets {
-    example {
-        compileClasspath += main.compileClasspath + main.output
-    }
-}
-
 license {
     exclude 'org/natrolite/cause/Cause.java'
     exclude 'org/natrolite/cause/NamedCause.java'

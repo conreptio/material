@@ -7,7 +7,7 @@ jdk:
   - openjdk8
   - oraclejdk8
 
-script: ./gradlew build checkstyle aggregatedJavadocs
+script: ./gradlew build checkstyle
 
 after_success:
   - ./scripts/publish-javadoc
