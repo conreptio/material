@@ -18,4 +18,4 @@
  */
 
 @org.natrolite.NonnullByDefault
-package org.natrolite.sql;
+package org.natrolite.service.sql;

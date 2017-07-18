@@ -18,6 +18,7 @@ license {
     exclude 'org/natrolite/economy/transaction/TransferResult.java'
     exclude 'org/natrolite/metrics/Metrics.java'
     exclude 'org/natrolite/metrics/MetricsLite.java'
+    exclude 'org/natrolite/service/sql/SqlService.java'
     exclude 'org/natrolite/util/Tristate.java'
     exclude 'org/natrolite/util/OptBool.java'
 }
