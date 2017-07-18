@@ -21,7 +21,15 @@ package org.natrolite;
 
 import java.util.UUID;
 
+/**
+ * Something that has an unique id.
+ */
 public interface Identifiable {
 
+  /**
+   * Gets the unique id of this object.
+   *
+   * @return The unique id
+   */
   UUID getUniqueId();
 }
