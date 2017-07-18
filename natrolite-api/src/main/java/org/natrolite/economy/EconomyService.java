@@ -28,10 +28,10 @@ package org.natrolite.economy;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import org.natrolite.context.ContextualService;
 import org.natrolite.economy.account.Account;
 import org.natrolite.economy.account.UniqueAccount;
 import org.natrolite.economy.account.VirtualAccount;
+import org.natrolite.service.context.ContextualService;
 
 public interface EconomyService extends ContextualService<Account> {
 

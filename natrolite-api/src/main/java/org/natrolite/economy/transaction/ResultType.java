@@ -25,7 +25,7 @@
 
 package org.natrolite.economy.transaction;
 
-import org.natrolite.context.Context;
+import org.natrolite.service.context.Context;
 
 /**
  * Represents the success or failure state of a {@link TransactionResult}.

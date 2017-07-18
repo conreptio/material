@@ -23,31 +23,19 @@
  * THE SOFTWARE.
  */
 
-package org.natrolite.context;
-
-import java.util.Set;
+package org.natrolite.service.context;
 
 /**
- * A common interface for objects that have an identifier and are bound by
- * {@link Context}s.
+ * A common interface for objects that have a relevant context.
  */
-public interface Contextual {
+public interface ContextSource {
 
   /**
-   * Returns the identifier associated with this Contextual. Not guaranteed to
-   * be human-readable.
+   * Returns the context most relevant to this object. This context may be the
+   * same across multiple invocations (but may not, so don't count on this
+   * being true).
    *
-   * @return The unique identifier for this subject
+   * @return A given context
    */
-  String getIdentifier();
-
-  /**
-   * Calculate active contexts, using the {@link ContextCalculator}s for the
-   * service.
-   * <p>
-   * <p>The result of these calculations may be cached.</p>
-   *
-   * @return An immutable set of active contexts
-   */
-  Set<Context> getActiveContexts();
+  Context getContext();
 }

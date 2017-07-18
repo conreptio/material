@@ -23,19 +23,15 @@
  * THE SOFTWARE.
  */
 
-package org.natrolite.context;
+package org.natrolite.service.context;
 
-/**
- * A common interface for objects that have a relevant context.
- */
-public interface ContextSource {
+public interface ContextualService<T extends Contextual> {
 
   /**
-   * Returns the context most relevant to this object. This context may be the
-   * same across multiple invocations (but may not, so don't count on this
-   * being true).
+   * Register a function that calculates {@link Context}s relevant to a
+   * {@link Contextual} given at the time the function is called.
    *
-   * @return A given context
+   * @param calculator The context calculator to register
    */
-  Context getContext();
+  void registerContextCalculator(ContextCalculator<T> calculator);
 }

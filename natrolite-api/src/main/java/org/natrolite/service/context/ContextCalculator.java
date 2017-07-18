@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-package org.natrolite.context;
+package org.natrolite.service.context;
 
 import java.util.Set;
 

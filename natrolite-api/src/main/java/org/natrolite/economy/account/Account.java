@@ -30,12 +30,12 @@ import java.util.Map;
 import java.util.Set;
 import org.bukkit.entity.Entity;
 import org.natrolite.cause.Cause;
-import org.natrolite.context.Context;
-import org.natrolite.context.Contextual;
 import org.natrolite.economy.Currency;
 import org.natrolite.economy.EconomyService;
 import org.natrolite.economy.transaction.TransactionResult;
 import org.natrolite.economy.transaction.TransferResult;
+import org.natrolite.service.context.Context;
+import org.natrolite.service.context.Contextual;
 
 /**
  * Represents an account, which stores amounts of various {@link Currency currencies}.

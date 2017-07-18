@@ -18,4 +18,4 @@
  */
 
 @org.natrolite.NonnullByDefault
-package org.natrolite.context;
+package org.natrolite.service.context;

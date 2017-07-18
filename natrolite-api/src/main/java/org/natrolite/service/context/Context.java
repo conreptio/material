@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-package org.natrolite.context;
+package org.natrolite.service.context;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

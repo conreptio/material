@@ -23,15 +23,31 @@
  * THE SOFTWARE.
  */
 
-package org.natrolite.context;
+package org.natrolite.service.context;
 
-public interface ContextualService<T extends Contextual> {
+import java.util.Set;
+
+/**
+ * A common interface for objects that have an identifier and are bound by
+ * {@link Context}s.
+ */
+public interface Contextual {
 
   /**
-   * Register a function that calculates {@link Context}s relevant to a
-   * {@link Contextual} given at the time the function is called.
+   * Returns the identifier associated with this Contextual. Not guaranteed to
+   * be human-readable.
    *
-   * @param calculator The context calculator to register
+   * @return The unique identifier for this subject
    */
-  void registerContextCalculator(ContextCalculator<T> calculator);
+  String getIdentifier();
+
+  /**
+   * Calculate active contexts, using the {@link ContextCalculator}s for the
+   * service.
+   * <p>
+   * <p>The result of these calculations may be cached.</p>
+   *
+   * @return An immutable set of active contexts
+   */
+  Set<Context> getActiveContexts();
 }
