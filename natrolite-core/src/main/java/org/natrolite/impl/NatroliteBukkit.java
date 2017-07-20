@@ -44,7 +44,6 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
     saveResource(LICENSE, true);
     saveResource(THIRD_PARTY_LICENSES, true);
-    saveResource("database.properties", false);
   }
 
   @Override
