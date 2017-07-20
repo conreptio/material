@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.sql.DataSource;
+import org.bukkit.plugin.Plugin;
 
 /**
  * This service provides the basics for an abstraction over SQL connections.
@@ -70,7 +71,7 @@ public interface SqlService {
    * @throws SQLException if a connection to the given database could not
    *                      be established
    */
-  DataSource getDataSource(Object plugin, String jdbcConnection) throws SQLException;
+  DataSource getDataSource(Plugin plugin, String jdbcConnection) throws SQLException;
 
   /**
    * Returns a possible connection URL for a given alias.

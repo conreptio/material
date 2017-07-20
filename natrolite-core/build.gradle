@@ -1,5 +1,12 @@
+license {
+    exclude 'org/natrolite/impl/config/category/SqlCategory.java'
+    exclude 'org/natrolite/impl/service/sql/SqlServiceImpl.java'
+}
+
 dependencies {
     compile project(':natrolite-api')
+
+    compile 'com.h2database:h2:1.4.196'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     compile (group: 'com.zaxxer', name: 'HikariCP', version: '2.6.2') {
         exclude module: 'slf4j-api'

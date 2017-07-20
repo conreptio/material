@@ -19,17 +19,23 @@
 
 package org.natrolite.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.natrolite.impl.StaticMessageProvider.in;
 
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.logging.Level;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.natrolite.BetterPlugin;
 import org.natrolite.Natrolite;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
+import org.natrolite.configurate.types.HoconConfig;
+import org.natrolite.impl.config.NatroliteConfig;
+import org.natrolite.impl.service.sql.SqlServiceImpl;
 import org.natrolite.metrics.Metrics;
+import org.natrolite.service.sql.SqlService;
 import org.natrolite.updater.Spigot;
 import org.natrolite.util.ReflectionUtil;
 
@@ -38,12 +44,31 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   public static final String LICENSE = "LICENSE.txt";
   public static final String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
+  private static NatroliteBukkit plugin;
+  private HoconConfig<NatroliteConfig> config;
+
+  public static NatroliteBukkit getInstance() {
+    return checkNotNull(plugin);
+  }
+
+  public static NatroliteConfig config() {
+    return getInstance().getSettings();
+  }
 
   @Override
   public void onLoad() {
+    plugin = this;
+
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
     saveResource(LICENSE, true);
     saveResource(THIRD_PARTY_LICENSES, true);
+
+    config = new HoconConfig<>(
+        getRoot().resolve("config").resolve("natrolite.conf"),
+        NatroliteConfig.class
+    );
+
+    register(SqlService.class, new SqlServiceImpl(), ServicePriority.Low);
   }
 
   @Override
@@ -84,5 +109,13 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   @Override
   public NatroliteBukkit getPlugin() {
     return this;
+  }
+
+  public NatroliteConfig getSettings() {
+    return config.getConfig();
+  }
+
+  private <T> void register(Class<T> clazz, T provider, ServicePriority priority) {
+    getServer().getServicesManager().register(clazz, provider, this, priority);
   }
 }
