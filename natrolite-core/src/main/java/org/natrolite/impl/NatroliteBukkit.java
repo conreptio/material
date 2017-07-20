@@ -36,11 +36,14 @@ import org.natrolite.util.ReflectionUtil;
 @Spigot("39140")
 public final class NatroliteBukkit extends BetterPlugin implements NatroliteInternal {
 
+  public static final String LICENSE = "LICENSE.txt";
+  public static final String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
+
   @Override
   public void onLoad() {
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
-    saveResource("THIRD-PARTY.txt", true);
-    saveResource("LICENSE.txt", true);
+    saveResource(LICENSE, true);
+    saveResource(THIRD_PARTY_LICENSES, true);
     saveResource("database.properties", false);
   }
 

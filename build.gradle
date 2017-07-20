@@ -82,7 +82,7 @@ subprojects { sub ->
 
     processResources {
         from rootProject.file('LICENSE.txt')
-        from rootProject.file('THIRD-PARTY.txt')
+        from rootProject.file('THIRD-PARTY-LICENSES.txt')
     }
 
     task sourceJar(type: Jar) {
