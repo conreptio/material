@@ -20,11 +20,21 @@
 package org.natrolite.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.file.StandardOpenOption.CREATE;
 import static org.natrolite.impl.StaticMessageProvider.in;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.logging.Level;
+import javax.annotation.Nullable;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.natrolite.BetterPlugin;
@@ -44,7 +54,12 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   public static final String LICENSE = "LICENSE.txt";
   public static final String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
+  public static final String SERVER_INFO = "server.dat";
+
+  @Nullable
   private static NatroliteBukkit plugin;
+
+  private UUID serverId;
   private HoconConfig<NatroliteConfig> config;
 
   public static NatroliteBukkit getInstance() {
@@ -58,10 +73,13 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   @Override
   public void onLoad() {
     plugin = this;
-
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
+
     saveResource(LICENSE, true);
     saveResource(THIRD_PARTY_LICENSES, true);
+
+    serverId = readUUID();
+    getLogger().info("Server UUID is " + serverId);
 
     config = new HoconConfig<>(
         getRoot().resolve("config").resolve("natrolite.conf"),
@@ -113,6 +131,27 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   public NatroliteConfig getSettings() {
     return config.getConfig();
+  }
+
+  private UUID readUUID() {
+    try {
+      final Path file = getRoot().resolve(SERVER_INFO);
+      if (Files.exists(getRoot().resolve(SERVER_INFO))) {
+        try (InputStream in = Files.newInputStream(file)) {
+          try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+            return UUID.fromString(reader.readLine());
+          }
+        }
+      }
+      try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(file, CREATE))) {
+        final UUID uuid = UUID.randomUUID();
+        out.write(uuid.toString().getBytes(), 0, uuid.toString().length());
+        return uuid;
+      }
+    } catch (IOException ex) {
+      getLogger().severe("Could not read server uuid in server.dat, using random id");
+      return UUID.randomUUID();
+    }
   }
 
   private <T> void register(Class<T> clazz, T provider, ServicePriority priority) {
