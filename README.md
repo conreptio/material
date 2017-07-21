@@ -15,7 +15,7 @@ Links
 Artifacts
 ---------
 
-Repository: 
+_Maven Repository:_
 ```xml
     <repository>
         <id>natrolite-repo</id>
@@ -23,7 +23,7 @@ Repository:
     </repository>
 ```
 
-Natrolite API:
+_Natrolite API:_
 ```xml
     <dependency>
         <groupId>org.natrolite.bukkit</groupId>
@@ -33,7 +33,7 @@ Natrolite API:
     </dependency>
 ```
 
-Minigames API:
+_Minigames API (includes Natrolite API):_
 ```xml
     <dependency>
         <groupId>org.natrolite.bukkit</groupId>
