@@ -25,6 +25,8 @@ import org.bukkit.plugin.Plugin;
 public interface NatroliteInternal {
 
   String PLUGIN_NAME = "Natrolite";
+  String LICENSE = "LICENSE.txt";
+  String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
 
   /**
    * Gets the working directory.

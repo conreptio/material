@@ -56,8 +56,6 @@ import org.natrolite.util.ReflectionUtil;
 public final class NatroliteBukkit extends BetterPlugin implements NatroliteInternal {
 
   public static final String TABLE_PREFIX = "natro_";
-  public static final String LICENSE = "LICENSE.txt";
-  public static final String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
   public static final String SERVER_INFO = "server.dat";
 
   @Nullable
