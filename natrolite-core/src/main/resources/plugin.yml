@@ -20,5 +20,7 @@
 name: Natrolite
 main: org.natrolite.impl.NatroliteBukkit
 version: ${version}
+
 author: XNITY
+description: ${description}
 website: https://docs.xnity.net/stable/en/plugins/natrolite

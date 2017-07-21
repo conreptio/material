@@ -21,8 +21,8 @@ name: Minigames
 main: org.natrolite.minigames.MinigamesBukkit
 version: ${version}
 
-depend: [Natrolite]
-
-description: ${description}
-website: https://natrolite.org
 author: XNITY
+description: ${description}
+website: https://docs.xnity.net/stable/en/plugins/minigames
+
+depend: [Natrolite]
