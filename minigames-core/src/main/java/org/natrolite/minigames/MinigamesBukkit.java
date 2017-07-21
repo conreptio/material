@@ -19,9 +19,13 @@
 
 package org.natrolite.minigames;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static org.natrolite.NatroliteInternal.LICENSE;
+import static org.natrolite.NatroliteInternal.THIRD_PARTY_LICENSES;
 import static org.natrolite.minigames.StaticMessageProvider.in;
 
 import com.google.common.reflect.TypeToken;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -44,7 +48,6 @@ import org.natrolite.minigames.arena.ArenaTicker;
 import org.natrolite.minigames.arena.NatroliteArenaService;
 import org.natrolite.minigames.arena.types.NatroliteRegionArena;
 import org.natrolite.minigames.arena.types.NatroliteWorldArena;
-import org.natrolite.minigames.commands.ArenaCommand;
 import org.natrolite.minigames.map.NatroliteMapService;
 import org.natrolite.minigames.serialisation.ArenaSerializer;
 import org.natrolite.minigames.serialisation.SignSerializer;
@@ -54,7 +57,6 @@ import org.natrolite.minigames.sign.types.CakeSign;
 import org.natrolite.minigames.sign.types.PluginSign;
 import org.natrolite.sign.GameSign;
 import org.natrolite.sign.SignService;
-import org.natrolite.util.ReflectionUtil;
 
 public final class MinigamesBukkit extends BetterPlugin implements MinigamesInternal {
 
@@ -65,11 +67,13 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
 
   @Override
   public void onLoad() {
-    ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
 
-    saveResource("THIRD-PARTY.txt", true);
-    saveResource("LICENSE.txt", true);
-    saveResource("database.properties", false);
+    try {
+      getAsset(LICENSE).copyIn("license", REPLACE_EXISTING);
+      getAsset(THIRD_PARTY_LICENSES).copyIn("license", REPLACE_EXISTING);
+    } catch (IOException ex) {
+      getLogger().log(Level.WARNING, "Could not save licenses", ex);
+    }
 
     config = new HoconConfig<>(
         getRoot().resolve("natrolite.conf"),
@@ -94,7 +98,7 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
     try {
       final long start = System.currentTimeMillis();
 
-      getCommand("arena").setExecutor(new ArenaCommand(registry));
+      //getCommand("arena").setExecutor(new ArenaCommand(registry));
 
       registry.bake();
 
