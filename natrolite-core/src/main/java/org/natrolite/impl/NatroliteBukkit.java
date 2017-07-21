@@ -20,6 +20,7 @@
 package org.natrolite.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static org.natrolite.impl.StaticMessageProvider.in;
 
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.configurate.types.HoconConfig;
 import org.natrolite.impl.config.NatroliteConfig;
+import org.natrolite.impl.server.ServerRepository;
 import org.natrolite.impl.service.sql.SqlServiceImpl;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.service.sql.SqlService;
@@ -52,6 +55,7 @@ import org.natrolite.util.ReflectionUtil;
 @Spigot("39140")
 public final class NatroliteBukkit extends BetterPlugin implements NatroliteInternal {
 
+  public static final String TABLE_PREFIX = "natro_";
   public static final String LICENSE = "LICENSE.txt";
   public static final String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
   public static final String SERVER_INFO = "server.dat";
@@ -74,9 +78,14 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   public void onLoad() {
     plugin = this;
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
+    ReflectionUtil.setFinalStatic(NatroliteBukkit.class, "plugin", this);
 
-    saveResource(LICENSE, true);
-    saveResource(THIRD_PARTY_LICENSES, true);
+    try {
+      getAsset(LICENSE).copyIn("license", REPLACE_EXISTING);
+      getAsset(THIRD_PARTY_LICENSES).copyIn("license", REPLACE_EXISTING);
+    } catch (IOException ex) {
+      getLogger().log(Level.WARNING, "Could not save licenses", ex);
+    }
 
     serverId = readUUID();
     getLogger().info("Server UUID is " + serverId);
@@ -93,6 +102,10 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   public void onEnable() {
     try {
       final long start = System.currentTimeMillis();
+
+      Class.forName("org.h2.Driver");
+
+      new ServerRepository(this).update(serverId, "Test Server");
 
       try {
         Metrics metrics = new Metrics(this);

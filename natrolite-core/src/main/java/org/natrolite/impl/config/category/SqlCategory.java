@@ -37,6 +37,10 @@ public class SqlCategory {
   @Setting(comment = "Aliases for SQL connections, in the format jdbc:protocol://[username[:password]@]host/database")
   private Map<String, String> aliases = new HashMap<>();
 
+  public SqlCategory() {
+   aliases.putIfAbsent("default", "jdbc:h2:natrolite;MODE=MYSQL");
+  }
+
   public Map<String, String> getAliases() {
     return this.aliases;
   }

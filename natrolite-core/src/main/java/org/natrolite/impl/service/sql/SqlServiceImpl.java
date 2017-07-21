@@ -242,6 +242,7 @@ public class SqlServiceImpl implements SqlService, Closeable {
         serverDatabaseSpecifier = derelativizer.apply(container, serverDatabaseSpecifier);
       }
       final String unauthedUrl = "jdbc:" + protocol + (hasSlashes ? "://" : ":") + serverDatabaseSpecifier;
+      System.out.println(unauthedUrl);
       final String driverClass = DriverManager.getDriver(unauthedUrl).getClass().getCanonicalName();
       return new ConnectionInfo(user, pass, driverClass, unauthedUrl, fullUrl);
     }

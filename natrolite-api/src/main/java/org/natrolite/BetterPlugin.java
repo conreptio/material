@@ -25,11 +25,17 @@ import java.nio.file.Path;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.updater.Updatable;
+import org.natrolite.util.Asset;
 
 public class BetterPlugin extends JavaPlugin implements Listener, Updatable {
 
   public Path getRoot() {
     return this.getDataFolder().toPath();
+  }
+
+  public Asset getAsset(String path) {
+    path = path.replace("\\", "/");
+    return new Asset(this, path);
   }
 
   @Override
