@@ -11,3 +11,34 @@ Links
 - [Issues](https://github.com/natrolite/natrolite/issues/)
 - [Documentation](https://docs.natrolite.org/)
 - [Javadoc](http://jd.natrolite.org/aggregated/1.0.5/)
+
+Artifacts
+---------
+
+Repository: 
+```xml
+    <repository>
+        <id>natrolite-repo</id>
+        <url>https://repo.natrolite.org/repository/maven-public/</url>
+    </repository>
+```
+
+Natrolite API:
+```xml
+    <dependency>
+        <groupId>org.natrolite.bukkit</groupId>
+        <artifactId>natrolite-api</artifactId>
+        <version>1.0.10</version>
+        <scope>provided</scope>
+    </dependency>
+```
+
+Minigames API:
+```xml
+    <dependency>
+        <groupId>org.natrolite.bukkit</groupId>
+        <artifactId>minigames-api</artifactId>
+        <version>1.0.10</version>
+        <scope>provided</scope>
+    </dependency>
+```
