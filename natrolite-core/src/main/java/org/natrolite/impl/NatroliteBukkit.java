@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -138,6 +137,11 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   @Override
   public NatroliteBukkit getPlugin() {
     return this;
+  }
+
+  @Override
+  public UUID getServerId() {
+    return serverId;
   }
 
   public NatroliteConfig getSettings() {

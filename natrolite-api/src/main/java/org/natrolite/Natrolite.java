@@ -23,6 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.UUID;
 import javax.annotation.Nullable;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
@@ -46,6 +47,10 @@ public final class Natrolite {
 
   public static Plugin getPlugin() {
     return getNatrolite().getPlugin();
+  }
+
+  public static UUID getServerId() {
+    return getNatrolite().getServerId();
   }
 
   public static Server getServer() {

@@ -20,6 +20,7 @@
 package org.natrolite;
 
 import java.nio.file.Path;
+import java.util.UUID;
 import org.bukkit.plugin.Plugin;
 
 public interface NatroliteInternal {
@@ -41,4 +42,11 @@ public interface NatroliteInternal {
    * @return the natrolite plugin
    */
   Plugin getPlugin();
+
+  /**
+   * Gets the unique server id.
+   *
+   * @return The unique server id
+   */
+  UUID getServerId();
 }
