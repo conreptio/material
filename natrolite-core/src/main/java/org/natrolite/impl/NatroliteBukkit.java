@@ -26,6 +26,7 @@ import static org.natrolite.impl.StaticMessageProvider.in;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +34,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
@@ -126,6 +128,18 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     } catch (Throwable throwable) {
       getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
       setEnabled(false);
+    }
+  }
+
+  @Override
+  public void onDisable() {
+    try {
+      Optional<SqlService> service = Natrolite.provide(SqlService.class);
+      if (service.isPresent() && service.get() instanceof Closeable) {
+        ((Closeable) service.get()).close();
+      }
+    } catch (Throwable throwable) {
+      getLogger().log(Level.WARNING, "Could not close sql service on shutdown", throwable);
     }
   }
 
