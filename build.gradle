@@ -59,7 +59,7 @@ subprojects { sub ->
     newLine = true
     include '**/*.java'
     include '**/*.yml'
-    include '**/natrolite_*.properties'
+    include '**/*.properties'
   }
 
   shadowJar {
