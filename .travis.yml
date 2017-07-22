@@ -19,7 +19,10 @@ deploy:
   skip_cleanup: true
   file_glob: true
   file:
-    - "*.jar"
+    - "minigames-api/build/libs/*.jar"
+    - "minigames-core/build/libs/*-shaded.jar"
+    - "natrolite-api/build/libs/*.jar"
+    - "natrolite-core/build/libs/*-shaded.jar"
   on:
     tags: true
     jdk: oraclejdk8
