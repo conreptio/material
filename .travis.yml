@@ -19,7 +19,7 @@ deploy:
   skip_cleanup: true
   file_glob: true
   file:
-    - "natrolite-core/build/libs/*-shaded.jar"
+    - "*.jar"
   on:
     tags: true
     jdk: oraclejdk8
