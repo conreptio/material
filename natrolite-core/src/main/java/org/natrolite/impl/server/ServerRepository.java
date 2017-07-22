@@ -25,33 +25,69 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.UUID;
 import org.natrolite.Natrolite;
 import org.natrolite.impl.NatroliteBukkit;
+import org.natrolite.server.Server;
 import org.natrolite.service.sql.SqlService;
 
 public final class ServerRepository {
 
-  private static final String TABLE = "CREATE TABLE IF NOT EXISTS `" + TABLE_PREFIX + "server` (uuid VARCHAR(32) NOT NULL, name VARCHAR(256) NOT NULL, PRIMARY KEY(uuid));";
-  private static final String UPDATE = "INSERT INTO `" + TABLE_PREFIX + "server` (uuid, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name = ?;";
+  private static final String TABLE = "CREATE TABLE IF NOT EXISTS `{prefix}server` (uuid VARCHAR(32) NOT NULL, name VARCHAR(256) NOT NULL, PRIMARY KEY(uuid));";
+  private static final String INSERT = "INSERT INTO `{prefix}server` (uuid, name) VALUES (?, ?) ON DUPLICATE KEY UPDATE name = ?;";
+  private static final String TABLE_SERVERS = "CREATE TABLE IF NOT EXISTS `{prefix}servers` (server VARCHAR(32) NOT NULL, address VARCHAR(256) NOT NULL, port INT NOT NULL, motd VARCHAR(256) NOT NULL, players INT NOT NULL, lastUpdate DATETIME NOT NULL, FOREIGN KEY (server) REFERENCES {prefix}server(uuid), PRIMARY KEY(server));";
+  private static final String UPDATE = "INSERT INTO `{prefix}servers` (server, address, port, motd, players, lastUpdate) VALUES (?, ?, ?, ?, ?, now()) ON DUPLICATE KEY UPDATE address = ?, port = ?, motd = ?, players = ?, lastUpdate = NOW();";
+
   private final NatroliteBukkit plugin;
 
-  public ServerRepository(NatroliteBukkit plugin) {
+  ServerRepository(NatroliteBukkit plugin) {
     this.plugin = plugin;
   }
 
-  public void update(UUID uuid, String name) throws SQLException {
+  private static String sql(String sql) {
+    return sql.replace("{prefix}", TABLE_PREFIX);
+  }
+
+  public void init() throws SQLException {
     final SqlService service = Natrolite.provideUnchecked(SqlService.class);
     final Optional<String> url = service.getConnectionUrlFromAlias("default");
     if (url.isPresent()) {
       try (Connection connection = service.getDataSource(plugin, url.get()).getConnection()) {
-        try (PreparedStatement table = connection.prepareStatement(TABLE)) {
+        try (
+          PreparedStatement table = connection.prepareStatement(sql(TABLE))) {
           table.executeUpdate();
         }
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
-          statement.setString(1, uuid.toString().replace("-", ""));
-          statement.setString(2, name);
-          statement.setString(3, name);
+        try (
+          PreparedStatement table = connection.prepareStatement(sql(TABLE_SERVERS))) {
+          table.executeUpdate();
+        }
+        try (PreparedStatement statement = connection.prepareStatement(sql(INSERT))) {
+          statement.setString(1, plugin.getServerId().toString().replace("-", ""));
+          statement.setString(2, plugin.getServerName());
+          statement.setString(3, plugin.getServerName());
+          statement.executeUpdate();
+        }
+      }
+    }
+  }
+
+  void update(Server server) throws SQLException {
+    final SqlService service = Natrolite.provideUnchecked(SqlService.class);
+    final Optional<String> url = service.getConnectionUrlFromAlias("default");
+    if (url.isPresent()) {
+      try (Connection connection = service.getDataSource(plugin, url.get()).getConnection()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql(UPDATE))) {
+
+          statement.setString(1, server.getServerId().toString().replace("-", ""));
+          statement.setString(2, server.getAddress());
+          statement.setInt(3, server.getPort());
+          statement.setString(4, server.getMotd());
+          statement.setInt(5, server.getPlayerCount());
+
+          statement.setString(6, server.getAddress());
+          statement.setInt(7, server.getPort());
+          statement.setString(8, server.getMotd());
+          statement.setInt(9, server.getPlayerCount());
+
           statement.executeUpdate();
         }
       }

@@ -46,7 +46,8 @@ import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.configurate.types.HoconConfig;
 import org.natrolite.impl.config.NatroliteConfig;
-import org.natrolite.impl.server.ServerRepository;
+import org.natrolite.impl.config.ServerConfig;
+import org.natrolite.impl.server.NatroliteServerManager;
 import org.natrolite.impl.service.sql.SqlServiceImpl;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.service.sql.SqlService;
@@ -63,7 +64,13 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   private static NatroliteBukkit plugin;
 
   private UUID serverId;
+  private String serverName;
+
+  @Nullable
+  private NatroliteServerManager serverManager;
+
   private HoconConfig<NatroliteConfig> config;
+  private HoconConfig<ServerConfig> serverConfig;
 
   public static NatroliteBukkit getInstance() {
     return checkNotNull(plugin);
@@ -75,7 +82,6 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   @Override
   public void onLoad() {
-    plugin = this;
     ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
     ReflectionUtil.setFinalStatic(NatroliteBukkit.class, "plugin", this);
 
@@ -86,13 +92,21 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
       getLogger().log(Level.WARNING, "Could not save licenses", ex);
     }
 
-    serverId = readUUID();
-    getLogger().info("Server UUID is " + serverId);
-
     config = new HoconConfig<>(
         getRoot().resolve("config").resolve("natrolite.conf"),
         NatroliteConfig.class
     );
+
+    serverConfig = new HoconConfig<>(
+      getRoot().resolve("config").resolve("server.conf"),
+      "server",
+      ServerConfig.class
+    );
+
+    this.serverId = readUUID();
+    this.serverName = serverConfig.getConfig().name();
+
+    getLogger().info("Server UUID is " + serverId);
 
     register(SqlService.class, new SqlServiceImpl(), ServicePriority.Low);
   }
@@ -104,7 +118,8 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
       Class.forName("org.h2.Driver");
 
-      new ServerRepository(this).update(serverId, "Test Server");
+      this.serverManager = new NatroliteServerManager(this);
+      this.serverManager.init();
 
       try {
         Metrics metrics = new Metrics(this);
@@ -133,6 +148,7 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   @Override
   public void onDisable() {
+
     try {
       Optional<SqlService> service = Natrolite.provide(SqlService.class);
       if (service.isPresent() && service.get() instanceof Closeable) {
@@ -140,6 +156,14 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
       }
     } catch (Throwable throwable) {
       getLogger().log(Level.WARNING, "Could not close sql service on shutdown", throwable);
+    }
+
+    try {
+      if (serverManager != null) {
+        serverManager.cancel();
+      }
+    } catch (Throwable throwable) {
+      getLogger().log(Level.WARNING, "Could not stop server manager on shutdown", throwable);
     }
   }
 
@@ -156,6 +180,10 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   @Override
   public UUID getServerId() {
     return serverId;
+  }
+
+  public String getServerName() {
+    return serverName;
   }
 
   public NatroliteConfig getSettings() {
