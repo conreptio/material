@@ -24,24 +24,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
-public final class Server {
+public final class ServerSnapshot {
 
   private UUID uuid;
   private String address;
   private int port;
   private String motd;
   private int playerCount;
+  private int maxPlayers;
 
-  private Server(Server.Builder builder) {
+  private ServerSnapshot(ServerSnapshot.Builder builder) {
     this.uuid = checkNotNull(builder.uuid);
     this.address = checkNotNull(builder.address);
     this.port = builder.port;
     this.motd = checkNotNull(builder.motd);
     this.playerCount = builder.playerCount;
+    this.maxPlayers = builder.maxPlayers;
   }
 
-  public static Server.Builder builder() {
-    return new Server.Builder();
+  public static ServerSnapshot.Builder builder() {
+    return new ServerSnapshot.Builder();
   }
 
   public UUID getServerId() {
@@ -64,6 +66,10 @@ public final class Server {
     return playerCount;
   }
 
+  public int getMaxPlayers() {
+    return maxPlayers;
+  }
+
   public static final class Builder {
 
     @Nullable private UUID uuid;
@@ -71,6 +77,7 @@ public final class Server {
     private int port;
     @Nullable private String motd;
     private int playerCount;
+    private int maxPlayers;
 
     public Builder uuid(UUID uuid) {
       this.uuid = uuid;
@@ -97,8 +104,13 @@ public final class Server {
       return this;
     }
 
-    public Server build() {
-      return new Server(this);
+    public Builder maxPlayers(int maxPlayers) {
+      this.maxPlayers = maxPlayers;
+      return this;
+    }
+
+    public ServerSnapshot build() {
+      return new ServerSnapshot(this);
     }
   }
 }

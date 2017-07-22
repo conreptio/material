@@ -19,13 +19,12 @@
 
 package org.natrolite.impl.server;
 
-import java.sql.SQLException;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 import org.bukkit.scheduler.BukkitTask;
 import org.natrolite.impl.NatroliteBukkit;
-import org.natrolite.server.Server;
 import org.natrolite.server.ServerManager;
+import org.natrolite.server.ServerSnapshot;
 
 public final class NatroliteServerManager implements ServerManager, Runnable {
 
@@ -47,13 +46,14 @@ public final class NatroliteServerManager implements ServerManager, Runnable {
   }
 
   @Override
-  public Server generateSnapshot() {
-    return Server.builder()
+  public ServerSnapshot generateSnapshot() {
+    return ServerSnapshot.builder()
         .uuid(plugin.getServerId())
         .address(getAddress())
         .port(plugin.getServer().getPort())
         .motd(plugin.getServer().getMotd())
         .playerCount(plugin.getServer().getOnlinePlayers().size())
+        .maxPlayers(plugin.getServer().getMaxPlayers())
         .build();
   }
 
@@ -65,10 +65,6 @@ public final class NatroliteServerManager implements ServerManager, Runnable {
       plugin.getLogger().log(Level.SEVERE, "Could not update server status", throwable);
       cancel();
     }
-  }
-
-  public void init() throws SQLException {
-    this.repository.init();
   }
 
   /**

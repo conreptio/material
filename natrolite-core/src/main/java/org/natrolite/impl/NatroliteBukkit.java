@@ -92,6 +92,12 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
       getLogger().log(Level.WARNING, "Could not save licenses", ex);
     }
 
+    try {
+      Class.forName("org.h2.Driver");
+    } catch (Throwable throwable) {
+      getLogger().log(Level.WARNING, "Could not find the h2 driver");
+    }
+
     config = new HoconConfig<>(
         getRoot().resolve("config").resolve("natrolite.conf"),
         NatroliteConfig.class
@@ -116,10 +122,7 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     try {
       final long start = System.currentTimeMillis();
 
-      Class.forName("org.h2.Driver");
-
       this.serverManager = new NatroliteServerManager(this);
-      this.serverManager.init();
 
       try {
         Metrics metrics = new Metrics(this);
@@ -148,7 +151,6 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   @Override
   public void onDisable() {
-
     try {
       Optional<SqlService> service = Natrolite.provide(SqlService.class);
       if (service.isPresent() && service.get() instanceof Closeable) {

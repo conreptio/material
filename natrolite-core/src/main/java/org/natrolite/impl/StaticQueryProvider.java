@@ -17,9 +17,26 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.server;
+package org.natrolite.impl;
 
-public interface ServerManager {
+import java.io.IOException;
+import java.util.Properties;
 
-  ServerSnapshot generateSnapshot();
+public final class StaticQueryProvider {
+
+  private static final Properties properties = new Properties();
+
+  static {
+    try {
+      properties.load(StaticQueryProvider.class.getResourceAsStream("/sql_natrolite.properties"));
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  private StaticQueryProvider() {}
+
+  public static String sql(String key) {
+    return properties.getProperty(key).replace("{prefix}", NatroliteBukkit.TABLE_PREFIX);
+  }
 }
