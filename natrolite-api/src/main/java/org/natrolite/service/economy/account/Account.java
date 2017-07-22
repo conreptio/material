@@ -39,10 +39,12 @@ import org.natrolite.service.economy.transaction.TransferResult;
 
 /**
  * Represents an account, which stores amounts of various {@link Currency currencies}.
- * <p>Accounts come in two varieties: {@link UniqueAccount user accounts} and {@link VirtualAccount} virtual accounts.
+ * <p>Accounts come in two varieties: {@link UniqueAccount user accounts} and {@link VirtualAccount}
+ * virtual accounts.
  * Virtual accounts are identified by a String identifier, which may have any
  * value. They are not tied to any {@link Entity}, player or otherwise. Virtual
- * accounts may be used for purposes such as bank accounts, non-player {@link Entity} accounts, or other things.</p>
+ * accounts may be used for purposes such as bank accounts, non-player {@link Entity} accounts, or
+ * other things.</p>
  */
 public interface Account extends Contextual {
 
@@ -93,7 +95,8 @@ public interface Account extends Contextual {
    * current active contexts</p>.
    *
    * @param currency The {@link Currency} to determine if a balance is set for.
-   * @return Whether this account has a set balance for the speicified {@link Currency} and current active contexts.
+   * @return Whether this account has a set balance for the speicified {@link Currency} and current
+   * active contexts.
    */
   default boolean hasBalance(Currency currency) {
     return this.hasBalance(currency, this.getActiveContexts());
@@ -202,7 +205,8 @@ public interface Account extends Contextual {
 
   /**
    * Resets the balances for all {@link Currency}s used on this account to
-   * their default values ({@link #getDefaultBalance(Currency)}), using the current active {@link Context}.
+   * their default values ({@link #getDefaultBalance(Currency)}), using the current active {@link
+   * Context}.
    *
    * @param cause The {@link Cause} for the transaction
    * @return A map of {@link Currency} to {@link TransactionResult}. Each
@@ -288,7 +292,8 @@ public interface Account extends Contextual {
   /**
    * Transfers the specified amount of the specified {@link Currency} from this account
    * the destination account, using the specified {@link Context}s.
-   * <p>This operation is a merged {@link #withdraw(Currency, BigDecimal, Cause, Set)}  from this account
+   * <p>This operation is a merged {@link #withdraw(Currency, BigDecimal, Cause, Set)}  from this
+   * account
    * with a {@link #deposit(Currency, BigDecimal, Cause, Set)}  into the specified account.</p>
    *
    * @param to       the Account to transfer the amounts to.
@@ -304,7 +309,8 @@ public interface Account extends Contextual {
   /**
    * Transfers the specified amount of the specified {@link Currency} from this account
    * the destination account, using the current active {@link Context}s.
-   * <p>This operation is a merged {@link #withdraw(Currency, BigDecimal, Cause, Set)} from this account
+   * <p>This operation is a merged {@link #withdraw(Currency, BigDecimal, Cause, Set)} from this
+   * account
    * with a {@link #deposit(Currency, BigDecimal, Cause, Set)} into the specified account.</p>
    *
    * @param to       the Account to transfer the amounts to.

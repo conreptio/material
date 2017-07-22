@@ -1,12 +1,12 @@
 allprojects {
-    apply plugin: 'eclipse'
+  apply plugin: 'eclipse'
 
-    plugins.withType(JavaPlugin) {
-        eclipse {
-            jdt {
-                sourceCompatibility = '1.8'
-                targetCompatibility = '1.8'
-            }
-        }
+  plugins.withType(JavaPlugin) {
+    eclipse {
+      jdt {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+      }
     }
+  }
 }

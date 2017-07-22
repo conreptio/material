@@ -35,6 +35,11 @@ public final class NatroliteServerManager implements ServerManager, Runnable {
   @Nullable
   private BukkitTask task = null;
 
+  /**
+   * Creates a new instance.
+   *
+   * @param plugin the plugin
+   */
   public NatroliteServerManager(NatroliteBukkit plugin) {
     this.plugin = plugin;
     this.repository = new ServerRepository(plugin);
@@ -44,12 +49,12 @@ public final class NatroliteServerManager implements ServerManager, Runnable {
   @Override
   public Server generateSnapshot() {
     return Server.builder()
-      .uuid(plugin.getServerId())
-      .address(getAddress())
-      .port(plugin.getServer().getPort())
-      .motd(plugin.getServer().getMotd())
-      .playerCount(plugin.getServer().getOnlinePlayers().size())
-      .build();
+        .uuid(plugin.getServerId())
+        .address(getAddress())
+        .port(plugin.getServer().getPort())
+        .motd(plugin.getServer().getMotd())
+        .playerCount(plugin.getServer().getOnlinePlayers().size())
+        .build();
   }
 
   @Override

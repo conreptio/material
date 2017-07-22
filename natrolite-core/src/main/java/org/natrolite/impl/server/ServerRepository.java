@@ -47,17 +47,22 @@ public final class ServerRepository {
     return sql.replace("{prefix}", TABLE_PREFIX);
   }
 
+  /**
+   * Creates all needed tables.
+   *
+   * @throws SQLException if an sql error occurs
+   */
   public void init() throws SQLException {
     final SqlService service = Natrolite.provideUnchecked(SqlService.class);
     final Optional<String> url = service.getConnectionUrlFromAlias("default");
     if (url.isPresent()) {
       try (Connection connection = service.getDataSource(plugin, url.get()).getConnection()) {
         try (
-          PreparedStatement table = connection.prepareStatement(sql(TABLE))) {
+            PreparedStatement table = connection.prepareStatement(sql(TABLE))) {
           table.executeUpdate();
         }
         try (
-          PreparedStatement table = connection.prepareStatement(sql(TABLE_SERVERS))) {
+            PreparedStatement table = connection.prepareStatement(sql(TABLE_SERVERS))) {
           table.executeUpdate();
         }
         try (PreparedStatement statement = connection.prepareStatement(sql(INSERT))) {

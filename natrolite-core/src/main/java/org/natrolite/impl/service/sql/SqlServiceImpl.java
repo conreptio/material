@@ -33,7 +33,6 @@ import com.google.common.cache.RemovalListener;
 import com.google.common.collect.ImmutableMap;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -47,7 +46,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.sql.DataSource;
@@ -146,6 +144,11 @@ public class SqlServiceImpl implements SqlService, Closeable {
     this.connectionCache.invalidateAll();
   }
 
+  @Override
+  public Optional<String> getConnectionUrlFromAlias(String alias) {
+    return Optional.ofNullable(NatroliteBukkit.config().getSql().getAliases().get(alias));
+  }
+
   public static class ConnectionInfo {
 
     private static final Pattern URL_REGEX = Pattern.compile("(?:jdbc:)?([^:]+):(//)?(?:([^:]+)(?::([^@]+))?@)?(.*)");
@@ -172,6 +175,35 @@ public class SqlServiceImpl implements SqlService, Closeable {
       this.driverClassName = driverClassName;
       this.authlessUrl = authlessUrl;
       this.fullUrl = fullUrl;
+    }
+
+    /**
+     * Extracts the connection info from a JDBC url with additional authentication information as
+     * specified in {@link SqlService}.
+     *
+     * @param container The plugin to put a path relative to
+     * @param fullUrl   The full JDBC URL as specified in SqlService
+     * @return A constructed ConnectionInfo object using the info from the provided URL
+     * @throws SQLException If the driver for the given URL is not present
+     */
+    public static ConnectionInfo fromUrl(@Nullable Plugin container, String fullUrl) throws SQLException {
+      Matcher match = URL_REGEX.matcher(fullUrl);
+      if (!match.matches()) {
+        throw new IllegalArgumentException("URL " + fullUrl + " is not a valid JDBC URL");
+      }
+
+      final String protocol = match.group(1);
+      final boolean hasSlashes = match.group(2) != null;
+      final String user = match.group(3);
+      final String pass = match.group(4);
+      String serverDatabaseSpecifier = match.group(5);
+      BiFunction<Plugin, String, String> derelativizer = PATH_CANONICALIZERS.get(protocol);
+      if (container != null && derelativizer != null) {
+        serverDatabaseSpecifier = derelativizer.apply(container, serverDatabaseSpecifier);
+      }
+      final String unauthedUrl = "jdbc:" + protocol + (hasSlashes ? "://" : ":") + serverDatabaseSpecifier;
+      final String driverClass = DriverManager.getDriver(unauthedUrl).getClass().getCanonicalName();
+      return new ConnectionInfo(user, pass, driverClass, unauthedUrl, fullUrl);
     }
 
     @Nullable
@@ -216,39 +248,5 @@ public class SqlServiceImpl implements SqlService, Closeable {
     public int hashCode() {
       return Objects.hashCode(this.user, this.password, this.driverClassName, this.authlessUrl, this.fullUrl);
     }
-
-    /**
-     * Extracts the connection info from a JDBC url with additional authentication information as
-     * specified in {@link SqlService}.
-     *
-     * @param container The plugin to put a path relative to
-     * @param fullUrl   The full JDBC URL as specified in SqlService
-     * @return A constructed ConnectionInfo object using the info from the provided URL
-     * @throws SQLException If the driver for the given URL is not present
-     */
-    public static ConnectionInfo fromUrl(@Nullable Plugin container, String fullUrl) throws SQLException {
-      Matcher match = URL_REGEX.matcher(fullUrl);
-      if (!match.matches()) {
-        throw new IllegalArgumentException("URL " + fullUrl + " is not a valid JDBC URL");
-      }
-
-      final String protocol = match.group(1);
-      final boolean hasSlashes = match.group(2) != null;
-      final String user = match.group(3);
-      final String pass = match.group(4);
-      String serverDatabaseSpecifier = match.group(5);
-      BiFunction<Plugin, String, String> derelativizer = PATH_CANONICALIZERS.get(protocol);
-      if (container != null && derelativizer != null) {
-        serverDatabaseSpecifier = derelativizer.apply(container, serverDatabaseSpecifier);
-      }
-      final String unauthedUrl = "jdbc:" + protocol + (hasSlashes ? "://" : ":") + serverDatabaseSpecifier;
-      final String driverClass = DriverManager.getDriver(unauthedUrl).getClass().getCanonicalName();
-      return new ConnectionInfo(user, pass, driverClass, unauthedUrl, fullUrl);
-    }
-  }
-
-  @Override
-  public Optional<String> getConnectionUrlFromAlias(String alias) {
-    return Optional.ofNullable(NatroliteBukkit.config().getSql().getAliases().get(alias));
   }
 }

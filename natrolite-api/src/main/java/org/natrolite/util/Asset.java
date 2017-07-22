@@ -56,7 +56,7 @@ public class Asset {
   }
 
   public void copy(Path path, CopyOption... options) throws IOException {
-    try(InputStream in = plugin.getResource(file)) {
+    try (InputStream in = plugin.getResource(file)) {
       Files.copy(in, path, options);
     }
   }

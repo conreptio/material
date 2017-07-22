@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;
 
 @Nonnull
-@TypeQualifierDefault({
+@TypeQualifierDefault( {
     ElementType.FIELD,
     ElementType.METHOD,
     ElementType.PARAMETER

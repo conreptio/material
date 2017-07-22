@@ -98,9 +98,9 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     );
 
     serverConfig = new HoconConfig<>(
-      getRoot().resolve("config").resolve("server.conf"),
-      "server",
-      ServerConfig.class
+        getRoot().resolve("config").resolve("server.conf"),
+        "server",
+        ServerConfig.class
     );
 
     this.serverId = readUUID();

@@ -36,7 +36,8 @@ public final class TransactionTypes {
   public static final TransactionType DEPOSIT = new TransactionType("DEPOSIT");
 
   /**
-   * Represents a transaction where an {@link Account} transferred some amount of a currency to another {@link Account}.
+   * Represents a transaction where an {@link Account} transferred some amount of a currency to
+   * another {@link Account}.
    */
   public static final TransactionType TRANSFER = new TransactionType("TRANSFER");
 

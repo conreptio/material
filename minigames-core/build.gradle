@@ -1,7 +1,7 @@
 dependencies {
-    compile project(':minigames-api')
+  compile project(':minigames-api')
 }
 
 processResources {
-    expand(version: project.version, description: project.description)
+  expand(version: project.version, description: project.description)
 }

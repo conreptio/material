@@ -56,7 +56,7 @@ import javax.annotation.Nullable;
  * some blocks, but tracing this event would be too complicated and thus
  * may not be attempted.</p>
  */
-@SuppressWarnings({"unchecked", "ConstantConditions"})
+@SuppressWarnings( {"unchecked", "ConstantConditions"})
 public final class Cause {
 
   final Object[] cause;
