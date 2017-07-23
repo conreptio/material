@@ -126,23 +126,7 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
       this.serverManager = new NatroliteServerManager(this);
 
-      try {
-        Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.AdvancedPie("plugins") {
-          @Override
-          public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
-            HashMap<String, Integer> map = new HashMap<>();
-            for (Plugin plugin : getServer().getPluginManager().getPlugins()) {
-              if (plugin instanceof NatrolitePlugin) {
-                map.put(plugin.getName(), 1);
-              }
-            }
-            return map;
-          }
-        });
-      } catch (Throwable throwable) {
-        getLogger().log(Level.FINE, "Could not start metrics service", throwable);
-      }
+      setupMetrics();
 
       in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
     } catch (Throwable throwable) {
@@ -217,5 +201,25 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   private <T> void register(Class<T> clazz, T provider, ServicePriority priority) {
     getServer().getServicesManager().register(clazz, provider, this, priority);
+  }
+
+  private void setupMetrics() {
+    try {
+      Metrics metrics = new Metrics(this);
+      metrics.addCustomChart(new Metrics.AdvancedPie("plugins") {
+        @Override
+        public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
+          HashMap<String, Integer> map = new HashMap<>();
+          for (Plugin plugin : getServer().getPluginManager().getPlugins()) {
+            if (plugin instanceof NatrolitePlugin) {
+              map.put(plugin.getName(), 1);
+            }
+          }
+          return map;
+        }
+      });
+    } catch (Throwable throwable) {
+      getLogger().log(Level.FINE, "Could not start metrics service", throwable);
+    }
   }
 }

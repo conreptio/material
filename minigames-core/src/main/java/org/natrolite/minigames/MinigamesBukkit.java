@@ -37,8 +37,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.natrolite.BetterPlugin;
 import org.natrolite.MinigamesInternal;
+import org.natrolite.MinigamesPlugin;
 import org.natrolite.Natrolite;
-import org.natrolite.NatrolitePlugin;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
 import org.natrolite.configurate.types.HoconConfig;
@@ -121,28 +121,12 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
       final int signAmount = sign.getSigns().size();
       in(getLogger(), signAmount == 1 ? "sign.load.one" : "sign.load", signAmount);
 
-      try {
-        Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.AdvancedPie("plugins") {
-          @Override
-          public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
-            HashMap<String, Integer> map = new HashMap<>();
-            for (Plugin plugin : getServer().getPluginManager().getPlugins()) {
-              if (plugin instanceof NatrolitePlugin) {
-                map.put(plugin.getName(), 1);
-              }
-            }
-            return map;
-          }
-        });
-      } catch (Throwable throwable) {
-        getLogger().log(Level.FINE, "Could not start metrics service", throwable);
-      }
-
       getServer().getPluginManager().registerEvents(servicesManager, this);
       getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
 
       ArenaTicker.start(this);
+
+      setupMetrics();
 
       in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
     } catch (Throwable throwable) {
@@ -188,5 +172,25 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
 
   private <T> void register(Class<T> clazz, T provider, ServicePriority priority) {
     getServer().getServicesManager().register(clazz, provider, this, priority);
+  }
+
+  private void setupMetrics() {
+    try {
+      Metrics metrics = new Metrics(this);
+      metrics.addCustomChart(new Metrics.AdvancedPie("games") {
+        @Override
+        public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
+          HashMap<String, Integer> map = new HashMap<>();
+          for (Plugin plugin : getServer().getPluginManager().getPlugins()) {
+            if (plugin instanceof MinigamesPlugin) {
+              map.put(plugin.getName(), 1);
+            }
+          }
+          return map;
+        }
+      });
+    } catch (Throwable throwable) {
+      getLogger().log(Level.FINE, "Could not start metrics service", throwable);
+    }
   }
 }
