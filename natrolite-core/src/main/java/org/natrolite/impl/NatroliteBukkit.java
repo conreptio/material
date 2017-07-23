@@ -41,7 +41,6 @@ import javax.annotation.Nullable;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.natrolite.BetterPlugin;
-import org.natrolite.Git;
 import org.natrolite.GitHub;
 import org.natrolite.Natrolite;
 import org.natrolite.NatroliteInternal;
@@ -57,7 +56,6 @@ import org.natrolite.updater.Spigot;
 import org.natrolite.util.ReflectionUtil;
 
 @Spigot("39140")
-@Git("https://github.com/natrolite/natrolite.git")
 @GitHub(organisation = "natrolite", repository = "natrolite")
 public final class NatroliteBukkit extends BetterPlugin implements NatroliteInternal {
 
