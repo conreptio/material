@@ -60,7 +60,6 @@ import org.natrolite.sign.SignService;
 
 public final class MinigamesBukkit extends BetterPlugin implements MinigamesInternal {
 
-  private final NatroliteServicesManager servicesManager = new NatroliteServicesManager(this);
   private final NatroliteRegistry registry = new NatroliteRegistry();
   private TypeSerializerCollection serializers;
   private HoconConfig<NatroliteConfig> config;
@@ -121,7 +120,6 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
       final int signAmount = sign.getSigns().size();
       in(getLogger(), signAmount == 1 ? "sign.load.one" : "sign.load", signAmount);
 
-      getServer().getPluginManager().registerEvents(servicesManager, this);
       getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
 
       ArenaTicker.start(this);

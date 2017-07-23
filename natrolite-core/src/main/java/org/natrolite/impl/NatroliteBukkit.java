@@ -49,6 +49,7 @@ import org.natrolite.configurate.types.HoconConfig;
 import org.natrolite.impl.config.NatroliteConfig;
 import org.natrolite.impl.config.ServerConfig;
 import org.natrolite.impl.server.NatroliteServerManager;
+import org.natrolite.impl.service.NatroliteServicesManager;
 import org.natrolite.impl.service.sql.SqlServiceImpl;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.service.sql.SqlService;
@@ -67,6 +68,9 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   private UUID serverId;
   private String serverName;
+
+  @Nullable
+  private NatroliteServicesManager servicesManager;
 
   @Nullable
   private NatroliteServerManager serverManager;
@@ -124,6 +128,7 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     try {
       final long start = System.currentTimeMillis();
 
+      this.servicesManager = new NatroliteServicesManager(this);
       this.serverManager = new NatroliteServerManager(this);
 
       setupMetrics();

@@ -17,30 +17,28 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.minigames;
+package org.natrolite.impl.service;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServiceUnregisterEvent;
+import org.natrolite.impl.NatroliteBukkit;
 import org.natrolite.service.NatroliteService;
 
 public final class NatroliteServicesManager implements Listener {
 
-  private final MinigamesBukkit natrolite;
-
-  NatroliteServicesManager(MinigamesBukkit natrolite) {
-    this.natrolite = natrolite;
+  public NatroliteServicesManager(NatroliteBukkit plugin) {
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
-  @EventHandler(priority = EventPriority.HIGH)
+  @EventHandler
   public void onServiceUnregister(ServiceUnregisterEvent event) {
     final Object service = event.getProvider().getProvider();
     if (service instanceof NatroliteService) {
       ((NatroliteService) service).shutdown();
       if (service instanceof Listener) {
-        HandlerList.unregisterAll((Listener) service);
+        HandlerList.unregisterAll((Listener) event.getProvider());
       }
     }
   }
