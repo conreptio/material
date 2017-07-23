@@ -34,8 +34,7 @@ public class BetterPlugin extends JavaPlugin implements Listener, Updatable {
   }
 
   public Asset getAsset(String path) {
-    path = path.replace("\\", "/");
-    return new Asset(this, path);
+    return new Asset(this, path.replace("\\", "/"));
   }
 
   @Override
