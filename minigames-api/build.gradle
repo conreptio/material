@@ -1,3 +1,5 @@
+description = 'Minigames Library for Bukkit'
+
 sourceSets {
   example {
     compileClasspath += main.compileClasspath + main.output

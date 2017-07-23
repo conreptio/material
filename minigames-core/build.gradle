@@ -1,3 +1,5 @@
+description = 'Implementation of MinigamesAPI'
+
 dependencies {
   compile project(':minigames-api')
 }

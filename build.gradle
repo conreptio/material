@@ -8,9 +8,9 @@ apply from: 'gradle/idea.gradle'
 apply from: 'gradle/eclipse.gradle'
 
 allprojects {
-  group = rootProject.group
-  description = rootProject.description
-  version = rootProject.version
+  group = 'org.natrolite.bukkit'
+  version = '1.0.11'
+  ext.homepage = 'https://natrolite.org/'
 }
 
 subprojects { sub ->

@@ -1,3 +1,5 @@
+description = 'Natrolite API for Bukkit'
+
 license {
   exclude 'org/natrolite/cause/Cause.java'
   exclude 'org/natrolite/cause/NamedCause.java'

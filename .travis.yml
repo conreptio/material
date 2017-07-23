@@ -7,7 +7,7 @@ jdk:
   - openjdk8
   - oraclejdk8
 
-script: ./gradlew build checkstyle
+script: ./gradlew build checkstyle -Dorg.gradle.daemon=false
 
 after_success:
   - ./scripts/publish-javadoc
