@@ -22,6 +22,7 @@ package org.natrolite;
 import java.nio.file.Path;
 import java.util.UUID;
 import org.bukkit.plugin.Plugin;
+import org.natrolite.lang.legacy.MessageProvider;
 
 public interface NatroliteInternal {
 
@@ -30,11 +31,11 @@ public interface NatroliteInternal {
   String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
 
   /**
-   * Gets the working directory.
+   * Gets the {@link MessageProvider} belonging this plugin.
    *
-   * @return path of the working directory
+   * @return The Message Provider
    */
-  Path getRoot();
+  MessageProvider getMessageProvider();
 
   /**
    * Gets the Natrolite {@link Plugin}.
@@ -42,6 +43,13 @@ public interface NatroliteInternal {
    * @return the natrolite plugin
    */
   Plugin getPlugin();
+
+  /**
+   * Gets the working directory.
+   *
+   * @return path of the working directory
+   */
+  Path getRoot();
 
   /**
    * Gets the unique server id.

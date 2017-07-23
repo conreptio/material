@@ -33,6 +33,10 @@ public final class StaticMessageProvider extends SimpleMessageProvider {
     super("natrolite");
   }
 
+  public static StaticMessageProvider get() {
+    return INSTANCE;
+  }
+
   public static void in(Logger logger, String key, Object... args) {
     tr(key, args).ifPresent(logger::info);
   }

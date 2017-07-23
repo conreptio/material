@@ -51,6 +51,7 @@ import org.natrolite.impl.config.ServerConfig;
 import org.natrolite.impl.server.NatroliteServerManager;
 import org.natrolite.impl.service.NatroliteServicesManager;
 import org.natrolite.impl.service.sql.SqlServiceImpl;
+import org.natrolite.lang.legacy.MessageProvider;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.service.sql.SqlService;
 import org.natrolite.updater.Spigot;
@@ -158,6 +159,11 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     } catch (Throwable throwable) {
       getLogger().log(Level.WARNING, "Could not stop server manager on shutdown", throwable);
     }
+  }
+
+  @Override
+  public MessageProvider getMessageProvider() {
+    return StaticMessageProvider.get();
   }
 
   @Override
