@@ -6,6 +6,7 @@ language: java
 jdk:
   - openjdk8
   - oraclejdk8
+  - oraclejdk9
 
 script: ./gradlew build checkstyle -Dorg.gradle.daemon=false
 
@@ -27,6 +28,11 @@ deploy:
     tags: true
     jdk: oraclejdk8
     repo: natrolite/natrolite
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - jdk: oraclejdk9
 
 branches:
   except:
