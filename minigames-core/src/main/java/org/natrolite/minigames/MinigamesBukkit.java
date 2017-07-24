@@ -41,7 +41,6 @@ import org.natrolite.MinigamesPlugin;
 import org.natrolite.Natrolite;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
-import org.natrolite.configurate.types.HoconConfig;
 import org.natrolite.map.MapService;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.minigames.arena.ArenaTicker;
@@ -62,7 +61,6 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
   private TypeSerializerCollection serializers;
-  private HoconConfig<NatroliteConfig> config;
 
   @Override
   public void onLoad() {
@@ -73,12 +71,6 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
     } catch (IOException ex) {
       getLogger().log(Level.WARNING, "Could not save licenses", ex);
     }
-
-    config = new HoconConfig<>(
-        getRoot().resolve("natrolite.conf"),
-        "natrolite",
-        NatroliteConfig.class
-    );
 
     register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
     register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
