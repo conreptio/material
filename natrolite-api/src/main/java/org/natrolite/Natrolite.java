@@ -27,7 +27,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
 
 public final class Natrolite {
@@ -45,7 +44,7 @@ public final class Natrolite {
     return getNatrolite().getRoot();
   }
 
-  public static Plugin getPlugin() {
+  public static BetterPlugin getPlugin() {
     return getNatrolite().getPlugin();
   }
 

@@ -146,7 +146,7 @@ public class SqlServiceImpl implements SqlService, Closeable {
 
   @Override
   public Optional<String> getConnectionUrlFromAlias(String alias) {
-    return Optional.ofNullable(NatroliteBukkit.config().getSql().getAliases().get(alias));
+    return Optional.ofNullable(NatroliteBukkit.config().sql().getAliases().get(alias));
   }
 
   public static class ConnectionInfo {

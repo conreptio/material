@@ -28,7 +28,10 @@ import com.google.common.reflect.TypeToken;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.logging.Level;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
@@ -40,6 +43,9 @@ import org.natrolite.MinigamesPlugin;
 import org.natrolite.Natrolite;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
+import org.natrolite.dictionary.TranslationDictionary;
+import org.natrolite.dictionary.bundle.MultiSourceResourceBundleTranslationDictionary;
+import org.natrolite.dictionary.bundle.SimpleResourceBundleTranslationDictionary;
 import org.natrolite.map.MapService;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.minigames.arena.ArenaTicker;
@@ -61,32 +67,45 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
   private final NatroliteRegistry registry = new NatroliteRegistry();
   private TypeSerializerCollection serializers;
 
+  @Nullable
+  private Throwable throwable;
+
   @Override
   public void onLoad() {
-
     try {
-      getAsset(LICENSE).copyIn("license", REPLACE_EXISTING);
-      getAsset(THIRD_PARTY_LICENSES).copyIn("license", REPLACE_EXISTING);
-    } catch (IOException ex) {
-      getLogger().log(Level.WARNING, "Could not save licenses", ex);
+      try {
+        getAsset(LICENSE).copyIn("license", REPLACE_EXISTING);
+        getAsset(THIRD_PARTY_LICENSES).copyIn("license", REPLACE_EXISTING);
+      } catch (IOException ex) {
+        getLogger().log(Level.WARNING, "Could not save licenses", ex);
+      }
+
+      register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
+      register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
+      register(SignService.class, new NatroliteSignService(this), ServicePriority.Low);
+
+      registry.register("world", NatroliteWorldArena.class, NatroliteWorldArena.factory());
+      registry.register("region", NatroliteRegionArena.class, NatroliteRegionArena.factory());
+
+      registry.register("arena", ArenaSign.class, ArenaSign.factory());
+      registry.register("cake", CakeSign.class, CakeSign.factory());
+      registry.register("plugin", PluginSign.class, PluginSign.factory());
+
+      setupDictionary();
+      setupMetrics();
+    } catch (Throwable throwable) {
+      this.throwable = throwable;
     }
-
-    register(MapService.class, new NatroliteMapService(this), ServicePriority.Low);
-    register(ArenaService.class, new NatroliteArenaService(this), ServicePriority.Low);
-    register(SignService.class, new NatroliteSignService(this), ServicePriority.Low);
-
-    registry.register("world", NatroliteWorldArena.class, NatroliteWorldArena.factory());
-    registry.register("region", NatroliteRegionArena.class, NatroliteRegionArena.factory());
-
-    registry.register("arena", ArenaSign.class, ArenaSign.factory());
-    registry.register("cake", CakeSign.class, CakeSign.factory());
-    registry.register("plugin", PluginSign.class, PluginSign.factory());
   }
 
   @Override
   public void onEnable() {
     try {
       final long start = System.currentTimeMillis();
+
+      if (throwable != null) {
+        throw throwable;
+      }
 
       //getCommand("arena").setExecutor(new ArenaCommand(registry));
 
@@ -112,8 +131,6 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
       in(getLogger(), signAmount == 1 ? "sign.load.one" : "sign.load", signAmount);
 
       ArenaTicker.start(this);
-
-      setupMetrics();
 
       in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
     } catch (Throwable throwable) {
@@ -172,5 +189,25 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
     } catch (Throwable throwable) {
       getLogger().log(Level.FINE, "Could not start metrics service", throwable);
     }
+  }
+
+  private void setupDictionary() {
+    final Locale def = Natrolite.getNatrolite().getSettings().general().lang().locale();
+    @Nonnull TranslationDictionary dictionary;
+    if (Natrolite.getNatrolite().getSettings().general().lang().custom()) {
+      try {
+        getAsset(BUNDLE_NAME + "_en.properties").copyIn("message");
+        getAsset(BUNDLE_NAME + "_de.properties").copyIn("message");
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+      dictionary = new MultiSourceResourceBundleTranslationDictionary(this, def, BUNDLE_NAME);
+      //TODO custom messages
+    } else {
+      dictionary = new SimpleResourceBundleTranslationDictionary(this, def, BUNDLE_NAME);
+    }
+    getServicesManager().register(
+        TranslationDictionary.class, dictionary, this, ServicePriority.Low
+    );
   }
 }

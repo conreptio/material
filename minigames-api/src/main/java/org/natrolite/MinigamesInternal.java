@@ -28,6 +28,7 @@ import org.natrolite.registry.Registry;
 public interface MinigamesInternal {
 
   String PLUGIN_NAME = "Minigames";
+  String BUNDLE_NAME = "minigames";
 
   /**
    * Gets the working directory.

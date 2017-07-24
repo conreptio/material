@@ -19,38 +19,18 @@
 
 package org.natrolite;
 
-import java.nio.file.Path;
-import java.util.UUID;
-import org.bukkit.plugin.Plugin;
-import org.natrolite.config.NatroliteConfig;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-public interface NatroliteInternal {
+import javax.annotation.Nullable;
 
-  String PLUGIN_NAME = "Natrolite";
-  String BUNDLE_NAME = "natrolite";
-  String LICENSE = "LICENSE.txt";
-  String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
+public final class Minigames {
 
-  /**
-   * Gets the Natrolite {@link Plugin}.
-   *
-   * @return the natrolite plugin
-   */
-  BetterPlugin getPlugin();
+  @Nullable
+  private static MinigamesInternal minigames;
 
-  /**
-   * Gets the working directory.
-   *
-   * @return path of the working directory
-   */
-  Path getRoot();
+  private Minigames() {}
 
-  /**
-   * Gets the unique server id.
-   *
-   * @return The unique server id
-   */
-  UUID getServerId();
-
-  NatroliteConfig getSettings();
+  public static MinigamesInternal getMinigames() {
+    return checkNotNull(minigames, "Minigames has not been initialized");
+  }
 }

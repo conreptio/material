@@ -17,5 +17,25 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@org.natrolite.NonnullByDefault
-package org.natrolite.impl.config.category;
+package org.natrolite.config.category;
+
+import java.util.HashMap;
+import java.util.Map;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+
+@ConfigSerializable
+public class SqlCategory {
+
+  @Setting(comment = "Aliases for SQL connections, in the format "
+      + "jdbc:protocol://[username[:password]@]host/database")
+  private Map<String, String> aliases = new HashMap<>();
+
+  public SqlCategory() {
+    aliases.putIfAbsent("default", "jdbc:h2:natrolite;MODE=MYSQL");
+  }
+
+  public Map<String, String> getAliases() {
+    return this.aliases;
+  }
+}
