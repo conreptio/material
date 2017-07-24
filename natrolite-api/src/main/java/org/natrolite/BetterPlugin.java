@@ -22,19 +22,42 @@ package org.natrolite;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.annotation.Nullable;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.plugin.SimpleServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.updater.Updatable;
 import org.natrolite.util.Asset;
 
 public abstract class BetterPlugin extends JavaPlugin implements Listener, Updatable {
 
+  @Nullable
+  private ServicesManager servicesManager;
+
+  public Asset getAsset(String path) {
+    return new Asset(this, path.replace("\\", "/"));
+  }
+
+  @Override
+  public File getFile() {
+    return super.getFile();
+  }
+
   public Path getRoot() {
     return this.getDataFolder().toPath();
   }
 
-  public Asset getAsset(String path) {
-    return new Asset(this, path.replace("\\", "/"));
+  /**
+   * Gets the {@link ServicesManager} belonging to this plugin.
+   *
+   * @return The Service Manager belonging to this plugin
+   */
+  public final ServicesManager getServicesManager() {
+    if (servicesManager == null) {
+      servicesManager = new SimpleServicesManager();
+    }
+    return servicesManager;
   }
 
   @Override
@@ -42,10 +65,5 @@ public abstract class BetterPlugin extends JavaPlugin implements Listener, Updat
     if (!Files.exists(getRoot().resolve(resourcePath)) || replace) {
       super.saveResource(resourcePath, replace);
     }
-  }
-
-  @Override
-  public File getFile() {
-    return super.getFile();
   }
 }
