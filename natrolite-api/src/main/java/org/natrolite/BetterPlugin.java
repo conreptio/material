@@ -27,7 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.updater.Updatable;
 import org.natrolite.util.Asset;
 
-public class BetterPlugin extends JavaPlugin implements Listener, Updatable {
+public abstract class BetterPlugin extends JavaPlugin implements Listener, Updatable {
 
   public Path getRoot() {
     return this.getDataFolder().toPath();
