@@ -17,7 +17,7 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite;
+package org.natrolite.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
