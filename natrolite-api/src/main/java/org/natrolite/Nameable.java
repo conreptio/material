@@ -19,7 +19,15 @@
 
 package org.natrolite;
 
+/**
+ * Something that has a name.
+ */
 public interface Nameable {
 
+  /**
+   * Gets the name of this object.
+   *
+   * @return The name
+   */
   String getName();
 }
