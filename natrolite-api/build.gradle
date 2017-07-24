@@ -13,6 +13,7 @@ license {
   exclude 'org/natrolite/dictionary/TranslationDictionaries.java'
   exclude 'org/natrolite/dictionary/TranslationDictionary.java'
   exclude 'org/natrolite/dictionary/TranslationDictionarySourceResolver.java'
+  exclude 'org/natrolite/internal/config/category/SqlCategory.java'
   exclude 'org/natrolite/metrics/Metrics.java'
   exclude 'org/natrolite/metrics/MetricsLite.java'
   exclude 'org/natrolite/service/context/Context.java'

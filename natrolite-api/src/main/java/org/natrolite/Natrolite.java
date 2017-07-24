@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicesManager;
+import org.natrolite.internal.NatroliteInternal;
 
 public final class Natrolite {
 

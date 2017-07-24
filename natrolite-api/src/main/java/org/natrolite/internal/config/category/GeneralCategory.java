@@ -17,40 +17,18 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite;
+package org.natrolite.internal.config.category;
 
-import java.nio.file.Path;
-import java.util.UUID;
-import org.bukkit.plugin.Plugin;
-import org.natrolite.config.NatroliteConfig;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-public interface NatroliteInternal {
+@ConfigSerializable
+public class GeneralCategory {
 
-  String PLUGIN_NAME = "Natrolite";
-  String BUNDLE_NAME = "natrolite";
-  String LICENSE = "LICENSE.txt";
-  String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
+  @Setting("language")
+  private LanguageCategory lang = new LanguageCategory();
 
-  /**
-   * Gets the Natrolite {@link Plugin}.
-   *
-   * @return the natrolite plugin
-   */
-  BetterPlugin getPlugin();
-
-  /**
-   * Gets the working directory.
-   *
-   * @return path of the working directory
-   */
-  Path getRoot();
-
-  /**
-   * Gets the unique server id.
-   *
-   * @return The unique server id
-   */
-  UUID getServerId();
-
-  NatroliteConfig getSettings();
+  public LanguageCategory lang() {
+    return lang;
+  }
 }

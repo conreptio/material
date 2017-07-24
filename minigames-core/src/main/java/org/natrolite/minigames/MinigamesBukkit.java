@@ -20,8 +20,8 @@
 package org.natrolite.minigames;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static org.natrolite.NatroliteInternal.LICENSE;
-import static org.natrolite.NatroliteInternal.THIRD_PARTY_LICENSES;
+import static org.natrolite.internal.NatroliteInternal.LICENSE;
+import static org.natrolite.internal.NatroliteInternal.THIRD_PARTY_LICENSES;
 import static org.natrolite.minigames.StaticMessageProvider.in;
 
 import com.google.common.reflect.TypeToken;

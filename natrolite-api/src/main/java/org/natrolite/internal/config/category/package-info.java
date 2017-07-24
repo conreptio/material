@@ -18,4 +18,4 @@
  */
 
 @org.natrolite.NonnullByDefault
-package org.natrolite.config.category;
+package org.natrolite.internal.config.category;

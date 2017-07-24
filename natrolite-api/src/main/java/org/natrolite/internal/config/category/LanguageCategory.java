@@ -17,18 +17,29 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.config;
+package org.natrolite.internal.config.category;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static org.natrolite.util.Locales.DEFAULT;
+
+import java.util.Locale;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class ServerConfig {
+public class LanguageCategory {
 
-  @Setting("name")
-  private String name = "My Minecraft Server";
+  @Setting("locale")
+  private String locale = DEFAULT.toLanguageTag();
 
-  public String name() {
-    return name;
+  @Setting("custom")
+  private boolean custom = false;
+
+  public Locale locale() {
+    return Locale.forLanguageTag(firstNonNull(locale, DEFAULT.toLanguageTag()).replace("_", "-"));
+  }
+
+  public boolean custom() {
+    return custom;
   }
 }

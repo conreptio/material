@@ -17,29 +17,27 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.config.category;
+package org.natrolite.internal.config;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
-import static org.natrolite.util.Locales.DEFAULT;
-
-import java.util.Locale;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.natrolite.internal.config.category.GeneralCategory;
+import org.natrolite.internal.config.category.SqlCategory;
 
 @ConfigSerializable
-public class LanguageCategory {
+public class NatroliteConfig {
 
-  @Setting("locale")
-  private String locale = DEFAULT.toLanguageTag();
+  @Setting("general")
+  private GeneralCategory general = new GeneralCategory();
 
-  @Setting("custom")
-  private boolean custom = false;
+  @Setting("sql")
+  private SqlCategory sql = new SqlCategory();
 
-  public Locale locale() {
-    return Locale.forLanguageTag(firstNonNull(locale, DEFAULT.toLanguageTag()).replace("_", "-"));
+  public GeneralCategory general() {
+    return general;
   }
 
-  public boolean custom() {
-    return custom;
+  public SqlCategory sql() {
+    return sql;
   }
 }

@@ -17,5 +17,18 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-@org.natrolite.NonnullByDefault
-package org.natrolite.config;
+package org.natrolite.internal.config;
+
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+
+@ConfigSerializable
+public class ServerConfig {
+
+  @Setting("name")
+  private String name = "My Minecraft Server";
+
+  public String name() {
+    return name;
+  }
+}

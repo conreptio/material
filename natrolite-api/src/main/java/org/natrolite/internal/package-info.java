@@ -17,18 +17,5 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.config.category;
-
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-
-@ConfigSerializable
-public class GeneralCategory {
-
-  @Setting("language")
-  private LanguageCategory lang = new LanguageCategory();
-
-  public LanguageCategory lang() {
-    return lang;
-  }
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.internal;
