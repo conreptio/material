@@ -20,12 +20,14 @@
 package org.natrolite.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 import org.natrolite.BetterPlugin;
 
 public class Asset {
@@ -56,8 +58,10 @@ public class Asset {
   }
 
   public void copy(Path path, CopyOption... options) throws IOException {
-    try (InputStream in = plugin.getResource(file)) {
-      Files.copy(in, path, options);
+    if (!Files.exists(path) || Stream.of(options).anyMatch(o -> o == REPLACE_EXISTING)) {
+      try (InputStream in = plugin.getResource(file)) {
+        Files.copy(in, path, options);
+      }
     }
   }
 }

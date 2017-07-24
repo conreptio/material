@@ -17,27 +17,16 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.impl.config;
+package org.natrolite.util;
 
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.natrolite.impl.config.category.GeneralCategory;
-import org.natrolite.impl.config.category.SqlCategory;
+public final class StringUtils {
 
-@ConfigSerializable
-public class NatroliteConfig {
+  private StringUtils() {}
 
-  @Setting("general")
-  private GeneralCategory general = new GeneralCategory();
-
-  @Setting("sql")
-  private SqlCategory sql = new SqlCategory();
-
-  public GeneralCategory general() {
-    return general;
-  }
-
-  public SqlCategory getSql() {
-    return sql;
+  public static String capitalizeFirst(String text) {
+    if (text == null || text.isEmpty()) {
+      return text;
+    }
+    return text.substring(0, 1).toUpperCase() + text.substring(1);
   }
 }

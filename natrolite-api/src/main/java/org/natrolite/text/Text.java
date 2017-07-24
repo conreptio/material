@@ -176,6 +176,10 @@ public abstract class Text implements Comparable<Text> {
         .map(dictionary -> dictionary.get(key).map(Text::of).orElse(null));
   }
 
+  public static Text unwrap(BetterPlugin plugin, String key) {
+    return get(plugin, key).orElseThrow(IllegalStateException::new);
+  }
+
   /**
    * Gets an optional {@link Text} from the provided
    * plugin's {@link TranslationDictionary} by key and locale.
@@ -188,6 +192,10 @@ public abstract class Text implements Comparable<Text> {
   public static Optional<Text> get(BetterPlugin plugin, String key, Locale locale) {
     return TranslationDictionaries.plugin(plugin)
         .map(dictionary -> dictionary.get(key, locale).map(Text::of).orElse(null));
+  }
+
+  public static Text unwrap(BetterPlugin plugin, String key, Locale locale) {
+    return get(plugin, key, locale).orElseThrow(IllegalStateException::new);
   }
 
   /**

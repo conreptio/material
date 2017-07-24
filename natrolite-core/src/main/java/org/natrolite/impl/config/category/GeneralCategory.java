@@ -17,27 +17,18 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.impl.config;
+package org.natrolite.impl.config.category;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.natrolite.impl.config.category.GeneralCategory;
-import org.natrolite.impl.config.category.SqlCategory;
 
 @ConfigSerializable
-public class NatroliteConfig {
+public class GeneralCategory {
 
-  @Setting("general")
-  private GeneralCategory general = new GeneralCategory();
+  @Setting("language")
+  private LanguageCategory lang = new LanguageCategory();
 
-  @Setting("sql")
-  private SqlCategory sql = new SqlCategory();
-
-  public GeneralCategory general() {
-    return general;
-  }
-
-  public SqlCategory getSql() {
-    return sql;
+  public LanguageCategory lang() {
+    return lang;
   }
 }

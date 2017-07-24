@@ -22,7 +22,8 @@ package org.natrolite.impl;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.nio.file.StandardOpenOption.CREATE;
-import static org.natrolite.impl.StaticMessageProvider.in;
+import static org.natrolite.text.Text.unwrap;
+import static org.natrolite.util.StringUtils.capitalizeFirst;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -34,9 +35,11 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
@@ -46,12 +49,14 @@ import org.natrolite.Natrolite;
 import org.natrolite.NatroliteInternal;
 import org.natrolite.NatrolitePlugin;
 import org.natrolite.configurate.types.HoconConfig;
+import org.natrolite.dictionary.TranslationDictionary;
+import org.natrolite.dictionary.bundle.MultiSourceResourceBundleTranslationDictionary;
+import org.natrolite.dictionary.bundle.SimpleResourceBundleTranslationDictionary;
 import org.natrolite.impl.config.NatroliteConfig;
 import org.natrolite.impl.config.ServerConfig;
 import org.natrolite.impl.server.NatroliteServerManager;
 import org.natrolite.impl.service.NatroliteServicesManager;
 import org.natrolite.impl.service.sql.SqlServiceImpl;
-import org.natrolite.lang.legacy.MessageProvider;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.service.sql.SqlService;
 import org.natrolite.updater.Spigot;
@@ -64,20 +69,17 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   public static final String TABLE_PREFIX = "natro_";
   public static final String SERVER_INFO = "server.dat";
 
-  @Nullable
-  private static NatroliteBukkit plugin;
+  @Nullable private static NatroliteBukkit plugin;
+  @Nullable private Throwable throwable;
 
-  private UUID serverId;
-  private String serverName;
-
-  @Nullable
-  private NatroliteServicesManager servicesManager;
-
-  @Nullable
-  private NatroliteServerManager serverManager;
+  @Nullable private NatroliteServicesManager servicesManager;
+  @Nullable private NatroliteServerManager serverManager;
 
   private HoconConfig<NatroliteConfig> config;
   private HoconConfig<ServerConfig> serverConfig;
+
+  private UUID serverId;
+  private String serverName;
 
   public static NatroliteBukkit getInstance() {
     return checkNotNull(plugin);
@@ -89,39 +91,46 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   @Override
   public void onLoad() {
-    ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
-    ReflectionUtil.setFinalStatic(NatroliteBukkit.class, "plugin", this);
-
     try {
-      getAsset(LICENSE).copyIn("license", REPLACE_EXISTING);
-      getAsset(THIRD_PARTY_LICENSES).copyIn("license", REPLACE_EXISTING);
-    } catch (IOException ex) {
-      getLogger().log(Level.WARNING, "Could not save licenses", ex);
-    }
+      ReflectionUtil.setFinalStatic(Natrolite.class, "natrolite", this);
+      ReflectionUtil.setFinalStatic(NatroliteBukkit.class, "plugin", this);
 
-    try {
-      Class.forName("org.h2.Driver");
+      try {
+        getAsset(LICENSE).copyIn("license", REPLACE_EXISTING);
+        getAsset(THIRD_PARTY_LICENSES).copyIn("license", REPLACE_EXISTING);
+      } catch (IOException ex) {
+        getLogger().log(Level.WARNING, "Could not save licenses", ex);
+      }
+
+      try {
+        Class.forName("org.h2.Driver");
+      } catch (Throwable throwable) {
+        getLogger().log(Level.WARNING, "Could not find the h2 driver");
+      }
+
+      config = new HoconConfig<>(
+          getRoot().resolve("config").resolve("natrolite.conf"),
+          NatroliteConfig.class
+      );
+
+      serverConfig = new HoconConfig<>(
+          getRoot().resolve("config").resolve("server.conf"),
+          "server",
+          ServerConfig.class
+      );
+
+      setupDictionary();
+      setupMetrics();
+
+      register(SqlService.class, new SqlServiceImpl(), ServicePriority.Low);
+
+      this.serverId = readUUID();
+      this.serverName = serverConfig.getConfig().name();
+
+      unwrap(this, "system.server.uuid").args(serverId).info(getLogger());
     } catch (Throwable throwable) {
-      getLogger().log(Level.WARNING, "Could not find the h2 driver");
+      this.throwable = throwable;
     }
-
-    config = new HoconConfig<>(
-        getRoot().resolve("config").resolve("natrolite.conf"),
-        NatroliteConfig.class
-    );
-
-    serverConfig = new HoconConfig<>(
-        getRoot().resolve("config").resolve("server.conf"),
-        "server",
-        ServerConfig.class
-    );
-
-    this.serverId = readUUID();
-    this.serverName = serverConfig.getConfig().name();
-
-    getLogger().info("Server UUID is " + serverId);
-
-    register(SqlService.class, new SqlServiceImpl(), ServicePriority.Low);
   }
 
   @Override
@@ -129,12 +138,14 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     try {
       final long start = System.currentTimeMillis();
 
+      if (throwable != null) {
+        throw throwable;
+      }
+
       this.servicesManager = new NatroliteServicesManager(this);
       this.serverManager = new NatroliteServerManager(this);
 
-      setupMetrics();
-
-      in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
+      unwrap(this, "system.enabled").args(System.currentTimeMillis() - start).info(getLogger());
     } catch (Throwable throwable) {
       getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
       setEnabled(false);
@@ -159,11 +170,6 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     } catch (Throwable throwable) {
       getLogger().log(Level.WARNING, "Could not stop server manager on shutdown", throwable);
     }
-  }
-
-  @Override
-  public MessageProvider getMessageProvider() {
-    return StaticMessageProvider.get();
   }
 
   @Override
@@ -232,5 +238,28 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     } catch (Throwable throwable) {
       getLogger().log(Level.FINE, "Could not start metrics service", throwable);
     }
+  }
+
+  private void setupDictionary() {
+    final Locale def = getSettings().general().lang().locale();
+    @Nonnull TranslationDictionary dictionary;
+    if (getSettings().general().lang().custom()) {
+      try {
+        getAsset("natrolite_en.properties").copyIn("message");
+        getAsset("natrolite_de.properties").copyIn("message");
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+      dictionary = new MultiSourceResourceBundleTranslationDictionary(this, def, BUNDLE_NAME);
+      //TODO custom messages
+    } else {
+      dictionary = new SimpleResourceBundleTranslationDictionary(this, def, BUNDLE_NAME);
+    }
+    getServicesManager().register(
+        TranslationDictionary.class, dictionary, this, ServicePriority.Low
+    );
+    unwrap(this, "system.language")
+        .args(capitalizeFirst(def.getDisplayName(def)))
+        .info(getLogger());
   }
 }

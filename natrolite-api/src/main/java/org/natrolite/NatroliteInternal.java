@@ -22,20 +22,13 @@ package org.natrolite;
 import java.nio.file.Path;
 import java.util.UUID;
 import org.bukkit.plugin.Plugin;
-import org.natrolite.lang.legacy.MessageProvider;
 
 public interface NatroliteInternal {
 
   String PLUGIN_NAME = "Natrolite";
+  String BUNDLE_NAME = "natrolite";
   String LICENSE = "LICENSE.txt";
   String THIRD_PARTY_LICENSES = "THIRD-PARTY-LICENSES.txt";
-
-  /**
-   * Gets the {@link MessageProvider} belonging this plugin.
-   *
-   * @return The Message Provider
-   */
-  MessageProvider getMessageProvider();
 
   /**
    * Gets the Natrolite {@link Plugin}.
