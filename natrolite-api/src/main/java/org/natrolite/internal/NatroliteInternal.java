@@ -21,6 +21,8 @@ package org.natrolite.internal;
 
 import java.nio.file.Path;
 import java.util.UUID;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
 import org.natrolite.BetterPlugin;
 import org.natrolite.internal.config.NatroliteConfig;
@@ -53,5 +55,23 @@ public interface NatroliteInternal {
    */
   UUID getServerId();
 
+  /**
+   * Gets the {@link NatroliteConfig}.
+   *
+   * <p><b>Note:</b> Calls to the config are not safe and can change over time.
+   *
+   * @return The natrolite config
+   */
   NatroliteConfig getSettings();
+
+  /**
+   * Gets the {@link TypeSerializerCollection} Natrolite is using.
+   *
+   * <p>Use this rather than {@link TypeSerializers#getDefaultSerializers()}.
+   * If you want to add your own {@link TypeSerializers}, create a new child with {@link
+   * TypeSerializerCollection#newChild()}
+   *
+   * @return The serializer collection
+   */
+  TypeSerializerCollection getSerializers();
 }

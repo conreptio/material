@@ -19,6 +19,8 @@
 
 package org.natrolite.minigames.arena;
 
+import static ninja.leaping.configurate.gson.GsonConfigurationLoader.builder;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.MapMaker;
 import com.google.common.reflect.TypeToken;
@@ -31,8 +33,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.concurrent.NotThreadSafe;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.gson.GsonConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.natrolite.Natrolite;
 import org.natrolite.arena.Arena;
 import org.natrolite.arena.ArenaService;
 import org.natrolite.minigames.MinigamesBukkit;
@@ -44,12 +48,14 @@ public class NatroliteArenaService implements ArenaService {
   private static final String PATTERN = "^[a-zA-Z0-9]*$";
   private static final String FILE = "arenas.json";
   private final MinigamesBukkit natrolite;
+  private final ConfigurationOptions options;
   private final GsonConfigurationLoader loader;
   private Map<String, Arena> arenas = new MapMaker().concurrencyLevel(4).makeMap();
 
   public NatroliteArenaService(MinigamesBukkit natrolite) {
     this.natrolite = natrolite;
-    this.loader = GsonConfigurationLoader.builder().setPath(natrolite.resolve(FILE)).build();
+    this.options = ConfigurationOptions.defaults().setSerializers(Natrolite.getSerializers());
+    this.loader = builder().setPath(natrolite.getRoot().resolve(FILE)).build();
   }
 
   @Override
@@ -81,7 +87,7 @@ public class NatroliteArenaService implements ArenaService {
 
   @Override
   public void loadArenas() throws IOException, ObjectMappingException {
-    final ConfigurationNode root = loader.load(natrolite.defaultOptions());
+    final ConfigurationNode root = loader.load(options);
     this.arenas = root.getList(TypeToken.of(Arena.class)).stream()
         .collect(Collectors.toMap(Arena::getId, arena -> arena));
   }
@@ -89,7 +95,7 @@ public class NatroliteArenaService implements ArenaService {
   private void save() {
     natrolite.getServer().getScheduler().runTaskAsynchronously(natrolite, () -> {
       try {
-        final ConfigurationNode root = loader.load(natrolite.defaultOptions());
+        final ConfigurationNode root = loader.load(options);
         root.setValue(new TypeToken<List<Arena>>() {}, new ArrayList<>(arenas.values()));
         loader.save(root);
       } catch (IOException | ObjectMappingException ex) {

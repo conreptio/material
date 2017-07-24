@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nullable;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicesManager;
@@ -51,6 +52,10 @@ public final class Natrolite {
 
   public static UUID getServerId() {
     return getNatrolite().getServerId();
+  }
+
+  public static TypeSerializerCollection getSerializers() {
+    return getNatrolite().getSerializers();
   }
 
   public static Server getServer() {

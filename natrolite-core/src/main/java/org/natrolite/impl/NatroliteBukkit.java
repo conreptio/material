@@ -22,6 +22,7 @@ package org.natrolite.impl;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.nio.file.StandardOpenOption.CREATE;
+import static ninja.leaping.configurate.objectmapping.serialize.TypeSerializers.getDefaultSerializers;
 import static org.natrolite.text.Text.unwrap;
 import static org.natrolite.util.StringUtils.capitalizeFirst;
 
@@ -41,6 +42,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.natrolite.BetterPlugin;
@@ -70,6 +72,9 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
   public static final String SERVER_INFO = "server.dat";
 
   @Nullable private static NatroliteBukkit plugin;
+
+  private final TypeSerializerCollection serializers = getDefaultSerializers().newChild();
+
   @Nullable private Throwable throwable;
 
   @Nullable private NatroliteServicesManager servicesManager;
@@ -193,6 +198,11 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   public NatroliteConfig getSettings() {
     return config.getConfig();
+  }
+
+  @Override
+  public TypeSerializerCollection getSerializers() {
+    return serializers;
   }
 
   private UUID readUUID() {

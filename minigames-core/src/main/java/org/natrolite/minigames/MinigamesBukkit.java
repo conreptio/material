@@ -20,6 +20,7 @@
 package org.natrolite.minigames;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static org.natrolite.Natrolite.getSerializers;
 import static org.natrolite.internal.NatroliteInternal.LICENSE;
 import static org.natrolite.internal.NatroliteInternal.THIRD_PARTY_LICENSES;
 import static org.natrolite.minigames.StaticMessageProvider.in;
@@ -32,9 +33,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import ninja.leaping.configurate.ConfigurationOptions;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.natrolite.BetterPlugin;
@@ -65,7 +63,6 @@ import org.natrolite.sign.SignService;
 public final class MinigamesBukkit extends BetterPlugin implements MinigamesInternal {
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
-  private TypeSerializerCollection serializers;
 
   @Nullable
   private Throwable throwable;
@@ -111,9 +108,8 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
 
       registry.bake();
 
-      serializers = TypeSerializers.getDefaultSerializers().newChild();
-      serializers.registerType(TypeToken.of(Arena.class), new ArenaSerializer(this));
-      serializers.registerType(TypeToken.of(GameSign.class), new SignSerializer(this));
+      getSerializers().registerType(TypeToken.of(Arena.class), new ArenaSerializer(this));
+      getSerializers().registerType(TypeToken.of(GameSign.class), new SignSerializer(this));
 
       in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
 
@@ -152,19 +148,6 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
   @Override
   public NatroliteRegistry getRegistry() {
     return registry;
-  }
-
-  @Override
-  public TypeSerializerCollection getSerializers() {
-    return serializers;
-  }
-
-  public Path resolve(String file) {
-    return getRoot().resolve(file);
-  }
-
-  public ConfigurationOptions defaultOptions() {
-    return ConfigurationOptions.defaults().setSerializers(getSerializers());
   }
 
   private <T> void register(Class<T> clazz, T provider, ServicePriority priority) {

@@ -19,6 +19,8 @@
 
 package org.natrolite.minigames.sign;
 
+import static ninja.leaping.configurate.gson.GsonConfigurationLoader.builder;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeToken;
 import java.io.IOException;
@@ -26,9 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.gson.GsonConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.util.BlockVector;
+import org.natrolite.Natrolite;
 import org.natrolite.minigames.MinigamesBukkit;
 import org.natrolite.sign.GameSign;
 import org.natrolite.sign.SignService;
@@ -37,6 +41,7 @@ public final class NatroliteSignService implements SignService {
 
   private static final String FILE = "signs.json";
   private final MinigamesBukkit natrolite;
+  private final ConfigurationOptions options;
   private final GsonConfigurationLoader loader;
   private List<GameSign> signs = new ArrayList<>();
 
@@ -47,12 +52,13 @@ public final class NatroliteSignService implements SignService {
    */
   public NatroliteSignService(MinigamesBukkit natrolite) {
     this.natrolite = natrolite;
-    this.loader = GsonConfigurationLoader.builder().setPath(natrolite.resolve(FILE)).build();
+    this.options = ConfigurationOptions.defaults().setSerializers(Natrolite.getSerializers());
+    this.loader = builder().setPath(natrolite.getRoot().resolve(FILE)).build();
   }
 
   @Override
   public void loadSigns() throws Exception {
-    final ConfigurationNode root = loader.load(natrolite.defaultOptions());
+    final ConfigurationNode root = loader.load(options);
     this.signs = root.getList(TypeToken.of(GameSign.class));
   }
 
@@ -72,7 +78,7 @@ public final class NatroliteSignService implements SignService {
 
   private void save() {
     try {
-      final ConfigurationNode root = loader.load(natrolite.defaultOptions());
+      final ConfigurationNode root = loader.load(options);
       root.setValue(new TypeToken<List<GameSign>>() {}, signs);
       loader.save(root);
     } catch (IOException | ObjectMappingException ex) {
