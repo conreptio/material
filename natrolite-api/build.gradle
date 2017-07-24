@@ -52,5 +52,6 @@ dependencies {
   }
   compile(group: 'ninja.leaping.configurate', name: 'configurate-yaml', version: '3.3') {
     exclude module: 'guava'
+    exclude module: 'snakeyaml'
   }
 }
