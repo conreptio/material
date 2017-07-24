@@ -112,8 +112,6 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
       final int signAmount = sign.getSigns().size();
       in(getLogger(), signAmount == 1 ? "sign.load.one" : "sign.load", signAmount);
 
-      getServer().getPluginManager().registerEvents(new NatroliteUpdater(this), this);
-
       ArenaTicker.start(this);
 
       setupMetrics();
