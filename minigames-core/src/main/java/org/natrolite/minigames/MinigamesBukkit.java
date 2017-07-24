@@ -26,7 +26,6 @@ import static org.natrolite.minigames.StaticMessageProvider.in;
 
 import com.google.common.reflect.TypeToken;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -141,13 +140,6 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
   @Override
   public TypeSerializerCollection getSerializers() {
     return serializers;
-  }
-
-  @Override
-  public void saveResource(String resourcePath, boolean replace) {
-    if (!Files.exists(getRoot().resolve(resourcePath)) || replace) {
-      super.saveResource(resourcePath, replace);
-    }
   }
 
   public Path resolve(String file) {
