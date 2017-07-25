@@ -63,6 +63,7 @@ import org.natrolite.internal.config.ServerConfig;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.service.sql.SqlService;
 import org.natrolite.updater.Spigot;
+import org.natrolite.util.Dependency;
 import org.natrolite.util.ReflectionUtil;
 
 @Spigot("39140")
@@ -107,6 +108,8 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
       } catch (IOException ex) {
         getLogger().log(Level.WARNING, "Could not save licenses", ex);
       }
+
+      Dependency.of("com.flowpowered", "flow-nbt", "1.0.0").install(this);
 
       try {
         Class.forName("org.h2.Driver");

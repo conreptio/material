@@ -38,9 +38,10 @@ license {
   exclude 'org/natrolite/text/LiteralText.java'
   exclude 'org/natrolite/text/Text.java'
   exclude 'org/natrolite/text/TextIterator.java'
-  exclude 'org/natrolite/util/Tristate.java'
+  exclude 'org/natrolite/util/Dependency.java'
   exclude 'org/natrolite/util/Locales.java'
   exclude 'org/natrolite/util/OptBool.java'
+  exclude 'org/natrolite/util/Tristate.java'
 }
 
 dependencies {
