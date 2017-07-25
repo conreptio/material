@@ -53,6 +53,7 @@ import org.natrolite.configurate.types.HoconConfig;
 import org.natrolite.dictionary.TranslationDictionary;
 import org.natrolite.dictionary.bundle.MultiSourceResourceBundleTranslationDictionary;
 import org.natrolite.dictionary.bundle.SimpleResourceBundleTranslationDictionary;
+import org.natrolite.impl.command.ServicesCommand;
 import org.natrolite.impl.server.NatroliteServerManager;
 import org.natrolite.impl.service.NatroliteServicesManager;
 import org.natrolite.impl.service.sql.SqlServiceImpl;
@@ -146,6 +147,8 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
       if (throwable != null) {
         throw throwable;
       }
+
+      getCommand("services").setExecutor(new ServicesCommand(this));
 
       this.servicesManager = new NatroliteServicesManager(this);
       this.serverManager = new NatroliteServerManager(this);

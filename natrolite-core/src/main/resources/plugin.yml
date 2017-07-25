@@ -24,3 +24,9 @@ version: ${version}
 author: XNITY
 description: ${description}
 website: https://docs.xnity.net/stable/en/plugins/natrolite
+
+commands:
+  services:
+    description: Prints a list of registered services
+    usage: /<command>
+    permission: natrolite.services.list

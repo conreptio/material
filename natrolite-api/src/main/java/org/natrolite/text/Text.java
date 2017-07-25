@@ -360,6 +360,10 @@ public abstract class Text implements Comparable<Text> {
     logger.log(Level.SEVERE, toPlain(), throwable);
   }
 
+  public final Text color(TextColor color) {
+    return toBuilder().color(color).build();
+  }
+
   /**
    * Concatenates the specified {@link Text} to this Text and returns the
    * result.
