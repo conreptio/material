@@ -17,3 +17,5 @@ dependencies {
 processResources {
   expand(version: project.version, description: project.description)
 }
+
+apply from: rootProject.file('gradle/minecraft.gradle')

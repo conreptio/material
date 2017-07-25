@@ -1,0 +1,13 @@
+ext.export = "$project.name-$project.version-shaded.jar"
+
+task('export', dependsOn: shadowJar) {
+  group = 'minecraft'
+  copy {
+    from "build/libs/$project.export"
+    into rootProject.file('.server/plugins')
+  }
+}
+
+clean.doFirst {
+  delete rootProject.file('.server/plugins')
+}
