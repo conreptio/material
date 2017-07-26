@@ -122,14 +122,14 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
 
       final SignService sign = Natrolite.provideUnchecked(SignService.class);
       sign.loadSigns();
-      final int signAmount = sign.getSigns().size();
-      unb(this, "system." + (signAmount == 1 ? "sign.load.one" : "sign.load")).args(signAmount)
-          .build().info(getLogger());
+
+      final String st = sign.getSigns().size() == 1 ? "system.sign.load.one" : "system.sign.load";
+      unb(this, st).args(sign.getSigns().size()).build().info(getLogger());
 
       ArenaTicker.start(this);
 
-      unb(Natrolite.getPlugin(), "system.enabled").args(System.currentTimeMillis() - start).build()
-          .info(getLogger());
+      final long end = System.currentTimeMillis() - start;
+      unb(Natrolite.getPlugin(), "system.enabled").args(end).build().info(getLogger());
     } catch (Throwable throwable) {
       getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
       setEnabled(false);
