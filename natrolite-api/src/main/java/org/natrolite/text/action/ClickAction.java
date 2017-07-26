@@ -25,6 +25,8 @@
 
 package org.natrolite.text.action;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import java.net.URL;
 import org.natrolite.text.Text;
 
@@ -60,13 +62,9 @@ public abstract class ClickAction<R> extends TextAction<R> {
     }
 
     @Override
-    public String getAction() {
-      return "open_url";
-    }
-
-    @Override
-    public String getValue() {
-      return result.toString();
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      object.addProperty("action", "open_url");
+      object.addProperty("value", result.toString());
     }
   }
 
@@ -86,13 +84,9 @@ public abstract class ClickAction<R> extends TextAction<R> {
     }
 
     @Override
-    public String getAction() {
-      return "run_command";
-    }
-
-    @Override
-    public String getValue() {
-      return result;
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      object.addProperty("action", "run_command");
+      object.addProperty("value", result);
     }
   }
 
@@ -112,13 +106,9 @@ public abstract class ClickAction<R> extends TextAction<R> {
     }
 
     @Override
-    public String getAction() {
-      return "change_page";
-    }
-
-    @Override
-    public String getValue() {
-      return String.valueOf(result);
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      object.addProperty("action", "change_page");
+      object.addProperty("value", result);
     }
   }
 
@@ -138,13 +128,9 @@ public abstract class ClickAction<R> extends TextAction<R> {
     }
 
     @Override
-    public String getAction() {
-      return "suggest_command";
-    }
-
-    @Override
-    public String getValue() {
-      return result;
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      object.addProperty("action", "suggest_command");
+      object.addProperty("value", result);
     }
   }
 }

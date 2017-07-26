@@ -25,6 +25,8 @@
 
 package org.natrolite.text.action;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import org.natrolite.text.Text;
 
 /**
@@ -64,13 +66,8 @@ public abstract class ShiftClickAction<R> extends TextAction<R> {
     }
 
     @Override
-    public String getAction() {
-      return "insertion";
-    }
-
-    @Override
-    public String getValue() {
-      return result;
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      object.addProperty("insertion", result);
     }
   }
 }

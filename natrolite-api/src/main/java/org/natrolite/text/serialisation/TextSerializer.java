@@ -36,26 +36,21 @@ public abstract class TextSerializer {
 
     text.getClickAction().ifPresent(a -> {
       JsonObject clickAction = new JsonObject();
-      clickAction.addProperty("action", a.getAction());
-      clickAction.addProperty("value", a.getValue());
+      a.apply(clickAction, context);
       object.add("clickEvent", clickAction);
     });
 
     text.getHoverAction().ifPresent(a -> {
       JsonObject hoverAction = new JsonObject();
-      hoverAction.addProperty("action", a.getAction());
-      hoverAction.addProperty("value", a.getValue());
+      a.apply(hoverAction, context);
       object.add("hoverEvent", hoverAction);
     });
 
-    text.getShiftClickAction().ifPresent(a -> {
-      object.addProperty("insertion", a.getValue());
-    });
+    text.getShiftClickAction().ifPresent(a -> a.apply(object, context));
 
     if (!text.getChildren().isEmpty()) {
       object.add("extra", context.serialize(text.getChildren()));
     }
-
     return object;
   }
 }

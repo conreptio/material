@@ -28,6 +28,8 @@ package org.natrolite.text.action;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.MoreObjects;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import org.natrolite.text.TextElement;
 
 /**
@@ -55,9 +57,7 @@ public abstract class TextAction<R> implements TextElement {
     return this.result;
   }
 
-  public abstract String getAction();
-
-  public abstract String getValue();
+  public abstract void apply(JsonObject object, JsonSerializationContext context);
 
   @Override
   public boolean equals(Object o) {

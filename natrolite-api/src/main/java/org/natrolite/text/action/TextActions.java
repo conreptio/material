@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.natrolite.text.Text;
 
 /**
  * Utility methods to create instances of {@link TextAction}s.
@@ -91,7 +92,7 @@ public final class TextActions {
    * @param text The text to display
    * @return The created hover action instance
    */
-  public static HoverAction.ShowText showText(String[] text) {
+  public static HoverAction.ShowText showText(Text text) {
     return new HoverAction.ShowText(text);
   }
 

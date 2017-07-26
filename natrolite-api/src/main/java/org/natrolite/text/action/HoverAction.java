@@ -28,7 +28,7 @@ package org.natrolite.text.action;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.gson.JsonObject;
-import java.util.Arrays;
+import com.google.gson.JsonSerializationContext;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -36,7 +36,6 @@ import net.xnity.odium.Odium;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.json.simple.JSONArray;
 import org.natrolite.Identifiable;
 import org.natrolite.text.Text;
 
@@ -64,20 +63,16 @@ public abstract class HoverAction<R> extends TextAction<R> {
   /**
    * Shows some text.
    */
-  public static final class ShowText extends HoverAction<String[]> {
+  public static final class ShowText extends HoverAction<Text> {
 
-    ShowText(String[] text) {
+    ShowText(Text text) {
       super(text);
     }
 
     @Override
-    public String getAction() {
-      return "show_text";
-    }
-
-    @Override
-    public String getValue() {
-      return JSONArray.toJSONString(Arrays.asList(getResult()));
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      object.addProperty("action", "show_text");
+      object.add("value", context.serialize(result));
     }
   }
 
@@ -97,13 +92,9 @@ public abstract class HoverAction<R> extends TextAction<R> {
     }
 
     @Override
-    public String getAction() {
-      return "show_item";
-    }
-
-    @Override
-    public String getValue() {
-      return Odium.itemToJson(getResult()).orElse("{}");
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      object.addProperty("action", "show_item");
+      object.addProperty("value", Odium.itemToJson(getResult()).orElse("{}"));
     }
   }
 
@@ -123,22 +114,17 @@ public abstract class HoverAction<R> extends TextAction<R> {
     }
 
     @Override
-    public String getAction() {
-      return "show_entity";
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public String getValue() {
-      JsonObject object = new JsonObject();
-      object.addProperty("id", getResult().getUniqueId().toString());
-      object.addProperty("name", getResult().getName());
+    public void apply(JsonObject object, JsonSerializationContext context) {
+      JsonObject tmp = new JsonObject();
+      tmp.addProperty("id", getResult().getUniqueId().toString());
+      tmp.addProperty("name", getResult().getName());
       getResult().getType().ifPresent(type -> {
         if (type.getName() != null) {
-          object.addProperty("type", "minecraft:" + type.getName());
+          tmp.addProperty("type", "minecraft:" + type.getName());
         }
       });
-      return object.toString();
+      object.addProperty("action", "show_entity");
+      object.addProperty("value", tmp.toString());
     }
 
     /**

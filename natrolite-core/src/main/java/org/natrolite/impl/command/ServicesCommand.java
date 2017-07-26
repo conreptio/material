@@ -19,9 +19,6 @@
 
 package org.natrolite.impl.command;
 
-import static org.bukkit.ChatColor.AQUA;
-import static org.bukkit.ChatColor.GREEN;
-import static org.bukkit.ChatColor.RED;
 import static org.natrolite.text.format.TextColor.YELLOW;
 
 import java.util.Collection;
@@ -32,6 +29,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.natrolite.impl.NatroliteBukkit;
 import org.natrolite.text.Text;
+import org.natrolite.text.action.TextActions;
+import org.natrolite.text.format.TextColor;
 
 public final class ServicesCommand implements CommandExecutor {
 
@@ -49,14 +48,22 @@ public final class ServicesCommand implements CommandExecutor {
         Text.get(plugin, "services.loaded").ifPresent(t -> t.toBuilder().args(services.size())
             .color(YELLOW).build().to(sender));
         for (Class<?> service : services) {
-          final StringBuilder builder = new StringBuilder(AQUA + service.getSimpleName() + " ");
+          final Text.Builder text = Text.builder().append(Text.builder(service.getSimpleName())
+              .color(TextColor.AQUA)
+              .onHover(TextActions.showText(Text.of(service.getCanonicalName())))
+              .build()).append(Text.of(" "));
           final RegisteredServiceProvider pr = Bukkit.getServicesManager().getRegistration(service);
           if (pr == null) {
-            builder.append(RED).append("(No Provider)");
+            text.append(Text.builder("(No Provider)")
+                .color(TextColor.RED)
+                .build());
           } else {
-            builder.append(GREEN).append('(').append(pr.getPlugin().getName()).append(')');
+            text.append(Text.builder("({0})")
+                .args(pr.getPlugin().getName())
+                .color(TextColor.GREEN)
+                .build());
           }
-          sender.sendMessage(builder.toString());
+          text.build().to(sender);
         }
       }
       return true;
