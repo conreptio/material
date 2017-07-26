@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static ninja.leaping.configurate.objectmapping.serialize.TypeSerializers.getDefaultSerializers;
-import static org.natrolite.text.Text.unwrap;
+import static org.natrolite.text.Text.unb;
 import static org.natrolite.util.StringUtils.capitalizeFirst;
 
 import java.io.BufferedOutputStream;
@@ -72,6 +72,7 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
 
   public static final String TABLE_PREFIX = "natro_";
   public static final String SERVER_INFO = "server.dat";
+  public static final String URL = "https://github.com/kanoxx/odium/releases/download/1.0.1/odium.jar";
 
   @Nullable private static NatroliteBukkit plugin;
 
@@ -109,14 +110,6 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
         getLogger().log(Level.WARNING, "Could not save licenses", ex);
       }
 
-      Dependency.of("com.flowpowered", "flow-nbt", "1.0.0").install(this);
-
-      try {
-        Class.forName("org.h2.Driver");
-      } catch (Throwable throwable) {
-        getLogger().log(Level.WARNING, "Could not find the h2 driver");
-      }
-
       config = new HoconConfig<>(
           getRoot().resolve("config").resolve("natrolite.conf"),
           NatroliteConfig.class
@@ -128,6 +121,15 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
           ServerConfig.class
       );
 
+      Dependency.of("com.flowpowered", "flow-nbt", "1.0.0").install(this);
+      Dependency.of(URL, "odium.jar").install(this);
+
+      try {
+        Class.forName("org.h2.Driver");
+      } catch (Throwable throwable) {
+        getLogger().log(Level.WARNING, "Could not find the h2 driver");
+      }
+
       setupDictionary();
       setupMetrics();
 
@@ -136,7 +138,7 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
       this.serverId = readUUID();
       this.serverName = serverConfig.getConfig().name();
 
-      unwrap(this, "system.server.uuid").args(serverId).info(getLogger());
+      unb(this, "system.server.uuid").args(serverId).build().info(getLogger());
     } catch (Throwable throwable) {
       this.throwable = throwable;
     }
@@ -156,7 +158,9 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
       this.servicesManager = new NatroliteServicesManager(this);
       this.serverManager = new NatroliteServerManager(this);
 
-      unwrap(this, "system.enabled").args(System.currentTimeMillis() - start).info(getLogger());
+      unb(this, "system.enabled").args(System.currentTimeMillis() - start)
+          .build()
+          .info(getLogger());
     } catch (Throwable throwable) {
       getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
       setEnabled(false);
@@ -274,8 +278,7 @@ public final class NatroliteBukkit extends BetterPlugin implements NatroliteInte
     getServicesManager().register(
         TranslationDictionary.class, dictionary, this, ServicePriority.Low
     );
-    unwrap(this, "system.language")
-        .args(capitalizeFirst(def.getDisplayName(def)))
+    unb(this, "system.language").args(capitalizeFirst(def.getDisplayName(def))).build()
         .info(getLogger());
   }
 }

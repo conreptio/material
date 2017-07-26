@@ -23,19 +23,26 @@
  * THE SOFTWARE.
  */
 
-
 package org.natrolite.text.format;
 
-import com.google.common.base.MoreObjects;
-import java.util.Objects;
-import javax.annotation.Nullable;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-public final class TextFormat {
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import java.util.Optional;
+import javax.annotation.Nullable;
+import org.natrolite.text.Text;
+import org.natrolite.text.TextElement;
+
+/**
+ * Represents a pair of {@link TextStyle} and {@link TextColor}.
+ */
+public final class TextFormat implements TextElement {
 
   /**
    * An empty {@link TextFormat} with no {@link TextColor} and no {@link TextStyle}.
    */
-  public static final TextFormat NONE = new TextFormat(null, null);
+  public static final TextFormat NONE = new TextFormat(null, TextStyles.NONE);
 
   /**
    * The text color.
@@ -46,19 +53,7 @@ public final class TextFormat {
   /**
    * The text style.
    */
-  @Nullable
   private final TextStyle style;
-
-  /**
-   * Constructs a new {@link TextFormat}.
-   *
-   * @param color The color
-   * @param style The style
-   */
-  private TextFormat(@Nullable TextColor color, @Nullable TextStyle style) {
-    this.color = color;
-    this.style = style;
-  }
 
   /**
    * Gets the {@link TextFormat} with the default style and color.
@@ -80,13 +75,24 @@ public final class TextFormat {
   }
 
   /**
+   * Constructs a new {@link TextFormat}.
+   *
+   * @param color The color
+   * @param style The style
+   */
+  private TextFormat(@Nullable TextColor color, TextStyle style) {
+    this.color = color;
+    this.style = checkNotNull(style, "style");
+  }
+
+  /**
    * Constructs a new {@link TextFormat} with the specific color.
    *
    * @param color The color
    * @return The new text format
    */
   public static TextFormat of(TextColor color) {
-    return new TextFormat(color, null);
+    return new TextFormat(color, TextStyles.NONE);
   }
 
   /**
@@ -96,7 +102,7 @@ public final class TextFormat {
    * @param style The style
    * @return The new text format
    */
-  public static TextFormat of(TextColor color, TextStyle style) {
+  public static TextFormat of(@Nullable TextColor color, TextStyle style) {
     return new TextFormat(color, style);
   }
 
@@ -105,17 +111,16 @@ public final class TextFormat {
    *
    * @return The color
    */
-  @Nullable
-  public TextColor getColor() {
-    return this.color;
+  public Optional<TextColor> getColor() {
+    return Optional.ofNullable(this.color);
   }
+
 
   /**
    * Returns the {@link TextStyle} in this format.
    *
    * @return The style
    */
-  @Nullable
   public TextStyle getStyle() {
     return this.style;
   }
@@ -141,18 +146,56 @@ public final class TextFormat {
   }
 
   /**
+   * Returns a new {@link TextFormat} that combines this and the given format.
+   * The given format takes higher priority than this one. Due to this the
+   * color will only fallback to this one if the given format's color is
+   * Styles are combined using {@link TextStyle#and(TextStyle...)}.
+   *
+   * @param format The format to merge
+   * @return The new text format
+   */
+  public TextFormat merge(TextFormat format) {
+    TextColor color = format.color;
+    // If the given format's color is NONE use this ones
+    if (color == null) {
+      color = this.color;
+      // If the given format's color is RESET use NONE
+    } else if (color == TextColor.RESET) {
+      color = null;
+    }
+    return new TextFormat(color, this.style.and(format.style));
+  }
+
+  /**
    * Returns whether this {@link TextFormat} has no color and format
    * specified.
    *
    * @return If the format does not contain a color or any styles
    */
   public boolean isEmpty() {
-    return this.color == null && this.style == null;
+    return this.color == null && this.style.isEmpty();
+  }
+
+  @Override
+  public void applyTo(Text.Builder builder) {
+    builder.format(this);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    TextFormat that = (TextFormat) o;
+    return Objects.equal(color, that.color) && Objects.equal(style, that.style);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.color, this.style);
+    return Objects.hashCode(this.color, this.style);
   }
 
   @Override

@@ -46,8 +46,8 @@ public final class ServicesCommand implements CommandExecutor {
     if (command.getName().equalsIgnoreCase("services")) {
       final Collection<Class<?>> services = Bukkit.getServicesManager().getKnownServices();
       if (!services.isEmpty()) {
-        Text.get(plugin, "services.loaded").ifPresent(t -> t.args(services.size()).color(YELLOW)
-            .send(sender));
+        Text.get(plugin, "services.loaded").ifPresent(t -> t.toBuilder().args(services.size())
+            .color(YELLOW).build().to(sender));
         for (Class<?> service : services) {
           final StringBuilder builder = new StringBuilder(AQUA + service.getSimpleName() + " ");
           final RegisteredServiceProvider pr = Bukkit.getServicesManager().getRegistration(service);

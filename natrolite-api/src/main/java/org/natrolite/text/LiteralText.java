@@ -28,12 +28,15 @@ package org.natrolite.text;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 import javax.annotation.Nullable;
+import org.natrolite.text.action.ClickAction;
+import org.natrolite.text.action.HoverAction;
+import org.natrolite.text.action.ShiftClickAction;
 import org.natrolite.text.format.TextColor;
 import org.natrolite.text.format.TextFormat;
 import org.natrolite.text.format.TextStyle;
@@ -52,12 +55,18 @@ public final class LiteralText extends Text {
    * Constructs a new immutable {@link LiteralText} for the given plain text
    * content with the specified formatting and text actions applied.
    *
-   * @param format   The format of the text
-   * @param children The immutable list of children of the text
-   * @param content  The plain text content of the text
+   * @param format           The format of the text
+   * @param children         The immutable list of children of the text
+   * @param clickAction      The click action of the text, or {@code null} for none
+   * @param hoverAction      The hover action of the text, or {@code null} for none
+   * @param shiftClickAction The shift click action of the text, or
+   *                         {@code null} for none
+   * @param content          The plain text content of the text
    */
-  LiteralText(TextFormat format, ImmutableList<Text> children, Object[] objects, String content) {
-    super(format, children, objects);
+  LiteralText(TextFormat format, ImmutableList<Text> children, @Nullable ClickAction<?> clickAction,
+      @Nullable HoverAction<?> hoverAction, @Nullable ShiftClickAction<?> shiftClickAction,
+      Object[] args, String content) {
+    super(format, children, clickAction, hoverAction, shiftClickAction, args);
     this.content = checkNotNull(content, "content");
   }
 
@@ -77,9 +86,12 @@ public final class LiteralText extends Text {
 
   @Override
   public String toPlain() {
-    return (getFormat().getColor() != null ? getFormat().getColor().getColor().toString() : "")
-        + (getFormat().getStyle() != null ? getFormat().getStyle().getColor().toString() : "")
-        + MessageFormat.format(content, objects);
+    return MessageFormat.format(content, args);
+  }
+
+  @Override
+  public String toJson() {
+    return gson.toJson(this, LiteralText.class);
   }
 
   @Override
@@ -90,18 +102,20 @@ public final class LiteralText extends Text {
     if (!(o instanceof LiteralText) || !super.equals(o)) {
       return false;
     }
+
     LiteralText that = (LiteralText) o;
     return this.content.equals(that.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), this.content);
+    return Objects.hashCode(super.hashCode(), this.content);
   }
 
   @Override
   MoreObjects.ToStringHelper toStringHelper() {
-    return super.toStringHelper().addValue(this.content);
+    return super.toStringHelper()
+        .addValue(this.content);
   }
 
   /**
@@ -178,7 +192,8 @@ public final class LiteralText extends Text {
     @Override
     public LiteralText build() {
       // Special case for empty builder
-      if (this.format.isEmpty() && this.children.isEmpty()) {
+      if (this.format.isEmpty() && this.children.isEmpty() && this.clickAction == null && this.hoverAction == null
+          && this.shiftClickAction == null) {
         if (this.content.isEmpty()) {
           return EMPTY;
         } else if (this.content.equals(NEW_LINE_STRING)) {
@@ -189,7 +204,10 @@ public final class LiteralText extends Text {
       return new LiteralText(
           this.format,
           ImmutableList.copyOf(this.children),
-          this.objects,
+          this.clickAction,
+          this.hoverAction,
+          this.shiftClickAction,
+          this.args,
           this.content);
     }
 
@@ -201,13 +219,15 @@ public final class LiteralText extends Text {
       if (!(o instanceof Builder) || !super.equals(o)) {
         return false;
       }
+
       Builder that = (Builder) o;
-      return Objects.equals(this.content, that.content);
+      return Objects.equal(this.content, that.content);
+
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(super.hashCode(), this.content);
+      return Objects.hashCode(super.hashCode(), this.content);
     }
 
     @Override
@@ -222,13 +242,33 @@ public final class LiteralText extends Text {
     }
 
     @Override
+    public Builder args(Object... args) {
+      return (Builder) super.args(args);
+    }
+
+    @Override
     public Builder color(TextColor color) {
       return (Builder) super.color(color);
     }
 
     @Override
-    public Builder style(TextStyle style) {
-      return (Builder) super.style(style);
+    public Builder style(TextStyle... styles) {
+      return (Builder) super.style(styles);
+    }
+
+    @Override
+    public Builder onClick(@Nullable ClickAction<?> clickAction) {
+      return (Builder) super.onClick(clickAction);
+    }
+
+    @Override
+    public Builder onHover(@Nullable HoverAction<?> hoverAction) {
+      return (Builder) super.onHover(hoverAction);
+    }
+
+    @Override
+    public Builder onShiftClick(@Nullable ShiftClickAction<?> shiftClickAction) {
+      return (Builder) super.onShiftClick(shiftClickAction);
     }
 
     @Override
