@@ -77,6 +77,10 @@ public class Dependency {
     return new Dependency(artifactId, groupId, version);
   }
 
+  public static Dependency of(String url, String name) {
+    return new Dependency(url, name);
+  }
+
   public static void load(Plugin plugin, File jar) throws Exception {
     final URLClassLoader loader = (URLClassLoader) plugin.getClass().getClassLoader();
     addURL.invoke(loader, jar.toURI().toURL());
