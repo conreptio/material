@@ -23,13 +23,14 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static org.natrolite.Natrolite.getSerializers;
 import static org.natrolite.internal.NatroliteInternal.LICENSE;
 import static org.natrolite.internal.NatroliteInternal.THIRD_PARTY_LICENSES;
-import static org.natrolite.minigames.StaticMessageProvider.in;
+import static org.natrolite.text.Text.unb;
 
 import com.google.common.reflect.TypeToken;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -111,24 +112,24 @@ public final class MinigamesBukkit extends BetterPlugin implements MinigamesInte
       getSerializers().registerType(TypeToken.of(Arena.class), new ArenaSerializer(this));
       getSerializers().registerType(TypeToken.of(GameSign.class), new SignSerializer(this));
 
-      in(getLogger(), registry.size() == 1 ? "game.loaded" : "games.loaded", registry.size());
-
       final MapService map = Natrolite.provideUnchecked(MapService.class);
       map.loadMaps();
-      in(getLogger(), map.getSize() == 1 ? "map.loaded" : "maps.loaded", map.getSize());
 
-      final ArenaService arena = Natrolite.provideUnchecked(ArenaService.class);
-      arena.loadArenas();
-      in(getLogger(), arena.getSize() == 1 ? "arena.loaded" : "arenas.loaded", arena.getSize());
+      Optional<ArenaService> arena = Natrolite.provide(ArenaService.class);
+      if (arena.isPresent() && arena.get() instanceof NatroliteArenaService) {
+        arena.get().loadArenas();
+      }
 
       final SignService sign = Natrolite.provideUnchecked(SignService.class);
       sign.loadSigns();
       final int signAmount = sign.getSigns().size();
-      in(getLogger(), signAmount == 1 ? "sign.load.one" : "sign.load", signAmount);
+      unb(this, "system." + (signAmount == 1 ? "sign.load.one" : "sign.load")).args(signAmount)
+          .build().info(getLogger());
 
       ArenaTicker.start(this);
 
-      in(getLogger(), "plugin.enabled", System.currentTimeMillis() - start);
+      unb(Natrolite.getPlugin(), "system.enabled").args(System.currentTimeMillis() - start).build()
+          .info(getLogger());
     } catch (Throwable throwable) {
       getLogger().log(Level.SEVERE, "Plugin could not be enabled", throwable);
       setEnabled(false);
