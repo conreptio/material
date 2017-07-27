@@ -64,7 +64,7 @@ public interface Icon {
   ItemStack getItem();
 
   /**
-   * Creates a new {@link Builder} instance from this {@link Page}.
+   * Creates a new {@link Builder} instance from this {@link Icon}.
    */
   default Builder toBuilder() {
     return builder().from(this);
