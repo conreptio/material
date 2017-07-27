@@ -28,14 +28,16 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
-import org.natrolite.plugin.BetterPlugin;
+import org.natrolite.annotations.Experimental;
+import org.natrolite.plugin.NeoPlugin;
 
+@Experimental
 public class Asset {
 
-  private final BetterPlugin plugin;
+  private final NeoPlugin plugin;
   private final String file;
 
-  public Asset(BetterPlugin plugin, String file) {
+  public Asset(NeoPlugin plugin, String file) {
     this.plugin = checkNotNull(plugin, "Plugin cannot be null");
     this.file = checkNotNull(file, "File cannot be null");
   }

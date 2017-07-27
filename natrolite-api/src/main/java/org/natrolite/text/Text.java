@@ -51,7 +51,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.natrolite.dictionary.TranslationDictionaries;
 import org.natrolite.dictionary.TranslationDictionary;
-import org.natrolite.plugin.BetterPlugin;
+import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.text.action.ClickAction;
 import org.natrolite.text.action.HoverAction;
 import org.natrolite.text.action.ShiftClickAction;
@@ -220,7 +220,7 @@ public abstract class Text {
    * @param key    The translation key
    * @return The text, if present, {@link Optional#empty()} otherwise
    */
-  public static Optional<Text> get(BetterPlugin plugin, String key) {
+  public static Optional<Text> get(NeoJavaPlugin plugin, String key) {
     return TranslationDictionaries.plugin(plugin)
         .map(dictionary -> dictionary.get(key).map(Text::of).orElse(null));
   }
@@ -243,12 +243,12 @@ public abstract class Text {
    * @param locale The locale under which the value should be obtained in
    * @return The text, if present, {@link Optional#empty()} otherwise
    */
-  public static Optional<Text> get(BetterPlugin plugin, String key, Locale locale) {
+  public static Optional<Text> get(NeoJavaPlugin plugin, String key, Locale locale) {
     return TranslationDictionaries.plugin(plugin)
         .map(dictionary -> dictionary.get(key, locale).map(Text::of).orElse(null));
   }
 
-  public static Text un(BetterPlugin plugin, String key) {
+  public static Text un(NeoJavaPlugin plugin, String key) {
     return get(plugin, key).orElseThrow(IllegalStateException::new);
   }
 
@@ -276,11 +276,11 @@ public abstract class Text {
     logger.log(Level.SEVERE, toPlain(), throwable);
   }
 
-  public static Text un(BetterPlugin plugin, String key, Locale locale) {
+  public static Text un(NeoJavaPlugin plugin, String key, Locale locale) {
     return get(plugin, key, locale).orElseThrow(IllegalStateException::new);
   }
 
-  public static Text.Builder unb(BetterPlugin plugin, String key) {
+  public static Text.Builder unb(NeoJavaPlugin plugin, String key) {
     return get(plugin, key).orElseThrow(IllegalStateException::new).toBuilder();
   }
 
@@ -305,7 +305,7 @@ public abstract class Text {
     return toBuilder().trim().build();
   }
 
-  public static Text.Builder unb(BetterPlugin plugin, String key, Locale locale) {
+  public static Text.Builder unb(NeoJavaPlugin plugin, String key, Locale locale) {
     return get(plugin, key, locale).orElseThrow(IllegalStateException::new).toBuilder();
   }
 

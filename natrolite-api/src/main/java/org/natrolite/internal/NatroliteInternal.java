@@ -25,7 +25,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollectio
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
 import org.natrolite.internal.config.NatroliteConfig;
-import org.natrolite.plugin.BetterPlugin;
+import org.natrolite.plugin.NeoJavaPlugin;
 
 public interface NatroliteInternal {
 
@@ -39,7 +39,7 @@ public interface NatroliteInternal {
    *
    * @return the natrolite plugin
    */
-  BetterPlugin getPlugin();
+  NeoJavaPlugin getPlugin();
 
   /**
    * Gets the working directory.

@@ -57,11 +57,11 @@ import org.natrolite.minigames.sign.NatroliteSignService;
 import org.natrolite.minigames.sign.types.ArenaSign;
 import org.natrolite.minigames.sign.types.CakeSign;
 import org.natrolite.minigames.sign.types.PluginSign;
-import org.natrolite.plugin.BetterPlugin;
+import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.sign.GameSign;
 import org.natrolite.sign.SignService;
 
-public final class MinigamesBukkit extends BetterPlugin implements MinigamesInternal {
+public final class MinigamesBukkit extends NeoJavaPlugin implements MinigamesInternal {
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
 

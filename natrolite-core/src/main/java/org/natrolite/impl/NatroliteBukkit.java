@@ -60,7 +60,7 @@ import org.natrolite.internal.NatroliteInternal;
 import org.natrolite.internal.config.NatroliteConfig;
 import org.natrolite.internal.config.ServerConfig;
 import org.natrolite.metrics.Metrics;
-import org.natrolite.plugin.BetterPlugin;
+import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.service.sql.SqlService;
 import org.natrolite.updater.Spigot;
 import org.natrolite.util.Dependency;
@@ -68,7 +68,7 @@ import org.natrolite.util.ReflectionUtil;
 
 @Spigot("39140")
 @GitHub(organisation = "natrolite", repository = "natrolite")
-public final class NatroliteBukkit extends BetterPlugin implements NatroliteInternal {
+public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInternal {
 
   public static final String TABLE_PREFIX = "natro_";
   public static final String SERVER_INFO = "server.dat";

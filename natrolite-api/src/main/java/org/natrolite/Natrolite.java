@@ -30,7 +30,7 @@ import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicesManager;
 import org.natrolite.internal.NatroliteInternal;
-import org.natrolite.plugin.BetterPlugin;
+import org.natrolite.plugin.NeoJavaPlugin;
 
 public final class Natrolite {
 
@@ -47,7 +47,7 @@ public final class Natrolite {
     return getNatrolite().getRoot();
   }
 
-  public static BetterPlugin getPlugin() {
+  public static NeoJavaPlugin getPlugin() {
     return getNatrolite().getPlugin();
   }
 

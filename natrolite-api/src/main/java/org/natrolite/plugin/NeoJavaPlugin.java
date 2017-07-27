@@ -27,14 +27,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.SimpleServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.natrolite.updater.Updatable;
 import org.natrolite.util.Asset;
 
-public abstract class BetterPlugin extends JavaPlugin implements Listener, Updatable {
+/**
+ * An extension to the normal {@link JavaPlugin}.
+ */
+public abstract class NeoJavaPlugin extends JavaPlugin implements NeoPlugin, Listener {
 
   @Nullable
   private ServicesManager servicesManager;
 
+  @Override
   public Asset getAsset(String path) {
     return new Asset(this, path.replace("\\", "/"));
   }
@@ -44,6 +47,7 @@ public abstract class BetterPlugin extends JavaPlugin implements Listener, Updat
     return super.getFile();
   }
 
+  @Override
   public Path getRoot() {
     return this.getDataFolder().toPath();
   }
@@ -53,6 +57,7 @@ public abstract class BetterPlugin extends JavaPlugin implements Listener, Updat
    *
    * @return The Service Manager belonging to this plugin
    */
+  @Override
   public final ServicesManager getServicesManager() {
     if (servicesManager == null) {
       servicesManager = new SimpleServicesManager();

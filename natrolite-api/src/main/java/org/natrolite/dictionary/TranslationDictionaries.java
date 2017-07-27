@@ -26,7 +26,7 @@
 package org.natrolite.dictionary;
 
 import java.util.Optional;
-import org.natrolite.plugin.BetterPlugin;
+import org.natrolite.plugin.NeoJavaPlugin;
 
 /**
  * A helper class to retrieve translation dictionaries.
@@ -42,7 +42,7 @@ public final class TranslationDictionaries {
    * @return The translation dictionary, if present,
    * {@link Optional#empty()} otherwise
    */
-  public static Optional<TranslationDictionary> plugin(BetterPlugin plugin) {
+  public static Optional<TranslationDictionary> plugin(NeoJavaPlugin plugin) {
     return Optional.ofNullable(plugin.getServicesManager().load(TranslationDictionary.class));
   }
 }
