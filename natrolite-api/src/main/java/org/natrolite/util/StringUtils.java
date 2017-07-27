@@ -19,14 +19,30 @@
 
 package org.natrolite.util;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+import javax.annotation.concurrent.ThreadSafe;
+
+/**
+ * An utility class that provides various methods for {@link String}s.
+ */
+@ThreadSafe
 public final class StringUtils {
+
+  public static final String EMPTY = "";
+
+  public static final String SPACE = " ";
 
   private StringUtils() {}
 
-  public static String capitalizeFirst(String text) {
-    if (text == null || text.isEmpty()) {
-      return text;
-    }
-    return text.substring(0, 1).toUpperCase() + text.substring(1);
+  /**
+   * Capitalizes the first latter.
+   *
+   * @param string the string that should be formatted
+   * @throws IllegalArgumentException if the string is empty
+   */
+  public static String capitalizeFirst(String string) {
+    checkArgument(!string.isEmpty(), "String cannot be empty");
+    return string.substring(0, 1).toUpperCase() + string.substring(1);
   }
 }
