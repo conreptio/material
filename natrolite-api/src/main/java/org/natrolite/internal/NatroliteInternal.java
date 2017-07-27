@@ -24,6 +24,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollectio
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
 import org.natrolite.internal.config.NatroliteConfig;
+import org.natrolite.menu.MenuManager;
 import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.registry.Registry;
 
@@ -45,6 +46,11 @@ public interface NatroliteInternal {
    * Gets the {@link Registry}.
    */
   Registry getRegistry();
+
+  /**
+   * Gets the {@link MenuManager}.
+   */
+  MenuManager getMenuManager();
 
   /**
    * Gets the unique server id.

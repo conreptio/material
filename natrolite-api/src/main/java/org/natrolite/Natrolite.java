@@ -30,6 +30,7 @@ import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicesManager;
 import org.natrolite.internal.NatroliteInternal;
+import org.natrolite.menu.MenuManager;
 import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.registry.Registry;
 
@@ -50,6 +51,10 @@ public final class Natrolite {
 
   public static Registry getRegistry() {
     return getNatrolite().getRegistry();
+  }
+
+  public static MenuManager getMenuManager() {
+    return getNatrolite().getMenuManager();
   }
 
   public static Path getRoot() {

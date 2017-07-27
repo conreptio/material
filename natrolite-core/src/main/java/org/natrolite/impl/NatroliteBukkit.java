@@ -54,6 +54,10 @@ import org.natrolite.dictionary.bundle.MultiSourceResourceBundleTranslationDicti
 import org.natrolite.dictionary.bundle.SimpleResourceBundleTranslationDictionary;
 import org.natrolite.impl.command.ServicesCommand;
 import org.natrolite.impl.item.NatroItemBuilder;
+import org.natrolite.impl.menu.NatroIcon;
+import org.natrolite.impl.menu.NatroMenu;
+import org.natrolite.impl.menu.NatroMenuManager;
+import org.natrolite.impl.menu.NatroPage;
 import org.natrolite.impl.registry.NatroliteRegistry;
 import org.natrolite.impl.server.NatroliteServerManager;
 import org.natrolite.impl.service.NatroliteServicesManager;
@@ -62,6 +66,9 @@ import org.natrolite.internal.NatroliteInternal;
 import org.natrolite.internal.config.NatroliteConfig;
 import org.natrolite.internal.config.ServerConfig;
 import org.natrolite.item.Item;
+import org.natrolite.menu.Icon;
+import org.natrolite.menu.Menu;
+import org.natrolite.menu.Page;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.service.sql.SqlService;
@@ -84,6 +91,7 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
   @Nullable private Throwable throwable;
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
+  private final NatroMenuManager menuManager = new NatroMenuManager();
 
   @Nullable private NatroliteServicesManager servicesManager;
   @Nullable private NatroliteServerManager serverManager;
@@ -138,7 +146,10 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
       setupDictionary();
       setupMetrics();
 
-      registry.registerBuilder(Item.Builder.class, NatroItemBuilder::new);
+      registry.registerBuilder(Item.Builder.class, NatroItemBuilder::new)
+          .registerBuilder(Menu.Builder.class, NatroMenu.Builder::new)
+          .registerBuilder(Page.Builder.class, NatroPage.Builder::new)
+          .registerBuilder(Icon.Builder.class, NatroIcon.Builder::new);
 
       register(SqlService.class, new SqlServiceImpl(), ServicePriority.Low);
 
@@ -159,6 +170,8 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
       if (throwable != null) {
         throw throwable;
       }
+
+      getServer().getPluginManager().registerEvents(menuManager, this);
 
       getCommand("services").setExecutor(new ServicesCommand(this));
 
@@ -202,6 +215,11 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
   @Override
   public NatroliteRegistry getRegistry() {
     return registry;
+  }
+
+  @Override
+  public NatroMenuManager getMenuManager() {
+    return menuManager;
   }
 
   @Override
