@@ -31,6 +31,7 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicesManager;
 import org.natrolite.internal.NatroliteInternal;
 import org.natrolite.plugin.NeoJavaPlugin;
+import org.natrolite.registry.Registry;
 
 public final class Natrolite {
 
@@ -43,12 +44,16 @@ public final class Natrolite {
     return checkNotNull(natrolite, "Natrolite has not been initialized");
   }
 
-  public static Path getRoot() {
-    return getNatrolite().getRoot();
-  }
-
   public static NeoJavaPlugin getPlugin() {
     return getNatrolite().getPlugin();
+  }
+
+  public static Registry getRegistry() {
+    return getNatrolite().getRegistry();
+  }
+
+  public static Path getRoot() {
+    return getPlugin().getRoot();
   }
 
   public static UUID getServerId() {

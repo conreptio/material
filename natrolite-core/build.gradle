@@ -1,6 +1,7 @@
 description = 'Implementation of NatroliteAPI'
 
 license {
+  exclude 'org/natrolite/impl/registry/NatroliteRegistry.java'
   exclude 'org/natrolite/impl/service/sql/SqlServiceImpl.java'
 }
 

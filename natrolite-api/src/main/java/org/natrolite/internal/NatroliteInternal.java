@@ -19,13 +19,13 @@
 
 package org.natrolite.internal;
 
-import java.nio.file.Path;
 import java.util.UUID;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
 import org.natrolite.internal.config.NatroliteConfig;
 import org.natrolite.plugin.NeoJavaPlugin;
+import org.natrolite.registry.Registry;
 
 public interface NatroliteInternal {
 
@@ -42,11 +42,9 @@ public interface NatroliteInternal {
   NeoJavaPlugin getPlugin();
 
   /**
-   * Gets the working directory.
-   *
-   * @return path of the working directory
+   * Gets the {@link Registry}.
    */
-  Path getRoot();
+  Registry getRegistry();
 
   /**
    * Gets the unique server id.
