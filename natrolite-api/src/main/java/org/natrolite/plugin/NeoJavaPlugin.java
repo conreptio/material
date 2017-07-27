@@ -52,11 +52,6 @@ public abstract class NeoJavaPlugin extends JavaPlugin implements NeoPlugin, Lis
     return this.getDataFolder().toPath();
   }
 
-  /**
-   * Gets the {@link ServicesManager} belonging to this plugin.
-   *
-   * @return The Service Manager belonging to this plugin
-   */
   @Override
   public final ServicesManager getServicesManager() {
     if (servicesManager == null) {
