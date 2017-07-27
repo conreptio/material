@@ -22,26 +22,27 @@ package org.natrolite.util;
 import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 import org.bukkit.entity.Player;
 
-public final class PlayerUtil {
+@ThreadSafe
+public final class PlayerUtils {
 
-  private PlayerUtil() {}
+  private PlayerUtils() {}
 
   /**
    * Gets the players client language.
    *
    * @param player the player
-   * @return players client locale or {@link Optional#empty()} if it could not be retrieved
+   * @return The players client locale or {@link Optional#empty()} if it could not be retrieved
    */
   public static Optional<Locale> getLocale(@Nullable Player player) {
-    if (player == null) {
-      return Optional.empty();
-    }
     try {
-      final String lang = player.spigot().getLocale();
-      if (lang != null) {
-        return formatMinecraftLocale(lang);
+      if (player != null) {
+        final String lang = player.spigot().getLocale();
+        if (lang != null) {
+          return formatMinecraftLocale(lang);
+        }
       }
       return Optional.empty();
     } catch (Throwable throwable) {
@@ -53,20 +54,24 @@ public final class PlayerUtil {
    * Formats the Minecraft language to to a {@link Locale}.
    *
    * @param tag the language tag
-   * @return locale or {@link Optional#empty()} if it could not be parsed
+   * @return The locale or {@link Optional#empty()} if it could not be parsed
    */
   public static Optional<Locale> formatMinecraftLocale(String tag) {
-    final String[] parts = tag.split("[_.]");
-    if (parts.length == 1) {
-      return Optional.of(new Locale(parts[0]));
+    try {
+      final String[] parts = tag.split("[_.]");
+      if (parts.length == 1) {
+        return Optional.of(new Locale(parts[0]));
+      }
+      if (parts.length == 2) {
+        return Optional.of(new Locale(parts[0], parts[1]));
+      }
+      if (parts.length == 3) {
+        return Optional.of(new Locale(parts[0], parts[1], parts[2]));
+      }
+      return Optional.empty();
+    } catch (Throwable throwable) {
+      return Optional.empty();
     }
-    if (parts.length == 2) {
-      return Optional.of(new Locale(parts[0], parts[1]));
-    }
-    if (parts.length == 3) {
-      return Optional.of(new Locale(parts[0], parts[1], parts[2]));
-    }
-    return Optional.empty();
   }
 
   /**
@@ -74,16 +79,18 @@ public final class PlayerUtil {
    *
    * @param player the player to reset
    */
-  public static void reset(Player player) {
-    player.setFlying(false);
-    player.setAllowFlight(false);
-    player.setExp(0);
-    player.setLevel(0);
-    player.setHealth(20.0);
-    player.setFoodLevel(0);
-    player.getInventory().clear();
-    player.getInventory().setArmorContents(null);
-    player.resetPlayerTime();
-    player.resetPlayerWeather();
+  public static void reset(@Nullable Player player) {
+    if (player != null) {
+      player.setFlying(false);
+      player.setAllowFlight(false);
+      player.setExp(0);
+      player.setLevel(0);
+      player.setHealth(20.0);
+      player.setFoodLevel(0);
+      player.getInventory().clear();
+      player.getInventory().setArmorContents(null);
+      player.resetPlayerTime();
+      player.resetPlayerWeather();
+    }
   }
 }
