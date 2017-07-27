@@ -21,19 +21,39 @@ package org.natrolite.util.logging;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import java.util.Optional;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
+import org.bukkit.plugin.PluginLogger;
 
+/**
+ * A custom {@link Handler} that adds a defined prefix to all log messages,
+ * similar to a {@link PluginLogger}.
+ *
+ * <p>One {@link Logger} can only have one {@link PrefixHandler}.
+ *
+ * <p>The {@link PrefixHandler} is not immutable and can be set
+ * with {@link PrefixHandler#setPrefix(String)}.
+ *
+ * <p><b>All operations are Thread-Safe</b>
+ *
+ * @author Lukas Nehrke
+ */
 @ThreadSafe
 public class PrefixHandler extends Handler {
 
   @Nullable
   private volatile String prefix;
 
+  /**
+   * Creates a new instance.
+   *
+   * @param prefix the prefix
+   */
   public PrefixHandler(@Nullable String prefix) {
     this.prefix = prefix;
   }
@@ -49,7 +69,7 @@ public class PrefixHandler extends Handler {
   }
 
   /**
-   * Adds a {@link PrefixHandler} to add {@link Logger}.
+   * Adds a {@link PrefixHandler} to a {@link Logger}.
    *
    * @param logger  the logger
    * @param handler the handler
@@ -58,6 +78,26 @@ public class PrefixHandler extends Handler {
     if (Stream.of(logger.getHandlers()).noneMatch(handler::equals)) {
       logger.addHandler(handler);
     }
+  }
+
+  /**
+   * Gets the prefix of this {@link PrefixHandler}.
+   *
+   * @return The prefix or {@link Optional#empty()} if there is no prefix set
+   */
+  public Optional<String> getPrefix() {
+    return Optional.ofNullable(prefix);
+  }
+
+  /**
+   * Sets the prefix of this {@link PrefixHandler}.
+   *
+   * <p>To reset the prefix you can use <code>null</code> as parameter.
+   *
+   * @param prefix the prefix (can be null)
+   */
+  public void setPrefix(@Nullable String prefix) {
+    this.prefix = prefix;
   }
 
   @Override
@@ -92,19 +132,9 @@ public class PrefixHandler extends Handler {
   }
 
   @Override
-  @SuppressWarnings("deprecation")
   public String toString() {
     return MoreObjects.toStringHelper(this)
         .add("prefix", prefix)
         .toString();
-  }
-
-  @Nullable
-  public String getPrefix() {
-    return prefix;
-  }
-
-  public void setPrefix(@Nullable String prefix) {
-    this.prefix = prefix;
   }
 }
