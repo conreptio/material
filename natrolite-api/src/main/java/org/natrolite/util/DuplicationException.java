@@ -19,4 +19,8 @@
 
 package org.natrolite.util;
 
-public class DuplicationException extends RuntimeException {}
+/**
+ * @deprecated Use just {@link IllegalStateException}.
+ */
+@Deprecated
+public class DuplicationException extends IllegalStateException {}
