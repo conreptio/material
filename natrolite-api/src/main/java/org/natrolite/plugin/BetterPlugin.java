@@ -17,7 +17,7 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite;
+package org.natrolite.plugin;
 
 import java.io.File;
 import java.nio.file.Files;

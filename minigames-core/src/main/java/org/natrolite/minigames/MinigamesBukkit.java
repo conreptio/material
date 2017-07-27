@@ -36,7 +36,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
-import org.natrolite.BetterPlugin;
 import org.natrolite.MinigamesInternal;
 import org.natrolite.MinigamesPlugin;
 import org.natrolite.Natrolite;
@@ -58,6 +57,7 @@ import org.natrolite.minigames.sign.NatroliteSignService;
 import org.natrolite.minigames.sign.types.ArenaSign;
 import org.natrolite.minigames.sign.types.CakeSign;
 import org.natrolite.minigames.sign.types.PluginSign;
+import org.natrolite.plugin.BetterPlugin;
 import org.natrolite.sign.GameSign;
 import org.natrolite.sign.SignService;
 

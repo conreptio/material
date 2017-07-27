@@ -24,8 +24,8 @@ import java.util.UUID;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.plugin.Plugin;
-import org.natrolite.BetterPlugin;
 import org.natrolite.internal.config.NatroliteConfig;
+import org.natrolite.plugin.BetterPlugin;
 
 public interface NatroliteInternal {
 

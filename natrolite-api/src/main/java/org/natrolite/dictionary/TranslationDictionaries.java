@@ -26,7 +26,7 @@
 package org.natrolite.dictionary;
 
 import java.util.Optional;
-import org.natrolite.BetterPlugin;
+import org.natrolite.plugin.BetterPlugin;
 
 /**
  * A helper class to retrieve translation dictionaries.

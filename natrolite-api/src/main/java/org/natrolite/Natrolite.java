@@ -30,6 +30,7 @@ import org.bukkit.Server;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.ServicesManager;
 import org.natrolite.internal.NatroliteInternal;
+import org.natrolite.plugin.BetterPlugin;
 
 public final class Natrolite {
 
