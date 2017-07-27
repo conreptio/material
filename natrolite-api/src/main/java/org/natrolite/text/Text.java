@@ -31,8 +31,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,7 +56,7 @@ import org.natrolite.text.action.ShiftClickAction;
 import org.natrolite.text.format.TextColor;
 import org.natrolite.text.format.TextFormat;
 import org.natrolite.text.format.TextStyle;
-import org.natrolite.text.serialisation.LiteralTextSerializer;
+import org.natrolite.text.serialisation.TextSerializers;
 
 public abstract class Text {
 
@@ -74,10 +72,6 @@ public abstract class Text {
    * An unformatted {@link Text} that will start a new line (if supported).
    */
   public static final LiteralText NEW_LINE = new LiteralText(NEW_LINE_STRING);
-
-  static final Gson gson = new GsonBuilder()
-      .registerTypeAdapter(LiteralText.class, new LiteralTextSerializer())
-      .create();
 
   final TextFormat format;
   final ImmutableList<Text> children;
@@ -507,6 +501,17 @@ public abstract class Text {
     return this.shiftClickAction;
   }
 
+  /**
+   * Returns an immutable {@link Iterable} over this text and all of its
+   * children. This is recursive, the children of the children will be also
+   * included.
+   *
+   * @return An iterable over this text and the children texts
+   */
+  public final Iterable<Text> withChildren() {
+    return this.childrenIterable;
+  }
+
   public final Object[] getArgs() {
     return args;
   }
@@ -530,9 +535,13 @@ public abstract class Text {
     }
   }
 
-  public abstract String toPlain();
+  public final String toPlain() {
+    return TextSerializers.PLAIN.serialize(this);
+  }
 
-  public abstract String toJson();
+  public final String toJson() {
+    return TextSerializers.JSON.serialize(this);
+  }
 
   @Override
   public boolean equals(@Nullable Object o) {

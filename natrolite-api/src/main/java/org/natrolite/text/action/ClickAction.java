@@ -25,112 +25,33 @@
 
 package org.natrolite.text.action;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 import java.net.URL;
 import org.natrolite.text.Text;
 
-public abstract class ClickAction<R> extends TextAction<R> {
-
-  /**
-   * Constructs a new {@link ClickAction} with the given result.
-   *
-   * @param result The result of the click action
-   */
-  ClickAction(R result) {
-    super(result);
-  }
+public interface ClickAction<R> extends TextAction<R> {
 
   @Override
-  public void applyTo(Text.Builder builder) {
+  default void applyTo(Text.Builder builder) {
     builder.onClick(this);
   }
 
   /**
    * Opens a url.
    */
-  public static final class OpenUrl extends ClickAction<URL> {
-
-    /**
-     * Constructs a new {@link OpenUrl} instance that will ask the player to
-     * open an URL when it is clicked.
-     *
-     * @param url The url to open
-     */
-    OpenUrl(URL url) {
-      super(url);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      object.addProperty("action", "open_url");
-      object.addProperty("value", result.toString());
-    }
-  }
+  interface OpenUrl extends ClickAction<URL> {}
 
   /**
    * Runs a command.
    */
-  public static final class RunCommand extends ClickAction<String> {
-
-    /**
-     * Constructs a new {@link RunCommand} instance that will run a command
-     * on the client when it is clicked.
-     *
-     * @param command The command to execute
-     */
-    RunCommand(String command) {
-      super(command);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      object.addProperty("action", "run_command");
-      object.addProperty("value", result);
-    }
-  }
+  interface RunCommand extends ClickAction<String> {}
 
   /**
    * For books, changes pages.
    */
-  public static final class ChangePage extends ClickAction<Integer> {
-
-    /**
-     * Constructs a new {@link ChangePage} instance that will change the
-     * page in a book when it is clicked.
-     *
-     * @param page The book page to switch to
-     */
-    ChangePage(int page) {
-      super(page);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      object.addProperty("action", "change_page");
-      object.addProperty("value", result);
-    }
-  }
+  interface ChangePage extends ClickAction<Integer> {}
 
   /**
    * Suggests a command in the prompt.
    */
-  public static final class SuggestCommand extends ClickAction<String> {
-
-    /**
-     * Constructs a new {@link SuggestCommand} instance that will suggest
-     * the player a command when it is clicked.
-     *
-     * @param command The command to suggest
-     */
-    SuggestCommand(String command) {
-      super(command);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      object.addProperty("action", "suggest_command");
-      object.addProperty("value", result);
-    }
-  }
+  interface SuggestCommand extends ClickAction<String> {}
 }

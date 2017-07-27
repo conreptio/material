@@ -27,12 +27,9 @@ package org.natrolite.text.action;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nullable;
-import net.xnity.odium.Odium;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -44,94 +41,33 @@ import org.natrolite.text.Text;
  *
  * @param <R> The type of the result of the action
  */
-public abstract class HoverAction<R> extends TextAction<R> {
-
-  /**
-   * Constructs a new {@link HoverAction} with the given result.
-   *
-   * @param result The result of the hover action
-   */
-  public HoverAction(R result) {
-    super(result);
-  }
+public interface HoverAction<R> extends TextAction<R> {
 
   @Override
-  public void applyTo(Text.Builder builder) {
+  default void applyTo(Text.Builder builder) {
     builder.onHover(this);
   }
 
   /**
    * Shows some text.
    */
-  public static final class ShowText extends HoverAction<Text> {
-
-    ShowText(Text text) {
-      super(text);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      object.addProperty("action", "show_text");
-      object.add("value", context.serialize(result));
-    }
-  }
+  interface ShowText extends HoverAction<Text> {}
 
   /**
    * Shows information about an item.
    */
-  public static final class ShowItem extends HoverAction<ItemStack> {
-
-    /**
-     * Constructs a new {@link ShowItem} instance that will show information
-     * about an item when it is hovered.
-     *
-     * @param item The item to display
-     */
-    ShowItem(ItemStack item) {
-      super(item);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      object.addProperty("action", "show_item");
-      object.addProperty("value", Odium.itemToJson(getResult()).orElse("{}"));
-    }
-  }
+  interface ShowItem extends HoverAction<ItemStack> {}
 
   /**
    * Shows information about an entity.
    */
-  public static final class ShowEntity extends HoverAction<ShowEntity.Ref> {
-
-    /**
-     * Constructs a new {@link ShowEntity} that will show information about
-     * an entity when it is hovered.
-     *
-     * @param ref The reference to the entity to display
-     */
-    ShowEntity(Ref ref) {
-      super(ref);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      JsonObject tmp = new JsonObject();
-      tmp.addProperty("id", getResult().getUniqueId().toString());
-      tmp.addProperty("name", getResult().getName());
-      getResult().getType().ifPresent(type -> {
-        if (type.getName() != null) {
-          tmp.addProperty("type", "minecraft:" + type.getName());
-        }
-      });
-      object.addProperty("action", "show_entity");
-      object.addProperty("value", tmp.toString());
-    }
+  interface ShowEntity extends HoverAction<ShowEntity.Ref> {
 
     /**
      * Represents a reference to an entity, used in the underlying JSON of
      * the show entity action.
      */
-    public static final class Ref implements Identifiable {
+    final class Ref implements Identifiable {
 
       private final UUID uuid;
       private final String name;
@@ -182,7 +118,7 @@ public abstract class HoverAction<R> extends TextAction<R> {
       }
 
       /**
-       * Retrieves the UUID that this {@link Ref} refers to.
+       * Retrieves the UUID that this {@link HoverAction.ShowEntity.Ref} refers to.
        *
        * @return The UUID
        */
@@ -192,7 +128,7 @@ public abstract class HoverAction<R> extends TextAction<R> {
       }
 
       /**
-       * Retrieves the name that this {@link Ref} refers to.
+       * Retrieves the name that this {@link HoverAction.ShowEntity.Ref} refers to.
        *
        * @return The name
        */
@@ -201,7 +137,8 @@ public abstract class HoverAction<R> extends TextAction<R> {
       }
 
       /**
-       * Retrieves the type that this {@link Ref} refers to, if it exists.
+       * Retrieves the type that this {@link HoverAction.ShowEntity.Ref} refers to, if it
+       * exists.
        *
        * @return The type, or {@link Optional#empty()}
        */
@@ -214,10 +151,10 @@ public abstract class HoverAction<R> extends TextAction<R> {
         if (super.equals(obj)) {
           return true;
         }
-        if (!(obj instanceof Ref)) {
+        if (!(obj instanceof ShowEntity.Ref)) {
           return false;
         }
-        Ref that = (Ref) obj;
+        ShowEntity.Ref that = (ShowEntity.Ref) obj;
         return this.uuid.equals(that.uuid)
             && this.name.equals(that.name)
             && this.type.equals(that.type);

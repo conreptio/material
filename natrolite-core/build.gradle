@@ -3,6 +3,11 @@ description = 'Implementation of NatroliteAPI'
 license {
   exclude 'org/natrolite/impl/registry/NatroliteRegistry.java'
   exclude 'org/natrolite/impl/service/sql/SqlServiceImpl.java'
+  exclude 'org/natrolite/impl/text/action/NatroClickTextAction.java'
+  exclude 'org/natrolite/impl/text/action/NatroHoverTextAction.java'
+  exclude 'org/natrolite/impl/text/action/NatroShiftClickTextAction.java'
+  exclude 'org/natrolite/impl/text/action/NatroTextAction.java'
+  exclude 'org/natrolite/impl/text/action/NatroTextActionFactory.java'
 }
 
 dependencies {

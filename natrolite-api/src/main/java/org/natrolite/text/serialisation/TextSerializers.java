@@ -19,17 +19,13 @@
 
 package org.natrolite.text.serialisation;
 
-import com.google.gson.JsonElement;
-import org.natrolite.text.Text;
+import static org.natrolite.Natrolite.getImplementation;
 
-public interface TextSerializer {
+public final class TextSerializers {
 
-  String serialize(Text text);
+  public static final TextSerializer.Plain PLAIN = getImplementation(TextSerializer.Plain.class);
 
-  interface Plain extends TextSerializer {}
+  public static final TextSerializer.Json JSON = getImplementation(TextSerializer.Json.class);
 
-  interface Json extends TextSerializer {
-
-    JsonElement serializeJson(Text text);
-  }
+  private TextSerializers() {}
 }

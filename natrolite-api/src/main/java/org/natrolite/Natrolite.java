@@ -33,6 +33,7 @@ import org.natrolite.internal.NatroliteInternal;
 import org.natrolite.menu.MenuManager;
 import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.registry.Registry;
+import org.natrolite.text.action.TextActionFactory;
 
 public final class Natrolite {
 
@@ -55,6 +56,14 @@ public final class Natrolite {
 
   public static MenuManager getMenuManager() {
     return getNatrolite().getMenuManager();
+  }
+
+  public static TextActionFactory getTextActionFactory() {
+    return getNatrolite().getTextActionFactory();
+  }
+
+  public static <T> T getImplementation(Class<T> interfaceClass) {
+    return getRegistry().getImplementation(interfaceClass);
   }
 
   public static Path getRoot() {

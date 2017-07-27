@@ -23,29 +23,29 @@
  * THE SOFTWARE.
  */
 
-package org.natrolite.text.action;
+package org.natrolite.impl.text.action;
 
 import com.google.gson.JsonObject;
-import org.natrolite.text.Text;
-import org.natrolite.text.TextElement;
+import org.natrolite.text.action.ShiftClickAction;
 import org.natrolite.text.serialisation.TextSerializer;
 
-/**
- * Represents an action happening as a response to an event on a {@link Text}.
- *
- * @param <R> The type of the result
- * @see ClickAction
- * @see HoverAction
- * @see ShiftClickAction
- */
-public interface TextAction<R> extends TextElement {
+abstract class NatroShiftClickTextAction<R> extends NatroTextAction<R>
+    implements ShiftClickAction<R> {
 
-  /**
-   * Returns the result of this {@link TextAction}.
-   *
-   * @return The result
-   */
-  R getResult();
+  NatroShiftClickTextAction(R result) {
+    super(result);
+  }
 
-  void serialize(JsonObject object, TextSerializer.Json serializer);
+  static final class NatroInsertText extends NatroShiftClickTextAction<String>
+      implements InsertText {
+
+    NatroInsertText(String result) {
+      super(result);
+    }
+
+    @Override
+    public void serialize(JsonObject object, TextSerializer.Json serializer) {
+      object.addProperty("insertion", result);
+    }
+  }
 }

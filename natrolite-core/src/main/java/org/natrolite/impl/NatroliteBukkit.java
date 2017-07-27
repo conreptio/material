@@ -62,6 +62,9 @@ import org.natrolite.impl.registry.NatroliteRegistry;
 import org.natrolite.impl.server.NatroliteServerManager;
 import org.natrolite.impl.service.NatroliteServicesManager;
 import org.natrolite.impl.service.sql.SqlServiceImpl;
+import org.natrolite.impl.text.action.NatroTextActionFactory;
+import org.natrolite.impl.text.serialisation.NatroJsonTextSerializer;
+import org.natrolite.impl.text.serialisation.NatroPlainTextSerializer;
 import org.natrolite.internal.NatroliteInternal;
 import org.natrolite.internal.config.NatroliteConfig;
 import org.natrolite.internal.config.ServerConfig;
@@ -72,6 +75,9 @@ import org.natrolite.menu.Page;
 import org.natrolite.metrics.Metrics;
 import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.service.sql.SqlService;
+import org.natrolite.text.action.TextActionFactory;
+import org.natrolite.text.serialisation.TextSerializer.Json;
+import org.natrolite.text.serialisation.TextSerializer.Plain;
 import org.natrolite.updater.Spigot;
 import org.natrolite.util.Dependency;
 import org.natrolite.util.ReflectionUtil;
@@ -142,16 +148,18 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
       } catch (Throwable throwable) {
         getLogger().log(Level.WARNING, "Could not find the h2 driver");
       }
-
-      setupDictionary();
-      setupMetrics();
-
       registry.registerBuilder(Item.Builder.class, NatroItemBuilder::new)
           .registerBuilder(Menu.Builder.class, NatroMenu.Builder::new)
           .registerBuilder(Page.Builder.class, NatroPage.Builder::new)
           .registerBuilder(Icon.Builder.class, NatroIcon.Builder::new);
 
+      registry.registerImplementation(Json.class, () -> NatroJsonTextSerializer.INSTANCE)
+          .registerImplementation(Plain.class, () -> NatroPlainTextSerializer.INSTANCE);
+
       register(SqlService.class, new SqlServiceImpl(), ServicePriority.Low);
+
+      setupDictionary();
+      setupMetrics();
 
       this.serverId = readUUID();
       this.serverName = serverConfig.getConfig().name();
@@ -220,6 +228,11 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
   @Override
   public NatroMenuManager getMenuManager() {
     return menuManager;
+  }
+
+  @Override
+  public TextActionFactory getTextActionFactory() {
+    return NatroTextActionFactory.INSTANCE;
   }
 
   @Override

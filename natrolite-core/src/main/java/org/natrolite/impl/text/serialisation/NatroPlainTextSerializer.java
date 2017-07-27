@@ -17,19 +17,24 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.text.serialisation;
+package org.natrolite.impl.text.serialisation;
 
-import com.google.gson.JsonElement;
+import org.natrolite.text.LiteralText;
 import org.natrolite.text.Text;
+import org.natrolite.text.serialisation.TextSerializer;
 
-public interface TextSerializer {
+public enum NatroPlainTextSerializer implements TextSerializer.Plain {
 
-  String serialize(Text text);
+  INSTANCE;
 
-  interface Plain extends TextSerializer {}
-
-  interface Json extends TextSerializer {
-
-    JsonElement serializeJson(Text text);
+  @Override
+  public String serialize(Text text) {
+    final StringBuilder builder = new StringBuilder();
+    text.withChildren().forEach(t -> {
+      if (t instanceof LiteralText) {
+        builder.append(((LiteralText) t).getContentFormatted());
+      }
+    });
+    return builder.toString();
   }
 }

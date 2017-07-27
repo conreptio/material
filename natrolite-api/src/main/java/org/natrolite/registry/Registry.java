@@ -52,6 +52,10 @@ public interface Registry {
   <T extends ResettableBuilder<?, ? super T>> T createBuilder(Class<T> builderClass)
       throws IllegalArgumentException;
 
+  <T> Registry registerImplementation(Class<T> interfaceClass, Supplier<? extends T> supplier);
+
+  <T> T getImplementation(Class<T> interfaceClass);
+
   /**
    * Gets a locale for the specified locale code, e.g. {@code en_US}.
    *

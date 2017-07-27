@@ -39,6 +39,7 @@ import org.natrolite.util.PlayerUtils;
 public final class NatroliteRegistry implements Registry {
 
   private final Map<Class<?>, Supplier<?>> builderMap = new IdentityHashMap<>();
+  private final Map<Class<?>, Supplier<?>> implMap = new IdentityHashMap<>();
 
   @Override
   public <T> Registry registerBuilder(Class<T> builderClass, Supplier<? extends T> supplier) {
@@ -47,8 +48,8 @@ public final class NatroliteRegistry implements Registry {
     return this;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
+  @SuppressWarnings("unchecked")
   public <T extends ResettableBuilder<?, ? super T>> T createBuilder(Class<T> builderClass) {
     checkNotNull(builderClass, "Builder class was null!");
     final Supplier<?> supplier = builderMap.get(builderClass);
@@ -59,6 +60,24 @@ public final class NatroliteRegistry implements Registry {
     return (T) supplier.get();
   }
 
+  @Override
+  public <T> Registry registerImplementation(Class<T> clazz, Supplier<? extends T> supplier) {
+    checkArgument(!implMap.containsKey(clazz), "Supplier already registered");
+    implMap.put(clazz, supplier);
+    return this;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getImplementation(Class<T> clazz) {
+    checkNotNull(clazz, "Interface class was null!");
+    final Supplier<?> supplier = implMap.get(clazz);
+    if (supplier == null) {
+      throw new IllegalArgumentException("Could not find a Supplier for class: "
+          + clazz.getCanonicalName());
+    }
+    return (T) supplier.get();
+  }
 
   @Override
   public Locale getLocale(String locale) {

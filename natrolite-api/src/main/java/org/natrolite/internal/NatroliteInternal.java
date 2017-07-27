@@ -27,6 +27,7 @@ import org.natrolite.internal.config.NatroliteConfig;
 import org.natrolite.menu.MenuManager;
 import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.registry.Registry;
+import org.natrolite.text.action.TextActionFactory;
 
 public interface NatroliteInternal {
 
@@ -51,6 +52,11 @@ public interface NatroliteInternal {
    * Gets the {@link MenuManager}.
    */
   MenuManager getMenuManager();
+
+  /**
+   * Gets the {@link TextActionFactory}.
+   */
+  TextActionFactory getTextActionFactory();
 
   /**
    * Gets the unique server id.

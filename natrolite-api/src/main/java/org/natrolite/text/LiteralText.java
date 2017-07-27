@@ -79,19 +79,13 @@ public final class LiteralText extends Text {
     return this.content;
   }
 
+  public String getContentFormatted() {
+    return MessageFormat.format(this.content, this.args);
+  }
+
   @Override
   public Builder toBuilder() {
     return new Builder(this);
-  }
-
-  @Override
-  public String toPlain() {
-    return MessageFormat.format(content, args);
-  }
-
-  @Override
-  public String toJson() {
-    return gson.toJson(this, LiteralText.class);
   }
 
   @Override

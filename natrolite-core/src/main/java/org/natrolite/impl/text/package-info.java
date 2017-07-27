@@ -17,22 +17,5 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.text.serialisation;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import java.lang.reflect.Type;
-import org.natrolite.text.LiteralText;
-
-public class LiteralTextSerializer extends TextSerializer implements JsonSerializer<LiteralText> {
-
-  @Override
-  public JsonElement serialize(LiteralText src, Type typeOfSrc, JsonSerializationContext context) {
-    JsonObject object = new JsonObject();
-    serialize(object, src, context);
-    object.addProperty("text", src.toPlain());
-    return object;
-  }
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.impl.text;

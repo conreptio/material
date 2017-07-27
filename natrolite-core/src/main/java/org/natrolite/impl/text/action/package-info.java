@@ -17,19 +17,5 @@
  * along with Natrolite. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite.text.serialisation;
-
-import com.google.gson.JsonElement;
-import org.natrolite.text.Text;
-
-public interface TextSerializer {
-
-  String serialize(Text text);
-
-  interface Plain extends TextSerializer {}
-
-  interface Json extends TextSerializer {
-
-    JsonElement serializeJson(Text text);
-  }
-}
+@org.natrolite.NonnullByDefault
+package org.natrolite.impl.text.action;

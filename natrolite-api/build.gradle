@@ -38,6 +38,7 @@ license {
   exclude 'org/natrolite/text/action/HoverAction.java'
   exclude 'org/natrolite/text/action/ShiftClickAction.java'
   exclude 'org/natrolite/text/action/TextAction.java'
+  exclude 'org/natrolite/text/action/TextActionFactory.java'
   exclude 'org/natrolite/text/action/TextActions.java'
   exclude 'org/natrolite/text/format/TextColor.java'
   exclude 'org/natrolite/text/format/TextFormat.java'

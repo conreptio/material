@@ -26,19 +26,13 @@
 package org.natrolite.text.action;
 
 import java.net.URL;
-import java.util.UUID;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.natrolite.Natrolite;
 import org.natrolite.text.Text;
 
 /**
- * Utility methods to create instances of {@link TextAction}s.
+ * A factory to create {@link TextAction}s.
  */
-public final class TextActions {
-
-  private TextActions() {}
+public interface TextActionFactory {
 
   /**
    * Creates a new {@link ClickAction} that will ask the player to open an URL
@@ -47,9 +41,7 @@ public final class TextActions {
    * @param url The URL to open
    * @return The created click action instance
    */
-  public static ClickAction.OpenUrl openUrl(URL url) {
-    return Natrolite.getTextActionFactory().openUrl(url);
-  }
+  ClickAction.OpenUrl openUrl(URL url);
 
   /**
    * Creates a new {@link ClickAction} that will type a command on the client
@@ -58,9 +50,7 @@ public final class TextActions {
    * @param command The command to execute
    * @return The created click action instance
    */
-  public static ClickAction.RunCommand runCommand(String command) {
-    return Natrolite.getTextActionFactory().runCommand(command);
-  }
+  ClickAction.RunCommand runCommand(String command);
 
   /**
    * Creates a new {@link ClickAction} that will change the page in a book
@@ -69,9 +59,7 @@ public final class TextActions {
    * @param page The book page to switch to
    * @return The created click action instance
    */
-  public static ClickAction.ChangePage changePage(int page) {
-    return Natrolite.getTextActionFactory().changePage(page);
-  }
+  ClickAction.ChangePage changePage(int page);
 
   /**
    * Creates a new {@link ClickAction} that will suggest the player a command
@@ -80,9 +68,7 @@ public final class TextActions {
    * @param command The command to suggest
    * @return The created click action instance
    */
-  public static ClickAction.SuggestCommand suggestCommand(String command) {
-    return Natrolite.getTextActionFactory().suggestCommand(command);
-  }
+  ClickAction.SuggestCommand suggestCommand(String command);
 
   /**
    * Creates a new {@link HoverAction} that will show a text on the client
@@ -91,20 +77,16 @@ public final class TextActions {
    * @param text The text to display
    * @return The created hover action instance
    */
-  public static HoverAction.ShowText showText(Text text) {
-    return Natrolite.getTextActionFactory().showText(text);
-  }
+  HoverAction.ShowText showText(Text text);
 
   /**
    * Creates a new {@link HoverAction} that will show information about an
    * item when it is hovered.
    *
-   * @param item The item to display
+   * @param stack The item to display
    * @return The created hover action instance
    */
-  public static HoverAction.ShowItem showItem(ItemStack item) {
-    return Natrolite.getTextActionFactory().showItem(item);
-  }
+  HoverAction.ShowItem showItem(ItemStack stack);
 
   /**
    * Creates a new {@link HoverAction} that will show information about an
@@ -113,46 +95,7 @@ public final class TextActions {
    * @param entity The entity to display
    * @return The created hover action instance
    */
-  public static HoverAction.ShowEntity showEntity(HoverAction.ShowEntity.Ref entity) {
-    return Natrolite.getTextActionFactory().showEntity(entity);
-  }
-
-  /**
-   * Creates a new {@link HoverAction} that will show information about an
-   * entity when it is hovered.
-   *
-   * @param uuid The UUID of the entity
-   * @param name The name of the entity
-   * @param type The type of the entity
-   * @return The created hover action instance
-   */
-  public static HoverAction.ShowEntity showEntity(UUID uuid, String name, EntityType type) {
-    return showEntity(new HoverAction.ShowEntity.Ref(uuid, name, type));
-  }
-
-  /**
-   * Creates a new {@link HoverAction} that will show information about an
-   * entity when it is hovered.
-   *
-   * @param uuid The UUID of the entity
-   * @param name The name of the entity
-   * @return The created hover action instance
-   */
-  public static HoverAction.ShowEntity showEntity(UUID uuid, String name) {
-    return showEntity(new HoverAction.ShowEntity.Ref(uuid, name));
-  }
-
-  /**
-   * Creates a new {@link HoverAction} that will show information about an
-   * entity when it is hovered.
-   *
-   * @param entity The entity
-   * @param name   The name of the entity
-   * @return The created hover action instance
-   */
-  public static HoverAction.ShowEntity showEntity(Entity entity, String name) {
-    return showEntity(new HoverAction.ShowEntity.Ref(entity, name));
-  }
+  HoverAction.ShowEntity showEntity(HoverAction.ShowEntity.Ref entity);
 
   /**
    * Creates a new {@link ShiftClickAction} that will insert text at the
@@ -161,7 +104,5 @@ public final class TextActions {
    * @param text The text to insert
    * @return The created shift click action instance
    */
-  public static ShiftClickAction.InsertText insertText(String text) {
-    return Natrolite.getTextActionFactory().insertText(text);
-  }
+  ShiftClickAction.InsertText insertText(String text);
 }

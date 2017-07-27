@@ -25,8 +25,6 @@
 
 package org.natrolite.text.action;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 import org.natrolite.text.Text;
 
 /**
@@ -34,40 +32,15 @@ import org.natrolite.text.Text;
  *
  * @param <R> the type of the result of the action
  */
-public abstract class ShiftClickAction<R> extends TextAction<R> {
-
-  /**
-   * Constructs a new {@link ShiftClickAction} with the given result.
-   *
-   * @param result The result of the shift click action
-   */
-  ShiftClickAction(R result) {
-    super(result);
-  }
+public interface ShiftClickAction<R> extends TextAction<R> {
 
   @Override
-  public void applyTo(Text.Builder builder) {
+  default void applyTo(Text.Builder builder) {
     builder.onShiftClick(this);
   }
 
   /**
    * Inserts some text into the chat prompt.
    */
-  public static final class InsertText extends ShiftClickAction<String> {
-
-    /**
-     * Constructs a new {@link InsertText} instance that will insert text at
-     * the current cursor position in the chat when it is shift-clicked.
-     *
-     * @param text The text to insert
-     */
-    InsertText(String text) {
-      super(text);
-    }
-
-    @Override
-    public void apply(JsonObject object, JsonSerializationContext context) {
-      object.addProperty("insertion", result);
-    }
-  }
+  interface InsertText extends ShiftClickAction<String> {}
 }
