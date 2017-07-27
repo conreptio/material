@@ -21,18 +21,24 @@ package org.natrolite.util;
 
 import java.util.Comparator;
 
+/**
+ * Compares two version strings.
+ *
+ * <p>Examples for version strings are: 1.0.0, 1.7, 1.0.4.3,
+ * <b>but not</b> 1.2-rc, 1.7-SNAPSHOT, 1.2.5-02
+ */
 public class VersionComparator implements Comparator<String> {
 
+  /**
+   * Checks if <code>o1</code> is older than <code>o2</code>.
+   */
   public static boolean isOlderThan(String o1, String o2) {
-    return new VersionComparator().compare(o1, o2) == -1;
+    return new VersionComparator().compare(o1, o2) < 0;
   }
 
   @Override
   public int compare(String o1, String o2) {
-    if (o1 == null) {
-      return 1;
-    }
-    if (o2 == null) {
+    if (o1 == null || o2 == null) {
       return 1;
     }
     String[] thisParts = o1.split("\\.");
