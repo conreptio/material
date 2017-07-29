@@ -9,7 +9,7 @@ apply from: 'gradle/eclipse.gradle'
 
 allprojects {
   group = 'org.natrolite.bukkit'
-  version = '1.0.11'
+  version = '1.0.12'
   ext.homepage = 'https://natrolite.org/'
 }
 
