@@ -47,7 +47,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.natrolite.Natrolite;
 import org.natrolite.NatrolitePlugin;
-import org.natrolite.annotations.GitHub;
 import org.natrolite.configurate.types.HoconConfig;
 import org.natrolite.dictionary.TranslationDictionary;
 import org.natrolite.dictionary.bundle.MultiSourceResourceBundleTranslationDictionary;
@@ -65,6 +64,7 @@ import org.natrolite.impl.service.sql.SqlServiceImpl;
 import org.natrolite.impl.text.action.NatroTextActionFactory;
 import org.natrolite.impl.text.serialisation.NatroJsonTextSerializer;
 import org.natrolite.impl.text.serialisation.NatroPlainTextSerializer;
+import org.natrolite.impl.updater.NatroUpdater;
 import org.natrolite.internal.NatroliteInternal;
 import org.natrolite.internal.config.NatroliteConfig;
 import org.natrolite.internal.config.ServerConfig;
@@ -78,12 +78,11 @@ import org.natrolite.service.sql.SqlService;
 import org.natrolite.text.action.TextActionFactory;
 import org.natrolite.text.serialisation.TextSerializer.Json;
 import org.natrolite.text.serialisation.TextSerializer.Plain;
-import org.natrolite.updater.Spigot;
+import org.natrolite.updater.lightning.Lightning;
 import org.natrolite.util.Dependency;
 import org.natrolite.util.ReflectionUtil;
 
-@Spigot("39140")
-@GitHub(organisation = "natrolite", repository = "natrolite")
+@Lightning(org = "natrolite", repo = "natrolite", branch = "master")
 public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInternal {
 
   public static final String TABLE_PREFIX = "natro_";
@@ -98,6 +97,7 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
 
   private final NatroliteRegistry registry = new NatroliteRegistry();
   private final NatroMenuManager menuManager = new NatroMenuManager();
+  private final NatroUpdater updater = new NatroUpdater(this);
 
   @Nullable private NatroliteServicesManager servicesManager;
   @Nullable private NatroliteServerManager serverManager;
@@ -180,6 +180,7 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
       }
 
       getServer().getPluginManager().registerEvents(menuManager, this);
+      getServer().getPluginManager().registerEvents(updater, this);
 
       getCommand("services").setExecutor(new ServicesCommand(this));
 
