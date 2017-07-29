@@ -23,7 +23,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.natrolite.annotations.GitHub;
 
 /**
  * Activates the {@link Lightning} Updater.
@@ -34,11 +33,6 @@ public @interface Lightning {
 
   String FILE = ".lightning.json";
 
-  /**
-   * The url to the {@link LightningFile}.
-   *
-   * <p>Instead of setting this value you can use the {@link GitHub} annotation.
-   */
   String value() default "";
 
   String org() default "";
