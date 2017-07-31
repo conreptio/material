@@ -1,8 +1,8 @@
 {
   "*": {
-    "latest": "1.0.10",
+    "latest": "1.0.12",
     "inform": true,
     "install": true,
-    "url": "https://api.spiget.org/v2/resources/39140/versions/1.0.10/download"
+    "url": "https://api.spiget.org/v2/resources/39140/versions/1.0.12/download"
   }
 }
