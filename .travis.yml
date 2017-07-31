@@ -14,20 +14,27 @@ after_success:
   - ./scripts/publish-javadoc
 
 deploy:
-  provider: releases
-  api_key:
-    secure: "ogfGQQxY4I5Rwdcoj9qMOL/+unMokUmCdIioBMEhc0UDEa2kbosLIl9lc0OUg38remkQakwiiab/jUZmTGe6/CjAeaGD72FyV3yzx8qdOmBLM3D26xpZ/FdL9qJme5AoVhjba3HaUfl84p/ayxlJzU4GRCDDiVN1aZLFWn9ugLv7kaVakKeJc19t2Qqk8ebnnt1/ItxiDNx6UasVy2mrbZ27Nz4WRkGcorqUQ52Ls/WL/UVJVcZHdY3CU8+dRap+6I82r4W8QhYUMUxtEfOC6z6ataGdkuIYrTP/wH956t1E37Vl6asGPQScht77xhOw9YTM3Ms4lg1bQ/0IIbGM1iVGrHj9KI8I+U/oyHcmdruyB2vXqHuuP4kuL3or8FGFULRQRgrz7/trlzGAs6jrcdUaKa3AhfyvdddZzsuQYKRzQB4diJji+3j8v38V8yGPK+D0VTu/mFA01LsFTjLmnxtU012pp21y+cFt7X028HpiOZU2VixAZCaQr+zfdbzRQMXsyrbHWQfw6P7SCtKf5syjpyYJbYNqfpKq1wGQcX4LHwcmkLauKtpqE7A7sqd1je/4bUqiE17mwfASd5Tj0ISr1P2bcZ1f1sRAeFsggP2ulU5gq5E/MjtWiMpcmx8xXe/14UDCh/Z39luhnoR3t1MpNvqcB3M5msBnw39gzPY="
-  skip_cleanup: true
-  file_glob: true
-  file:
-    - "minigames-api/build/libs/*.jar"
-    - "minigames-core/build/libs/*-shaded.jar"
-    - "natrolite-api/build/libs/*.jar"
-    - "natrolite-core/build/libs/*-shaded.jar"
-  on:
-    tags: true
-    jdk: oraclejdk8
-    repo: natrolite/natrolite
+  - provider: releases
+    api_key:
+      secure: "ogfGQQxY4I5Rwdcoj9qMOL/+unMokUmCdIioBMEhc0UDEa2kbosLIl9lc0OUg38remkQakwiiab/jUZmTGe6/CjAeaGD72FyV3yzx8qdOmBLM3D26xpZ/FdL9qJme5AoVhjba3HaUfl84p/ayxlJzU4GRCDDiVN1aZLFWn9ugLv7kaVakKeJc19t2Qqk8ebnnt1/ItxiDNx6UasVy2mrbZ27Nz4WRkGcorqUQ52Ls/WL/UVJVcZHdY3CU8+dRap+6I82r4W8QhYUMUxtEfOC6z6ataGdkuIYrTP/wH956t1E37Vl6asGPQScht77xhOw9YTM3Ms4lg1bQ/0IIbGM1iVGrHj9KI8I+U/oyHcmdruyB2vXqHuuP4kuL3or8FGFULRQRgrz7/trlzGAs6jrcdUaKa3AhfyvdddZzsuQYKRzQB4diJji+3j8v38V8yGPK+D0VTu/mFA01LsFTjLmnxtU012pp21y+cFt7X028HpiOZU2VixAZCaQr+zfdbzRQMXsyrbHWQfw6P7SCtKf5syjpyYJbYNqfpKq1wGQcX4LHwcmkLauKtpqE7A7sqd1je/4bUqiE17mwfASd5Tj0ISr1P2bcZ1f1sRAeFsggP2ulU5gq5E/MjtWiMpcmx8xXe/14UDCh/Z39luhnoR3t1MpNvqcB3M5msBnw39gzPY="
+    skip_cleanup: true
+    file_glob: true
+    file:
+      - "minigames-api/build/libs/*.jar"
+      - "minigames-core/build/libs/*-shaded.jar"
+      - "natrolite-api/build/libs/*.jar"
+      - "natrolite-core/build/libs/*-shaded.jar"
+    on:
+      tags: true
+      jdk: oraclejdk8
+      repo: natrolite/natrolite
+  - provider: script
+    skip_cleanup: true
+    script: ./gradlew publish -PdeployUrl="${DEPLOY_URL}" -PdeployUser="${DEPLOY_USER}" -PdeployPass="${DEPLOY_PASS}"
+    on:
+      tags: true
+      jdk: oraclejdk8
+      repo: natrolite/natrolite
 
 matrix:
   fast_finish: true
