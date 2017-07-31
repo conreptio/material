@@ -28,7 +28,7 @@ _Natrolite API:_
     <dependency>
         <groupId>org.natrolite.bukkit</groupId>
         <artifactId>natrolite-api</artifactId>
-        <version>1.0.10</version>
+        <version>1.0.12</version>
         <scope>provided</scope>
     </dependency>
 ```
@@ -38,7 +38,7 @@ _Minigames API (includes Natrolite API):_
     <dependency>
         <groupId>org.natrolite.bukkit</groupId>
         <artifactId>minigames-api</artifactId>
-        <version>1.0.10</version>
+        <version>1.0.12</version>
         <scope>provided</scope>
     </dependency>
 ```
