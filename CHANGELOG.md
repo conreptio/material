@@ -11,6 +11,7 @@ Please update this file before pushing a new tag.
 - Added a Menu API
 - Added a Builder API (Registry)
 - Added the Lightning Updater
+- Automatic Deploy via Travis CI
 
 ### Changed
 
