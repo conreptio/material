@@ -20,9 +20,9 @@
 package org.natrolite.example;
 
 import org.natrolite.arena.Arena;
-import org.natrolite.plugin.AbstractGamePlugin;
+import org.natrolite.plugin.GameJavaPlugin;
 
-public class ExamplePlugin extends AbstractGamePlugin<Example> {
+public class ExamplePlugin extends GameJavaPlugin<Example> {
 
   public ExamplePlugin() {
     super(Example.class, ExampleSettings.class);

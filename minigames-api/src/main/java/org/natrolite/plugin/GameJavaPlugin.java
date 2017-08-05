@@ -29,14 +29,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.natrolite.game.Game;
 import org.natrolite.map.MapSettings;
 
-public abstract class AbstractGamePlugin<G extends Game>
+public abstract class GameJavaPlugin<G extends Game>
     extends JavaPlugin
     implements GamePlugin<G>, Listener {
 
   private final Class<G> gameClass;
   @Nullable private final Class<? extends MapSettings> settings;
 
-  public AbstractGamePlugin(Class<G> gameClass, Class<? extends MapSettings> settings) {
+  public GameJavaPlugin(Class<G> gameClass, Class<? extends MapSettings> settings) {
     this.gameClass = checkNotNull(gameClass);
     this.settings = settings;
 
