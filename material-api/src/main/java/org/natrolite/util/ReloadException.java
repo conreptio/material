@@ -17,9 +17,23 @@
  * along with Material. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.natrolite;
+package org.natrolite.util;
 
-public interface Reloadable {
+public class ReloadException extends Exception {
 
-  void reload();
+  public ReloadException() {
+    super();
+  }
+
+  public ReloadException(String message) {
+    super(message);
+  }
+
+  public ReloadException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public ReloadException(Throwable cause) {
+    super(cause);
+  }
 }
