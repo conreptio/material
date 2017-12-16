@@ -5,7 +5,7 @@ jdk:
   - oraclejdk8
   - oraclejdk9
 
-script: ./gradlew build
+script: ./scripts/build
 
 matrix:
   fast_finish: true
