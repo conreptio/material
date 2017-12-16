@@ -1,6 +1,10 @@
-# Natrolite
-# ---------
-.server
+# Eclipse
+# -------
+/bin
+*.classpath
+*.project
+*.settings
+atlassian-ide-plugin.xml
 
 # Gradle
 # ------
@@ -19,19 +23,19 @@ gradle-app.setting
 /*.iws
 /out
 
-# Eclipse
-# -------
-/bin
-*.classpath
-*.project
-*.settings
-atlassian-ide-plugin.xml
+# Logs
+# ----
+*.log
 
 # NetBeans
 # --------
 dist/
 .nb-gradle
 .nb-gradle-properties
+
+# OS X
+# ----
+.DS_Store
 
 # Windows
 # -------
@@ -46,11 +50,3 @@ ehthumbs_vista.db
 *.msm
 *.msp
 $RECYCLE.BIN/
-
-# OS X
-# ----
-.DS_Store
-
-# Logs
-# ----
-*.log
