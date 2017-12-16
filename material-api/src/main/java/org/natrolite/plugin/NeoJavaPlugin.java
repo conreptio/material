@@ -21,7 +21,6 @@ package org.natrolite.plugin;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import javax.annotation.Nullable;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.ServicesManager;
@@ -38,6 +37,20 @@ public abstract class NeoJavaPlugin extends JavaPlugin implements NeoPlugin, Lis
   private ServicesManager servicesManager;
 
   @Override
+  public void onEnable() {
+    enable();
+  }
+
+  @Override
+  public void onDisable() {
+    disable();
+  }
+
+  protected void enable() {}
+
+  protected void disable() {}
+
+  @Override
   public Asset getAsset(String path) {
     return new Asset(this, path.replace("\\", "/"));
   }
@@ -45,11 +58,6 @@ public abstract class NeoJavaPlugin extends JavaPlugin implements NeoPlugin, Lis
   @Override
   public File getFile() {
     return super.getFile();
-  }
-
-  @Override
-  public Path getRoot() {
-    return this.getDataFolder().toPath();
   }
 
   @Override

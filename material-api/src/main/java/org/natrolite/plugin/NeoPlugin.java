@@ -20,6 +20,8 @@
 package org.natrolite.plugin;
 
 import java.nio.file.Path;
+import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.SimpleServicesManager;
@@ -41,9 +43,21 @@ public interface NeoPlugin extends Plugin {
 
   /**
    * Gets the root directory (data folder) of this {@link Plugin}.
+   *
+   * @see Plugin#getDataFolder()
    */
   default Path getRoot() {
     return getDataFolder().toPath();
+  }
+
+  default <T extends Listener> T register(T listener) {
+    getServer().getPluginManager().registerEvents(listener, this);
+    return listener;
+  }
+
+  default <T extends Event> T call(T event) {
+    getServer().getPluginManager().callEvent(event);
+    return event;
   }
 
   /**
