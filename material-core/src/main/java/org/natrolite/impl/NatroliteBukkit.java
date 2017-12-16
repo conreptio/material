@@ -72,7 +72,6 @@ import org.natrolite.item.Item;
 import org.natrolite.menu.Icon;
 import org.natrolite.menu.Menu;
 import org.natrolite.menu.Page;
-import org.natrolite.metrics.Metrics;
 import org.natrolite.plugin.NeoJavaPlugin;
 import org.natrolite.service.sql.SqlService;
 import org.natrolite.text.action.TextActionFactory;
@@ -159,7 +158,6 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
       register(SqlService.class, new SqlServiceImpl(), ServicePriority.Low);
 
       setupDictionary();
-      setupMetrics();
 
       this.serverId = readUUID();
       this.serverName = serverConfig.getConfig().name();
@@ -279,6 +277,7 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
     getServer().getServicesManager().register(clazz, provider, this, priority);
   }
 
+  /*
   private void setupMetrics() {
     try {
       Metrics metrics = new Metrics(this);
@@ -298,6 +297,7 @@ public final class NatroliteBukkit extends NeoJavaPlugin implements NatroliteInt
       getLogger().log(Level.FINE, "Could not start metrics service", throwable);
     }
   }
+  */
 
   private void setupDictionary() {
     final Locale def = getSettings().general().lang().locale();
