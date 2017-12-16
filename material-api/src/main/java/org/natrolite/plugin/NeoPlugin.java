@@ -24,7 +24,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
-import org.bukkit.plugin.SimpleServicesManager;
 import org.natrolite.util.Asset;
 
 /**
@@ -60,12 +59,5 @@ public interface NeoPlugin extends Plugin {
     return event;
   }
 
-  /**
-   * Gets the {@link ServicesManager} belonging to this plugin.
-   *
-   * <p>In most cases, this is just a new instance of {@link SimpleServicesManager}.
-   *
-   * @return The service manager belonging to this plugin
-   */
   ServicesManager getServicesManager();
 }
