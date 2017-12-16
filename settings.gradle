@@ -1,9 +1,4 @@
-rootProject.name = 'natrolite'
+rootProject.name = 'material'
 
-include 'natrolite-api'
-include 'natrolite-core'
-
-rootProject.children.each {
-  assert it.projectDir.isDirectory()
-  assert it.buildFile.isFile()
-}
+include 'material-api'
+include 'material-core'
