@@ -1,14 +1,11 @@
-dist: trusty
+language: java
 sudo: false
 
-language: java
-
 jdk:
-  - openjdk8
   - oraclejdk8
   - oraclejdk9
 
-script: ./gradlew build checkstyle -Dorg.gradle.daemon=false
+script: ./gradlew build
 
 matrix:
   fast_finish: true
