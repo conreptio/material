@@ -37,9 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
 import org.bukkit.plugin.Plugin;
-import org.natrolite.annotations.Experimental;
 
-@Experimental
 public class Dependency {
 
   public static final String NAME = "%s-%s-%s.jar";

@@ -21,9 +21,7 @@ package org.natrolite.menu;
 
 import java.util.Optional;
 import org.bukkit.entity.Player;
-import org.natrolite.annotations.Experimental;
 
-@Experimental
 public interface MenuManager {
 
   int DEFAULT_PAGE = 0;

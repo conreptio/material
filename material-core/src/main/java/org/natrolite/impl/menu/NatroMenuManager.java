@@ -31,12 +31,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.natrolite.annotations.Experimental;
 import org.natrolite.menu.Menu;
 import org.natrolite.menu.MenuContext;
 import org.natrolite.menu.MenuManager;
 
-@Experimental
 public final class NatroMenuManager implements MenuManager, Listener {
 
   private final Map<UUID, NatroMenuContext> map = new MapMaker().concurrencyLevel(4).makeMap();
@@ -81,7 +79,7 @@ public final class NatroMenuManager implements MenuManager, Listener {
       if (context.isPresent()) {
         event.setCancelled(true);
         context.get().getPage().ifPresent(page -> page.getIcon(event.getRawSlot())
-            .ifPresent(icon -> icon.click().accept(new NatroMenuArguments(this, event))));
+          .ifPresent(icon -> icon.click().accept(new NatroMenuArguments(this, event))));
       }
     }
   }

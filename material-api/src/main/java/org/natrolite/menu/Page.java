@@ -25,11 +25,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.natrolite.Natrolite;
-import org.natrolite.annotations.Experimental;
 import org.natrolite.registry.ResettableBuilder;
 import org.natrolite.text.Text;
 
-@Experimental
 public interface Page {
 
   static Builder builder() {

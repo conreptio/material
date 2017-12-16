@@ -24,10 +24,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import org.bukkit.entity.Player;
 import org.natrolite.Natrolite;
-import org.natrolite.annotations.Experimental;
 import org.natrolite.registry.ResettableBuilder;
 
-@Experimental
 public interface Menu {
 
   static Menu.Builder builder() {

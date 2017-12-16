@@ -23,11 +23,9 @@ import java.util.function.Consumer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.natrolite.Natrolite;
-import org.natrolite.annotations.Experimental;
 import org.natrolite.item.Item;
 import org.natrolite.registry.ResettableBuilder;
 
-@Experimental
 public interface Icon {
 
   static Builder builder() {

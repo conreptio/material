@@ -42,14 +42,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
-import org.natrolite.annotations.Experimental;
 import org.natrolite.impl.NatroliteBukkit;
 import org.natrolite.updater.Updatable;
 import org.natrolite.updater.Updater;
 import org.natrolite.updater.lightning.Lightning;
 import org.natrolite.updater.lightning.LightningElement;
 
-@Experimental
 public final class NatroUpdater implements Updater, Listener {
 
   private static final String AGENT = "Natrolite/1.0";
@@ -109,9 +107,9 @@ public final class NatroUpdater implements Updater, Listener {
           if (isOlderThan(current, element.getLatest())) {
 
             unb(this.plugin, "system.updater.outdated")
-                .args(current, element.getLatest())
-                .build()
-                .info(plugin.getLogger());
+              .args(current, element.getLatest())
+              .build()
+              .info(plugin.getLogger());
 
             if (element.isInstall()) {
 
@@ -119,18 +117,18 @@ public final class NatroUpdater implements Updater, Listener {
               Files.createDirectories(file.getParent());
 
               unb(this.plugin, "system.updater.download")
-                  .args(name, element.getLatest())
-                  .build()
-                  .info(plugin.getLogger());
+                .args(name, element.getLatest())
+                .build()
+                .info(plugin.getLogger());
 
               try (InputStream in = new URL(element.getUrl()).openStream()) {
                 Files.copy(in, file, StandardCopyOption.REPLACE_EXISTING);
               }
 
               unb(this.plugin, "system.updater.success")
-                  .args(name)
-                  .build()
-                  .info(plugin.getLogger());
+                .args(name)
+                .build()
+                .info(plugin.getLogger());
               return;
             }
 

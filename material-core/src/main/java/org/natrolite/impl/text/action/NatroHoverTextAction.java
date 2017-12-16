@@ -27,7 +27,6 @@ package org.natrolite.impl.text.action;
 
 import com.google.gson.JsonObject;
 import org.bukkit.inventory.ItemStack;
-import org.natrolite.annotations.Experimental;
 import org.natrolite.text.Text;
 import org.natrolite.text.action.HoverAction;
 import org.natrolite.text.serialisation.TextSerializer;
@@ -69,14 +68,13 @@ abstract class NatroHoverTextAction<R> extends NatroTextAction<R> implements Hov
   }
 
   static final class NatroShowEntity extends NatroHoverTextAction<ShowEntity.Ref>
-      implements ShowEntity {
+    implements ShowEntity {
 
     NatroShowEntity(Ref result) {
       super(result);
     }
 
     @Override
-    @Experimental
     @SuppressWarnings("deprecation")
     public void serialize(JsonObject object, TextSerializer.Json serializer) {
       final JsonObject obj = new JsonObject();
