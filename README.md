@@ -1,44 +1,11 @@
-Natrolite [![Build Status](https://travis-ci.org/natrolite/natrolite.svg?branch=master)](https://travis-ci.org/natrolite/natrolite)
-=========
+# Material [![Build Status](https://travis-ci.org/neolumia/material.svg?branch=master)](https://travis-ci.org/neolumia/material)
 
-Natrolite is an API/Library created to help Bukkit Developers writing clean code without much effort.
+Material is an API/Library created to help Bukkit Developers writing clean code without much effort.
 
-Links
------
+## Links
 
-- [Source](https://github.com/natrolite/natrolite/)
-- [Spigot Resource](https://www.spigotmc.org/resources/natrolite.39140/)
-- [Issues](https://github.com/natrolite/natrolite/issues/)
-- [Documentation](https://docs.natrolite.org/)
-- [Javadoc](http://jd.natrolite.org/aggregated/1.0.5/)
+- [Source](https://github.com/neolumia/material)
+- [Issues](https://github.com/neolumia/material/issues)
 
-Artifacts
----------
-
-_Maven Repository:_
-```xml
-    <repository>
-        <id>natrolite-repo</id>
-        <url>https://repo.natrolite.org/repository/maven-public/</url>
-    </repository>
-```
-
-_Natrolite API:_
-```xml
-    <dependency>
-        <groupId>org.natrolite.bukkit</groupId>
-        <artifactId>natrolite-api</artifactId>
-        <version>1.0.12</version>
-        <scope>provided</scope>
-    </dependency>
-```
-
-_Minigames API (includes Natrolite API):_
-```xml
-    <dependency>
-        <groupId>org.natrolite.bukkit</groupId>
-        <artifactId>minigames-api</artifactId>
-        <version>1.0.12</version>
-        <scope>provided</scope>
-    </dependency>
-```
+## License
+This project is licensed under the GNU General Public License v3.0. For more information see "LICENSE".
