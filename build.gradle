@@ -84,7 +84,7 @@ subprojects { sub ->
   }
 
   processResources {
-    from rootProject.file('LICENSE.txt')
+    from rootProject.file('LICENSE')
     from rootProject.file('THIRD-PARTY-LICENSES.txt')
   }
 
