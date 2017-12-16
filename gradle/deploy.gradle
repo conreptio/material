@@ -24,18 +24,18 @@ publishing {
         asNode().children().last() + {
           resolveStrategy = DELEGATE_FIRST
 
-          name project.name
-          description project.description
-          url project.homepage
+          name 'Material'
+          description 'An API/Library created to help Bukkit Developers writing clean code without much effort.'
+          url 'https://neolumia.com/'
 
           ciManagement {
             system 'Travis CI'
-            url 'https://travis-ci.org/natrolite/natrolite'
+            url 'https://travis-ci.org/neolumia/material'
           }
 
           issueManagement {
             system 'GitHub Issues'
-            url 'https://github.com/natrolite/natrolite/issues'
+            url 'https://github.com/neolumia/material/issues'
           }
 
           licenses {
@@ -47,13 +47,12 @@ publishing {
           }
 
           scm {
-            url 'https://github.com/natrolite/natrolite'
-            connection 'scm:git:git://github.com/natrolite/natrolite.git'
-            developerConnection 'scm:git:ssh://github.com:natrolite/natrolite.git'
+            url 'https://github.com/neolumia/material'
+            connection 'scm:git:git://github.com/neolumia/material.git'
+            developerConnection 'scm:git:ssh://github.com:neolumia/material.git'
           }
         }
       }
     }
   }
 }
-
