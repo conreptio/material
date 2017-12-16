@@ -3,9 +3,6 @@ rootProject.name = 'natrolite'
 include 'natrolite-api'
 include 'natrolite-core'
 
-include 'minigames-api'
-include 'minigames-core'
-
 rootProject.children.each {
   assert it.projectDir.isDirectory()
   assert it.buildFile.isFile()
