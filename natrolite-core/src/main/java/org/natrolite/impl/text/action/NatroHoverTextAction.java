@@ -26,7 +26,6 @@
 package org.natrolite.impl.text.action;
 
 import com.google.gson.JsonObject;
-import net.xnity.odium.Odium;
 import org.bukkit.inventory.ItemStack;
 import org.natrolite.annotations.Experimental;
 import org.natrolite.text.Text;
@@ -64,7 +63,7 @@ abstract class NatroHoverTextAction<R> extends NatroTextAction<R> implements Hov
     public void serialize(JsonObject object, TextSerializer.Json serializer) {
       final JsonObject obj = new JsonObject();
       obj.addProperty(ACTION, "show_item");
-      obj.addProperty(VALUE, Odium.itemToJson(getResult()).orElse("{}"));
+      //TODO obj.addProperty(VALUE, Odium.itemToJson(getResult()).orElse("{}"));
       object.add(HOVER, obj);
     }
   }

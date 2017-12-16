@@ -80,7 +80,7 @@ subprojects { sub ->
     compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.12-R0.1-SNAPSHOT'
     testCompile group: 'org.spigotmc', name: 'spigot-api', version: '1.12-R0.1-SNAPSHOT'
 
-    compileOnly group: 'net.xnity', name: 'odium-core', version: '1.0.1'
+    //compileOnly group: 'net.xnity', name: 'odium-core', version: '1.0.1'
   }
 
   processResources {

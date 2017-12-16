@@ -43,8 +43,6 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
-import net.xnity.odium.ChatMessageType;
-import net.xnity.odium.Odium;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.natrolite.dictionary.TranslationDictionaries;
@@ -517,14 +515,16 @@ public abstract class Text {
   }
 
   public final void to(CommandSender... senders) {
-    to(ChatMessageType.CHAT, senders);
+    //to(ChatMessageType.CHAT, senders);
   }
 
-  /**
+
+
+  /*
    * Sends this {@link Text} to an {@link CommandSender}.
    *
    * @param senders the senders that should receive the message
-   */
+   *
   public final void to(ChatMessageType type, CommandSender... senders) {
     for (CommandSender sender : senders) {
       if (sender instanceof Player) {
@@ -534,6 +534,7 @@ public abstract class Text {
       sender.sendMessage(toPlain());
     }
   }
+  */
 
   public final String toPlain() {
     return TextSerializers.PLAIN.serialize(this);
