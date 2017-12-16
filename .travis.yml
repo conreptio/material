@@ -7,11 +7,6 @@ jdk:
 
 script: ./scripts/build
 
-matrix:
-  fast_finish: true
-  allow_failures:
-    - jdk: oraclejdk9
-
 branches:
   except:
     - gh-pages
