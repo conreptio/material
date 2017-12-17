@@ -1,6 +1,29 @@
-# Natrolite Changelog
-Changelog of _Natrolite_ and _Natrolite Minigames_.  
+# Material Changelog
+Changelog of _Material_.  
 Please update this file before pushing a new tag.
+
+## 1.0.13 - 2017-12-17
+
+### Added
+
+- Sound utilities
+- Reload utilities
+
+### Changed
+
+- Project has been renamed to _Material_
+- License updates
+- Repository cleanup
+- Updated Gradle and plugins
+- Testing with Java 9
+
+### Removed
+
+- Removed Odium
+- Removed Natrolite Minigames (is now _quartz_)
+- Removed Spigot assets
+- Removed metrics
+- Removed legacy data
 
 ## 1.0.12 - 2017-07-29
 
@@ -48,4 +71,3 @@ Please update this file before pushing a new tag.
 ### Removed
 
 - Hikari logging has been silenced
-
